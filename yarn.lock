@@ -2527,7 +2527,7 @@
   "resolved" "https://registry.npmjs.org/esbuild-darwin-64/-/esbuild-darwin-64-0.14.36.tgz"
   "version" "0.14.36"
 
-"esbuild@^0.14.18":
+"esbuild@^0.14.18", "esbuild@^0.14.36":
   "integrity" "sha512-HhFHPiRXGYOCRlrhpiVDYKcFJRdO0sBElZ668M4lh2ER0YgnkLxECuFe7uWCf23FrcLc59Pqr7dHkTqmRPDHmw=="
   "resolved" "https://registry.npmjs.org/esbuild/-/esbuild-0.14.36.tgz"
   "version" "0.14.36"

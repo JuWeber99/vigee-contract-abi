@@ -45,6 +45,7 @@
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.8",
+    "esbuild": "^0.14.36",
     "husky": "^7.0.4",
     "size-limit": "^7.0.8",
     "tsdx": "^0.13.3",
