@@ -1,4 +1,5 @@
-import algosdk, { ABIContractParams, Algodv2, SuggestedParams } from 'algosdk';
+import algosdk, { ABIContractParams, Algodv2, SignedTransaction, SuggestedParams } from 'algosdk';
+import { Transaction } from 'algosdk';
 import { getApplicationAddress } from 'algosdk';
 import { ContractProgramCompilationContext } from '.';
 import { ABIStateSchema, StateSchema } from '../algorand-typeextender';
@@ -26,6 +27,7 @@ export abstract class BaseContract extends algosdk.ABIContract {
     appID: number = 0,
     localSchema = new StateSchema(0, 0),
     globalSchema = new StateSchema(0, 0),
+
   ) {
     super(contractAbiDefinition);
     delete contractAbiDefinition.globals;
@@ -35,6 +37,10 @@ export abstract class BaseContract extends algosdk.ABIContract {
     this.globalSchema = globalSchema;
     this.localSchema = localSchema;
     this.address = getApplicationAddress(appID)
+  }
+
+  static getTransactionsFromGroup(signedArray: SignedTransaction[]): Transaction[] {
+    return signedArray.map((item) => item.txn)
   }
 
   getMethodByName(name: string): algosdk.ABIMethod {
