@@ -14,8 +14,8 @@ export enum PROGRAM_TYPE {
 
 interface ABIStateEntry {
   readonly name: string;
-  readonly type: ABIArgumentType;
-  readonly description?: string;
+  readonly type: string;
+  readonly desc?: string;
 }
 
 export interface ABIStateSchema {
