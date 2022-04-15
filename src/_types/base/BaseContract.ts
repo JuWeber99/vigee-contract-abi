@@ -13,8 +13,8 @@ export enum PROGRAM_TYPE {
 }
 
 interface ABIStateEntry {
-  readonly name: string;
-  readonly type: string;
+  readonly name?: string;
+  readonly type?: string;
   readonly desc?: string;
 }
 
