@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, gh-pages, alpha, beta]
+    branches: [main, alpha, beta]
   pull_request:
     branches: [main, alpha, beta]
 
