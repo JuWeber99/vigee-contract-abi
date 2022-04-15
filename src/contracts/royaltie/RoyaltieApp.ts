@@ -8,32 +8,34 @@ import algosdk, {
   makeBasicAccountTransactionSigner,
   makePaymentTxnWithSuggestedParamsFromObject,
   SignedTransaction,
-  TransactionWithSigner,
+  TransactionWithSigner
 } from 'algosdk';
-import { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
-import { ALGORAND_ZERO_ADDRESS_STRING } from 'algosdk/dist/types/src/encoding/address';
 import { RoyaltieContract } from '../../_types';
+import { StateSchema } from '../../_types/algorand-typeextender';
 import {
   BaseContract,
   ContractProgramCompilationContext,
-  PROGRAM_TYPE,
+  PROGRAM_TYPE
 } from '../../_types/base';
-import { decodedSignedTransactionBuffer } from '../utils';
+import {
+  ALGORAND_ZERO_ADDRESS,
+  decodedSignedTransactionBuffer
+} from '../utils';
 import royaltieInterface from './RoyaltieInterface.json';
 
 export class RoyaltieApp extends BaseContract implements RoyaltieContract {
-  appID: number;
-  constructor(appID = 0, client: Algodv2) {
+  constructor(appID: number = 0, client: Algodv2) {
     super(
       royaltieInterface,
       client,
-      new ApplicationStateSchema(0, 1),
-      new ApplicationStateSchema(0, 2)
+      appID,
+      new StateSchema(0, 1),
+      new StateSchema(0, 2),
     );
     this.appID = appID;
   }
 
-  async setup(
+  async makeSignedSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShareAddress: string,
@@ -52,7 +54,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS_STRING,
+        rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
     };
@@ -86,9 +88,17 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return setupAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async createNFT(
+  async makeSignedCreateNFTTransaction(
     signer: algosdk.Account,
-    assetData: any
+    mintInformation: {
+      assetName: string,
+      unitName: string,
+      total: number | bigint,
+      metadataInfoURL: string,
+      assetMetadataHash: string,
+      decimals: number,
+      defaultFrozen: boolean
+    }
   ): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -103,7 +113,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieMintColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS_STRING,
+        rekeyTo: ALGORAND_ZERO_ADDRESS
       }),
       signer: transactionSigner,
     };
@@ -111,9 +121,19 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     const assetCreateTransaction = {
       txn: makeAssetCreateTxnWithSuggestedParamsFromObject({
         from: signer.addr,
-        to: getApplicationAddress(this.appID),
         suggestedParams,
-        ...assetData,
+        assetName: mintInformation.assetName,
+        unitName: mintInformation.unitName,
+        manager: this.address,
+        clawback: this.address,
+        freeze: this.address,
+        reserve: this.address,
+        total: mintInformation.total,
+        decimals: mintInformation.decimals,
+        defaultFrozen: true,
+        assetMetadataHash: mintInformation.assetMetadataHash,
+        assetURL: mintInformation.metadataInfoURL,
+        rekeyTo: ALGORAND_ZERO_ADDRESS
       }),
       signer: transactionSigner,
     };
@@ -131,7 +151,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return createNFTAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async swapinNFT(
+  async makeSwapinNFTTransaction(
     signer: algosdk.Account,
     assetID: number
   ): Promise<SignedTransaction[]> {
@@ -149,7 +169,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
         suggestedParams: suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS_STRING,
+        rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: transactionSigner,
     };
@@ -164,7 +184,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         assetIndex: assetID,
         suggestedParams,
         strictEmptyAddressChecking: true,
-        rekeyTo: ALGORAND_ZERO_ADDRESS_STRING,
+        rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
     };
@@ -181,7 +201,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return swapinNFTAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async addToCollection(
+  async makeAddToCollectionTransaction(
     signer: algosdk.Account,
     collectionAppID: number
   ): Promise<SignedTransaction[]> {
@@ -204,7 +224,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return addToCollectionAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async lockForOffer(
+  async makeLockForOfferTransaction(
     signer: algosdk.Account,
     royaltyAsset: number,
     royaltyAssetAmount: number,
@@ -229,7 +249,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return lockForOfferGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async rescind(
+  async makeOfferRescindTransaction(
     signer: algosdk.Account,
     assetToRescindID: number
   ): Promise<SignedTransaction[]> {
@@ -252,7 +272,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return rescindOfferLockGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async royaltyFreeMove(
+  async makeRoyaltyFreeMoveTransaction(
     signer: algosdk.Account,
     royaltyAsset: number,
     royaltyAssetAmount: number,
@@ -311,7 +331,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   //   return transferAssetAbiGroup.map(decodedSignedTransactionBuffer)
   // }
 
-  async setPaymentAsset(
+  async makeSetPaymentAssetTransaction(
     signer: algosdk.Account,
     assetID: number,
     isNowAllowed: boolean
@@ -335,7 +355,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return setPolicyGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async setPolicy(
+  async makeSetPolicyTransaction(
     signer: algosdk.Account,
     royaltieShare: number,
     royaltyReceiver: string
@@ -359,7 +379,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return setPolicyGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async getOffer(
+  async makeGetOfferTransaction(
     signer: algosdk.Account,
     royaltyAsset: number,
     from: Account
@@ -383,7 +403,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return getOfferGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async getPolicy(
+  async makegetPolicyTransaction(
     signer: algosdk.Account,
     royaltyAsset: number
   ): Promise<SignedTransaction[]> {
@@ -413,3 +433,6 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 // function get_royaltie_clear_compiled(arg0: string): Uint8Array {
 //   throw new Error("Function not implemented.")
 // }
+
+
+

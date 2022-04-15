@@ -2,7 +2,7 @@ import algosdk, { Account, SignedTransaction } from 'algosdk';
 import { ContractProgramCompilationContext } from './base';
 
 export interface RoyaltieContract {
-  setup(
+  makeSignedSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShareAddress: string,
@@ -10,45 +10,45 @@ export interface RoyaltieContract {
     clearCompilationContext: ContractProgramCompilationContext
   ): Promise<SignedTransaction[]>;
 
-  createNFT(
+  makeSignedCreateNFTTransaction(
     signer: algosdk.Account,
     nftdata: any
   ): Promise<SignedTransaction[]>;
 
-  swapinNFT(
+  makeSwapinNFTTransaction(
     signer: algosdk.Account,
     assetID: number
   ): Promise<SignedTransaction[]>;
 
-  addToCollection(
+  makeAddToCollectionTransaction(
     signer: algosdk.Account,
     collectionAppID: number
   ): Promise<SignedTransaction[]>;
 
-  setPolicy(
+  makeSetPolicyTransaction(
     signer: algosdk.Account,
     royaltieShare: number,
     royaltieReceiver: string
   ): Promise<SignedTransaction[]>;
 
-  getPolicy(
+  makegetPolicyTransaction(
     signer: algosdk.Account,
     assetID: number
   ): Promise<SignedTransaction[]>;
 
-  getOffer(
+  makeGetOfferTransaction(
     signer: algosdk.Account,
     assetID: number,
     stateAccountAddr: Account
   ): Promise<SignedTransaction[]>;
 
-  setPaymentAsset(
+  makeSetPaymentAssetTransaction(
     signer: algosdk.Account,
     assetID: number,
     isNowAllowed: boolean
   ): Promise<SignedTransaction[]>;
 
-  rescind(
+  makeOfferRescindTransaction(
     signer: algosdk.Account,
     assetToRescindID: number
   ): Promise<SignedTransaction[]>;

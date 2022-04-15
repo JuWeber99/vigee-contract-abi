@@ -1,30 +1,21 @@
-import algosdk, {
-  ABIContractParams,
-  Algodv2,
-  SuggestedParams,
-} from 'algosdk';
-import { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
+import algosdk, { ABIContractParams, Algodv2, SuggestedParams } from 'algosdk';
+import { getApplicationAddress } from 'algosdk';
 import { ContractProgramCompilationContext } from '.';
+import { ABIStateSchema, StateSchema } from '../algorand-typeextender';
 
 export enum PROGRAM_TYPE {
   APPROVAL,
   CLEAR,
 }
-interface ABIStateEntry {
-  readonly name?: string;
-  readonly type?: string;
-  readonly desc?: string;
-}
 
-export interface ABIStateSchema {
-  locals: ABIStateEntry[];
-  globals: ABIStateEntry[];
-}
 
 export abstract class BaseContract extends algosdk.ABIContract {
   client: Algodv2;
-  localSchema: ApplicationStateSchema;
-  globalSchema: ApplicationStateSchema;
+  localSchema: StateSchema;
+  globalSchema: StateSchema;
+  appID: number
+  address: string
+
   static abiInterface: ABIContractParams & Partial<ABIStateSchema>;
   approvalProgram: Uint8Array = new Uint8Array();
   clearProgram: Uint8Array = new Uint8Array();
@@ -32,15 +23,18 @@ export abstract class BaseContract extends algosdk.ABIContract {
   constructor(
     contractAbiDefinition: ABIContractParams & Partial<ABIStateSchema>,
     client: Algodv2,
-    localSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0),
-    globalSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0)
+    appID: number = 0,
+    localSchema = new StateSchema(0, 0),
+    globalSchema = new StateSchema(0, 0),
   ) {
     super(contractAbiDefinition);
     delete contractAbiDefinition.globals;
     delete contractAbiDefinition.locals;
+    this.appID = appID
     this.client = client;
     this.globalSchema = globalSchema;
     this.localSchema = localSchema;
+    this.address = getApplicationAddress(appID)
   }
 
   getMethodByName(name: string): algosdk.ABIMethod {

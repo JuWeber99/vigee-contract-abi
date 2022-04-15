@@ -33,7 +33,8 @@
   "name": "@juweber99/vigee-contract-abi",
   "author": "julian.weber",
   "module": "dist/vigee-contract-abi.esm.js",
-  "size-limit": [{
+  "size-limit": [
+    {
       "path": "dist/vigee-contract-abi.cjs.production.min.js",
       "limit": "10 KB"
     },
