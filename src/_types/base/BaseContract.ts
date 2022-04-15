@@ -1,5 +1,4 @@
 import algosdk, {
-  ABIArgumentType,
   ABIContractParams,
   Algodv2,
   SuggestedParams,
