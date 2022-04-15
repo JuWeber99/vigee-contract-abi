@@ -27,12 +27,12 @@ export abstract class BaseContract extends algosdk.ABIContract {
   client: Algodv2;
   localSchema: ApplicationStateSchema;
   globalSchema: ApplicationStateSchema;
-  static abiInterface: ABIContractParams & ABIStateSchema;
+  static abiInterface: ABIContractParams & Partial<ABIStateSchema>;
   approvalProgram: Uint8Array = new Uint8Array();
   clearProgram: Uint8Array = new Uint8Array();
 
   constructor(
-    contractAbiDefinition: ABIContractParams & ABIStateSchema,
+    contractAbiDefinition: ABIContractParams & Partial<ABIStateSchema>,
     client: Algodv2,
     localSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0),
     globalSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0)
