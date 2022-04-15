@@ -1,4 +1,9 @@
-import algosdk, { ABIArgumentType, ABIInterface, Algodv2, SuggestedParams } from 'algosdk';
+import algosdk, {
+  ABIArgumentType,
+  ABIContractParams,
+  Algodv2,
+  SuggestedParams,
+} from 'algosdk';
 import { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
 import { ContractProgramCompilationContext } from '.';
 
@@ -8,32 +13,31 @@ export enum PROGRAM_TYPE {
 }
 
 interface ABIStateEntry {
-  readonly name: string,
-  readonly type: ABIArgumentType,
+  readonly name: string;
+  readonly type: ABIArgumentType;
   readonly description?: string;
 }
 
 export interface ABIStateSchema {
-  locals: ABIStateEntry[]
-  globals: ABIStateEntry[]
+  locals: ABIStateEntry[];
+  globals: ABIStateEntry[];
 }
 
 export abstract class BaseContract extends algosdk.ABIContract {
   client: Algodv2;
   localSchema: ApplicationStateSchema;
   globalSchema: ApplicationStateSchema;
-  static abiInterface: ABIInterface & ABIStateSchema;
-  approvalProgram: Uint8Array = new Uint8Array()
-  clearProgram: Uint8Array = new Uint8Array()
-
+  static abiInterface: ABIContractParams & ABIStateSchema;
+  approvalProgram: Uint8Array = new Uint8Array();
+  clearProgram: Uint8Array = new Uint8Array();
 
   constructor(
-    contractAbiDefinition: any,
+    contractAbiDefinition: ABIContractParams & ABIStateSchema,
     client: Algodv2,
     localSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0),
     globalSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0)
   ) {
-    super(contractAbiDefinition.globals);
+    super(contractAbiDefinition);
     delete contractAbiDefinition.globals;
     delete contractAbiDefinition.locals;
     this.client = client;
@@ -76,7 +80,8 @@ export abstract class BaseContract extends algosdk.ABIContract {
           programCompilationContext.templateVariables
         )
       )
-      .do().then();
+      .do()
+      .then();
     const programBytes = new Uint8Array(Buffer.from(compiled.result, 'base64'));
 
     switch (TYPE) {
