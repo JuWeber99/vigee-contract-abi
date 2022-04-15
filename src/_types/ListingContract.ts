@@ -1,7 +1,7 @@
-import { BaseContract } from "./base";
+import { BaseContract } from './base';
 
 // tslint:disable-next-line: no-empty-interface
-interface IListingContract { }
+interface IListingContract {}
 
-export declare class ListingContract extends BaseContract implements IListingContract { }
-
+export declare class ListingContract extends BaseContract
+  implements IListingContract {}

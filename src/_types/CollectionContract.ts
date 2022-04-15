@@ -1,6 +1,6 @@
-import { BaseContract } from "./base";
+import { BaseContract } from './base';
 
-interface ICollectionContract { }
+interface ICollectionContract {}
 
-export declare class CollectionContract extends BaseContract implements ICollectionContract { }
-
+export declare class CollectionContract extends BaseContract
+  implements ICollectionContract {}

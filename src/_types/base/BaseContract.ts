@@ -1,101 +1,98 @@
-import algosdk, { ABIInterface, Algodv2, SuggestedParams } from "algosdk";
-import { ApplicationStateSchema } from "algosdk/dist/types/src/client/v2/algod/models/types";
-import { ContractProgramCompilationContext } from ".";
+import algosdk, { ABIArgumentType, ABIInterface, Algodv2, SuggestedParams } from 'algosdk';
+import { ApplicationStateSchema } from 'algosdk/dist/types/src/client/v2/algod/models/types';
+import { ContractProgramCompilationContext } from '.';
 
 export enum PROGRAM_TYPE {
-    APPROVAL, CLEAR
+  APPROVAL,
+  CLEAR,
 }
-export type ABIStateMetaInformation = Record<"globals", unknown> & Record<"locals", unknown>
+
+interface ABIStateEntry {
+  readonly name: string,
+  readonly type: ABIArgumentType,
+  readonly description?: string;
+}
+
+export interface ABIStateSchema {
+  locals: ABIStateEntry[]
+  globals: ABIStateEntry[]
+}
 
 export abstract class BaseContract extends algosdk.ABIContract {
+  client: Algodv2;
+  localSchema: ApplicationStateSchema;
+  globalSchema: ApplicationStateSchema;
+  static abiInterface: ABIInterface & ABIStateSchema;
+  approvalProgram: Uint8Array = new Uint8Array()
+  clearProgram: Uint8Array = new Uint8Array()
 
-    client: Algodv2;
-    localSchema: ApplicationStateSchema
-    globalSchema: ApplicationStateSchema
-    static abiInterface: ABIInterface
 
-    private _approvalProgram?: Uint8Array | undefined;
-    public get approvalProgram(): Uint8Array | undefined {
-        return this._approvalProgram;
+  constructor(
+    contractAbiDefinition: any,
+    client: Algodv2,
+    localSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0),
+    globalSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0)
+  ) {
+    super(contractAbiDefinition.globals);
+    delete contractAbiDefinition.globals;
+    delete contractAbiDefinition.locals;
+    this.client = client;
+    this.globalSchema = globalSchema;
+    this.localSchema = localSchema;
+  }
+
+  getMethodByName(name: string): algosdk.ABIMethod {
+    const m = this.methods.find((mt: algosdk.ABIMethod) => {
+      return mt.name == name;
+    });
+    if (m === undefined) throw Error('Method undefined: ' + name);
+    return m;
+  }
+
+  async getSuggested(rounds: number): Promise<SuggestedParams> {
+    const txParams = await this.client.getTransactionParams().do();
+    return { ...txParams, lastRound: txParams.firstRound + rounds };
+  }
+
+  populateContract(template: string, vars: any): string {
+    for (const v of vars) {
+      let val = vars[v];
+      if (val === '') {
+        val = 'dummy'; // TODO
+      }
+      template = template.replace(new RegExp(v, 'g'), val);
     }
-    public set approvalProgram(value: Uint8Array | undefined) {
-        this._approvalProgram = value;
-    }
-    private _clearProgram?: Uint8Array | undefined;
-    public get clearProgram(): Uint8Array | undefined {
-        return this._clearProgram;
-    }
-    public set clearProgram(value: Uint8Array | undefined) {
-        this._clearProgram = value;
-    }
+    return template;
+  }
 
-    constructor(
-        contractAbiDefinition: Partial<ABIStateMetaInformation> & algosdk.ABIContractParams,
-        client: Algodv2,
-        localSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0),
-        globalSchema: ApplicationStateSchema = new ApplicationStateSchema(0, 0)
-    ) {
-        delete contractAbiDefinition.globals
-        delete contractAbiDefinition.locals
-        super(contractAbiDefinition)
-        this.client = client
-        this.globalSchema = globalSchema
-        this.localSchema = localSchema
-    }
+  async getCompiledProgram(
+    programCompilationContext: ContractProgramCompilationContext,
+    TYPE: PROGRAM_TYPE
+  ): Promise<Uint8Array> {
+    const compiled = await this.client
+      .compile(
+        this.populateContract(
+          programCompilationContext.programTemplate,
+          programCompilationContext.templateVariables
+        )
+      )
+      .do().then();
+    const programBytes = new Uint8Array(Buffer.from(compiled.result, 'base64'));
 
-
-    getMethodByName(name: string): algosdk.ABIMethod {
-        const m = this.methods.find((mt: algosdk.ABIMethod) => { return mt.name == name })
-        if (m === undefined)
-            throw Error("Method undefined: " + name)
-        return m
-    }
-
-    async getSuggested(rounds: number): Promise<SuggestedParams> {
-        const txParams = await this.client.getTransactionParams().do();
-        return { ...txParams, lastRound: txParams.firstRound + rounds }
-    }
-
-    populateContract(template: string, vars: any): string {
-        for (const v of vars) {
-            let val = vars[v]
-            if (val === "") {
-                val = "dummy" // TODO
-            }
-            template = template.replace(new RegExp(v, "g"), val)
-        }
-        return template
-    }
-
-
-    async getCompiledProgram(programCompilationContext: ContractProgramCompilationContext, TYPE: PROGRAM_TYPE): Promise<Uint8Array> {
-        const compiled = await this.client.compile(this.populateContract(programCompilationContext.programTemplate, programCompilationContext.templateVariables)).do()
-        const programBytes = new Uint8Array(Buffer.from(compiled.result, "base64"))
-
-        switch (TYPE) {
-            case PROGRAM_TYPE.APPROVAL:
-                this.approvalProgram = programBytes
-                break;
-            case PROGRAM_TYPE.CLEAR:
-                this.clearProgram = programBytes
-                break;
-            default: throw Error("WRONG INPUT")
-        }
-
-        return programBytes
+    switch (TYPE) {
+      case PROGRAM_TYPE.APPROVAL:
+        this.approvalProgram = programBytes;
+        break;
+      case PROGRAM_TYPE.CLEAR:
+        this.clearProgram = programBytes;
+        break;
+      default:
+        throw Error('WRONG INPUT');
     }
 
-
+    return programBytes;
+  }
 }
-
-
-
-
-
-
-
-
-
 
 // import algosdk from 'algosdk'
 // import * as fs from 'fs'

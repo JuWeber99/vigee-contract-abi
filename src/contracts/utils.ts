@@ -1,3 +1,5 @@
-import algosdk, { SignedTransaction } from "algosdk";
+import algosdk, { SignedTransaction } from 'algosdk';
 
-export const decodedSignedTransactionBuffer = (encodedTxnBuffer: Uint8Array): SignedTransaction => algosdk.decodeSignedTransaction(encodedTxnBuffer)
+export const decodedSignedTransactionBuffer = (
+  encodedTxnBuffer: Uint8Array
+): SignedTransaction => algosdk.decodeSignedTransaction(encodedTxnBuffer);
