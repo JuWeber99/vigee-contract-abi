@@ -96,8 +96,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       total: number | bigint,
       metadataInfoURL: string,
       assetMetadataHash: string,
-      decimals: number,
-      defaultFrozen: boolean
+      decimals: number
     }
   ): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
