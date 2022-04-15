@@ -1,0 +1,157 @@
+{
+    "name": "Vigee Main App",
+    "desc": "Interface for the listing of the vigee platform",
+    "methods": [{
+            "name": "createListing",
+            "desc": "create an instance of the listing contract",
+            "args": [{
+                    "type": "boolean",
+                    "name": "isNegotiatable",
+                    "desc": "default: false"
+                },
+                {
+                    "type": "account",
+                    "name": "sellerAccount"
+                }
+            ],
+            "returns": {
+                "type": "uint64",
+                "desc": "id of the created listing app"
+            }
+        },
+        {
+            "name": "purchaseListingBundled",
+            "desc": "purchase a listing and delete it",
+            "args": [{
+                    "type": "pay",
+                    "name": "purchaseColleteral"
+                },
+                {
+                    "type": "account",
+                    "name": "sellerAccount",
+                    "desc": "The address of the auction seller"
+                },
+                {
+                    "type": "account",
+                    "name": "buyerAccount",
+                    "desc": "The account of the buyer/auction winner"
+                },
+                {
+                    "type": "account",
+                    "name": "royaltieEnforcer[]",
+                    "desc": "The address of the assets royaltieEnforcer"
+                },
+                {
+                    "type": "asset[]",
+                    "name": "offeredAssets",
+                    "desc": "Array containing maximum possible offeredAssets for each call"
+                }
+            ],
+            "returns": {
+                "type": "string",
+                "desc": "settlement hash SHA256/512(appid, round, seller, buyer) OR transferredAssetCount/offeredAssetCount"
+            }
+        },
+        {
+            "name": "purchaseListingUnbundled",
+            "args": [{
+                    "type": "pay",
+                    "name": "purchaseColleteral"
+                },
+                {
+                    "type": "account",
+                    "name": "sellerAccount",
+                    "desc": "The address of the auction seller"
+                },
+                {
+                    "type": "account",
+                    "name": "buyerAccount",
+                    "desc": "The account of the buyer/auction winner"
+                },
+                {
+                    "type": "account",
+                    "name": "royaltieEnforcer",
+                    "desc": "The address of the assets royaltieEnforcer"
+                },
+                {
+                    "type": "asset",
+                    "name": "offeredAsset"
+                }
+            ],
+            "returns": {
+                "type": "string",
+                "desc": "settlement hash SHA256/512(appid, round, seller, buyer)"
+            }
+        },
+        {
+            "name": "proposeAlternativePrice",
+            "desc": "purchase a listing and delete it",
+            "args": [{
+                "type": "uint64",
+                "name": "proposedPrice"
+            }],
+            "returns": {
+                "type": "string",
+                "desc": "proposalHash"
+            }
+        },
+        {
+            "name": "addOfferedAsset",
+            "desc": "place a bid on the auction",
+            "args": [{
+                "type": "txn",
+                "name": "platformCall"
+            }, {
+                "type": "asset",
+                "name": "offerAsset"
+            }, {
+                "type": "account",
+                "name": "royaltieEnforcer",
+                "desc": "The address of the assets royaltieEnforcer"
+            }],
+            "returns": {
+                "type": "uint64[]",
+                "desc": "array containing all now offered assets"
+            }
+        }, {
+            "name": "setFloorPrice",
+            "args": [{
+                "type": "uint64",
+                "name": "floorPrice"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        }, {
+            "name": "setStartRound",
+            "args": [{
+                "type": "uint64",
+                "name": "startRound"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        }, {
+            "name": "setSeller",
+            "args": [{
+                "type": "txn",
+                "name": "platformCall"
+            }, {
+                "type": "account",
+                "name": "sellerAccount"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "changeBundleState",
+            "args": [{
+                "type": "boolean"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        }
+    ]
+}

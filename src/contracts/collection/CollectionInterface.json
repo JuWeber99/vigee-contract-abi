@@ -1,0 +1,61 @@
+{
+    "name": "AssetManager",
+    "desc": "Interface for the vigee - assetmanager",
+    "methods": [{
+            "name": "create",
+            "desc": "create an instance of the assetmanager contract which handles collections of an ASA or a single ASA",
+            "args": [{
+                    "type": "appl",
+                    "name": "createAssetManagerTransaction"
+                },
+                {
+                    "type": "(string, boolean)",
+                    "name": "collectionDetails",
+                    "desc": "[collectibleType( collection | default: single ), isContentMutable ] ! -> mutable content utilizes reserve address for mutable URL!"
+                },
+                {
+                    "type": "string",
+                    "name": "collectionName",
+                    "desc": "collectionName#appID OR collectionName+Global.zeroAddress (for single)"
+                }
+            ],
+            "returns": {
+                "type": "uint64",
+                "desc": "appId of the created instance"
+            }
+        },
+        {
+            "name": "swapin",
+            "desc": "Insert an existing ASA and add it to the collection",
+            "args": [{
+                "type": "uint64",
+                "name": "asset_id",
+                "desc": "The ID of the ASA to swap into the contract"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "changeEnforcer",
+            "desc": "Insert an existing ASA and add it to the collection",
+            "args": [{
+                "type": "address",
+                "name": "new enforcer"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "changeAdmin",
+            "args": [{
+                "type": "address",
+                "name": "new Admin address for the asset"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        }
+    ]
+}

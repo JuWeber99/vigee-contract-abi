@@ -1,0 +1,102 @@
+{
+    "name": "Vigee Main App",
+    "desc": "Interface for the main application of the vigee platform",
+    "methods": [
+
+        {
+            "name": "changeIndividualSolidarity",
+            "args": [{
+                "type": "account",
+                "name": "solidarityAccount"
+            }, {
+                "type": "uint64",
+                "desc": "new basis points value for solidarity rate"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "addSolidarityForUser",
+            "args": [{
+                    "type": "pay",
+                    "name": "taxTransaction"
+                },
+                {
+                    "type": "account",
+                    "name": "solidaritySender"
+                },
+                {
+                    "type": "string",
+                    "name": "appName"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "getOfferCount",
+            "args": [{
+                "type": "account",
+                "name": "solidarityAccount"
+            }],
+            "returns": {
+                "type": "(uint64, uint64)",
+                "desc": "(amount of auctions, amount of listings)"
+            }
+        },
+        {
+            "name": "raiseOfferCount",
+            "args": [{
+                "type": "account",
+                "name": "solidarityAccount"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "raiseCollectionCount",
+            "args": [{
+                "type": "account",
+                "name": "solidarityAccount"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        }
+    ],
+    "locals": [{
+            "name": "aggregatedSolidarity",
+            "desc": "aggregated amount of apps solidarity issued ",
+            "type": "uint64"
+        },
+        {
+            "name": "walletDetails",
+            "desc": "details about the wallet(if main or utility wallet ",
+            "type": "(boolean, uint8, uint16, uint16)"
+        }
+    ],
+    "globals": [{
+            "name": "aggregatedSolidarity",
+            "desc": "aggregated amount of apps solidarity issued ",
+            "type": "uint64"
+        },
+        {
+            "name": "aggregatedOfferCount",
+            "desc": "aggregated amount of app created offers ",
+            "type": "uint64"
+        },
+        {
+            "name": "aggregatedRoyaltie",
+            "desc": "aggregated amount of royaltie processed ",
+            "type": "uint64"
+        },
+        {
+            "name": "solidarityAssetID",
+            "desc": "the AssetID of the apps solidarity token ",
+            "type": "uint64"
+        }
+    ]
+}

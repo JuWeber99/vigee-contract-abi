@@ -1,0 +1,228 @@
+{
+    "name": "Vigee Royaltie Enforcer",
+
+    "methods": [{
+            "name": "setup",
+            "desc": "setup royaltie enforcer with policy",
+            "args": [{
+                    "type": "pay",
+                    "name": "taxTransaction"
+                }, {
+                    "type": "account",
+                    "name": "royaltieReceiverDefault"
+                },
+                {
+                    "type": "uint64",
+                    "name": "royaltieShareDefault"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "createNFT",
+            "desc": "Create an nft with appropriate parameters, return its id",
+            "args": [{
+                "type": "pay",
+                "name": "taxTransaction"
+            }, {
+                "type": "acfg",
+                "name": "assetCreateTransaction"
+            }],
+            "returns": {
+                "name": "asset_id",
+                "type": "uint64"
+            }
+        }, {
+            "name": "swapinNFT",
+            "args": [{
+                "type": "pay",
+                "name": "taxTransaction"
+            }, {
+                "type": "acfg",
+                "name": "assetReconfigurationTransaction"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        }, {
+            "name": "addToCollection",
+            "args": [{
+                "type": "application",
+                "name": "collectionApp"
+            }],
+            "returns": {
+                "name": "asset_id",
+                "type": "uint64"
+            }
+        }, {
+            "name": "setPolicy",
+            "desc": "Sets the royalty policy for a given asset id",
+            "args": [{
+                    "name": "royalty_receiver",
+                    "type": "address"
+                },
+                {
+                    "name": "royalty_share",
+                    "type": "uint64"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "getPolicy",
+            "desc": "Gets the royalty policy for a given asset id",
+            "readonly": true,
+            "args": [{
+                "name": "royalty_asset",
+                "type": "uint64"
+            }],
+            "returns": {
+                "type": "(address,uint64,uint64,uint64,uint64,uint64)"
+            }
+        },
+        {
+            "name": "lockForOffer",
+            "desc": "Flags that an asset is offered for sale and sets address authorized to submit the transfer",
+            "args": [{
+                    "name": "royalty_asset",
+                    "type": "asset"
+                },
+                {
+                    "name": "royalty_asset_amount",
+                    "type": "uint64"
+                },
+                {
+                    "name": "authorized_address",
+                    "type": "account"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "getOffer",
+            "desc": "Gets the details offered asset",
+            "readonly": true,
+            "args": [{
+                    "name": "royalty_asset",
+                    "type": "uint64"
+                },
+                {
+                    "name": "from",
+                    "type": "uint64"
+                }
+            ],
+            "returns": {
+                "type": "(address,uint64)"
+            }
+        }, {
+            "name": "rescind",
+            "desc": "Rescinds offered asset",
+            "args": [{
+                "name": "royalty_asset",
+                "type": "asset"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "royaltyFreeMove",
+            "desc": "Moves the asset passed from one account to another. This will wipe any offered state from the `from` account and can only be performed from the main application to move assets to an utiltity address",
+            "args": [{
+                    "name": "royalty_asset",
+                    "type": "asset"
+                },
+                {
+                    "name": "royalty_asset_amount",
+                    "type": "uint64"
+                },
+                {
+                    "name": "from",
+                    "type": "account"
+                },
+                {
+                    "name": "to",
+                    "type": "account"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "setPaymentAsset",
+            "desc": "Triggers the contract account to opt in or out of an asset that should be used for payment of royalties",
+            "args": [{
+                    "name": "paymentAsset",
+                    "type": "asset"
+                },
+                {
+                    "name": "allowed",
+                    "type": "boolean"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "transfer",
+            "desc": "Transfers an Asset from one account to another and enforces royalty payments. If payment is in Algos, payment_asset should be 0",
+            "args": [{
+                    "name": "royalty_asset",
+                    "type": "asset"
+                },
+                {
+                    "name": "from",
+                    "type": "account"
+                },
+                {
+                    "name": "to",
+                    "type": "account"
+                },
+                {
+                    "name": "royalty_receiver",
+                    "type": "account"
+                },
+                {
+                    "name": "royalty_asset_amount",
+                    "type": "uint64"
+                },
+                {
+                    "name": "payment",
+                    "type": "txn"
+                },
+                {
+                    "name": "payment_asset",
+                    "type": "asset"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        }
+    ],
+    "locals": [{
+        "name": "{uint64 asset id as big endian bytes}",
+        "desc": "The ID of the asset that has been offered as key, authorizing address as value",
+        "type": "(address,uint64)"
+    }],
+    "globals": [{
+            "name": "royalty_basis",
+            "desc": "The percentage for royalty payment specified in basis points",
+            "type": "uint64"
+        },
+        {
+            "name": "royalty_recipient",
+            "desc": "The receiver of any royalty payment",
+            "type": "address"
+        },
+        {}
+    ]
+}

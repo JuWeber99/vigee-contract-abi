@@ -1,0 +1,225 @@
+{
+    "name": "Vigee Main App",
+    "desc": "Interface for the auction of the vigee platform",
+    "methods": [{
+            "name": "createAuction",
+            "desc": "create an instance of the auction contract",
+            "args": [{
+                "type": "pay",
+                "name": "taxTransaction"
+            }, {
+                "type": "account",
+                "name": "sellerAccount"
+
+            }],
+            "returns": {
+                "type": "uint64",
+                "desc": "The appid of the auction application"
+            }
+        },
+        {
+            "name": "setBulkDetails",
+            "desc": "create an instance of the auction contract",
+            "args": [{
+                    "type": "account",
+                    "name": "creator_main_account"
+                },
+                {
+                    "type": "uint64",
+                    "name": "floorPrice"
+                },
+                {
+                    "type": "uint64",
+                    "name": "minimumPriceIncrement",
+                    "desc": "The starting minimum price increment"
+                },
+                {
+                    "type": "uint64",
+                    "name": "startRound",
+                    "desc": "The timestamp when the auction is valid for bidding"
+                },
+                {
+                    "type": "uint64",
+                    "name": "timeToLive",
+                    "desc": "The timestamp which represents the minumum end-timestamp possible."
+                },
+                {
+                    "type": "uint64",
+                    "name": "auctionType",
+                    "desc": "type 1 for dutch, type 2 for candle"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "addOfferedAsset",
+            "desc": "place a bid on the auction",
+            "args": [{
+                    "type": "pay",
+                    "name": "taxTransaction"
+                }, {
+                    "type": "asset",
+                    "name": "offerAsset"
+                },
+                {
+                    "type": "account",
+                    "name": "royaltieEnforcer",
+                    "desc": "The address of the assets royaltieEnforcer"
+                },
+                {
+                    "type": "application",
+                    "name": "offer_appid",
+                    "desc": "The appid of the offer to add the asset to"
+                }
+            ],
+            "returns": {
+                "type": "uint64[]",
+                "desc": "array containing all now offered assets"
+            }
+        },
+        {
+            "name": "setMinimumPriceIncrement",
+            "args": [{
+                "type": "uint64",
+                "name": "minimumPriceIncrement"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "setFloorPrice",
+            "args": [{
+                "type": "uint64",
+                "name": "floorPrice"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "setStartRound",
+            "args": [{
+                "type": "uint64",
+                "name": "startRound"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "setSeller",
+            "args": [{
+                "type": "account",
+                "name": "sellerAccount"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "changeBundleState",
+            "args": [{
+                "type": "bool"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "bid",
+            "desc": "place a bid on the auction",
+            "args": [{
+                    "type": "uint64",
+                    "name": "bidAmount",
+                    "desc": "The height of the bid"
+                },
+                {
+                    "type": "pay",
+                    "name": "bidColleteral"
+                },
+                {
+                    "type": "account",
+                    "name": "bidderToRefund",
+                    "desc": "The address of the old leading bidder (if Global.zero-validated there is no old bidder)"
+                }
+            ],
+            "returns": {
+                "type": "(uint64,uint64,uint64)",
+                "desc": "(newRoyaltieValue, newRoyaltieAdjustedPrice, createdSolidarity)"
+            }
+        },
+        {
+            "name": "settleUnbundledAuction",
+            "desc": "settle the auction",
+            "args": [{
+                    "type": "account",
+                    "name": "creatorAccount",
+                    "desc": "The address of the auction creator"
+                },
+                {
+                    "type": "account",
+                    "name": "buyerAccount",
+                    "desc": "The account of the buyer/auction winner"
+                },
+                {
+                    "type": "account",
+                    "name": "royaltieEnforcer",
+                    "desc": "The address of the assets royaltieEnforcer"
+                },
+                {
+                    "type": "asset",
+                    "name": "offeredAsset"
+                }
+            ],
+            "returns": {
+                "type": "string",
+                "desc": "settlement hash SHA256/512(appid, round, seller, buyer)"
+            }
+        },
+        {
+            "name": "settleBundledAuction",
+            "desc": "settle the auction",
+            "args": [{
+                    "type": "account",
+                    "name": "sellerAccount",
+                    "desc": "The address of the auction seller"
+                },
+                {
+                    "type": "account",
+                    "name": "buyerAccount",
+                    "desc": "The account of the buyer/auction winner"
+                },
+                {
+                    "type": "account",
+                    "name": "royaltieEnforcer[]",
+                    "desc": "The address of the assets royaltieEnforcer"
+                },
+                {
+                    "type": "asset",
+                    "name": "offeredAssets",
+                    "desc": "Array containing maximum possible offeredAssets for each call"
+                }
+            ],
+            "returns": {
+                "type": "string",
+                "desc": "settlement hash SHA256/512(appid, round, seller, buyer) OR transferredAssetCount/offeredAssetCount"
+            }
+        }
+    ],
+    "locals": [],
+    "globals": [{
+            "name": "aggregatedSolidarity",
+            "desc": "aggregated amount of apps solidarity issued ",
+            "type": "uint64"
+        },
+        {
+            "name": "auctionDetails",
+            "desc": "bytearray containing auction type,start round + rounds to live after start, leading bidder, highestBid and status of the auction",
+            "type": "(uint8, uint8, uint16, address, uint64)"
+        }
+    ]
+
+}
