@@ -10,7 +10,6 @@ export enum PROGRAM_TYPE {
   APPROVAL,
   CLEAR,
 }
-
 interface ABIStateEntry {
   readonly name?: string;
   readonly type?: string;
