@@ -1,12 +1,12 @@
 import algosdk, {SignedTransaction} from "algosdk";
 
 export interface AuctionContract {
-    createAuction(
+    makeCreateAuctionTransaction(
         signer: algosdk.Account,
         defaultsellerAddress: string
     ): Promise<SignedTransaction[]>;
 
-    setBulkDetails(
+    makeSetBulkDetailsTransaction(
         signer: algosdk.Account,
         creatorAddress: string,
         floorPrice: number,
@@ -16,45 +16,45 @@ export interface AuctionContract {
         auctionType: number
     ): Promise<SignedTransaction[]>;
 
-    addOfferedAsset(
+    makeAddOfferedAssetTransaction(
         signer: algosdk.Account,
         offerAsset: number,
         defaultRoyaltieEnforcerAddress: string,
         offerAppID: number
     ): Promise<SignedTransaction[]>
 
-    setMinimumPriceIncrement(
+    makeSetMinimumPriceIncrementTransaction(
         signer: algosdk.Account,
         minimumPriceIncrement: number
     ): Promise<SignedTransaction[]>
 
-    setFloorPrice(
+    makeSetFloorPriceTransaction(
         signer: algosdk.Account,
         floorPrice: number
     ): Promise<SignedTransaction[]>
 
-    setStartRound(
+    makeSetStartRoundTransaction(
         signer: algosdk.Account,
         startRound: number
     ): Promise<SignedTransaction[]>
 
-    setSeller(
+    makeSetSellerTransaction(
         signer: algosdk.Account,
         sellerAddress: string
     ): Promise<SignedTransaction[]>
 
-    changeBundleState(
+    makeChangeBundleStateTransaction(
         signer: algosdk.Account,
         bundleState: boolean
     ): Promise<SignedTransaction[]>
 
-    bid(
+    makeBidTransaction(
         signer: algosdk.Account,
         bidAmount: number,
         bidderToRefundAddress: string
     ): Promise<SignedTransaction[]>
 
-    settleUnbundledAuction(
+    makeSettleUnbundledAuctionTransaction(
         signer: algosdk.Account,
         creatorAddress: string,
         buyerAddress: string,
@@ -62,7 +62,7 @@ export interface AuctionContract {
         offeredAsset: number
     ): Promise<SignedTransaction[]>
 
-    settleBundledAuction(
+    makeSettleBundledAuctionTransaction(
         signer: algosdk.Account,
         sellerAddress: string,
         buyerAddress: string,

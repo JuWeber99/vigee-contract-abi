@@ -27,7 +27,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     this.appID = appID;
   }
 
-  async addOfferedAsset(signer: Account, offerAsset: number, defaultRoyaltieEnforcerAddress: string, offerAppID: number): Promise<SignedTransaction[]> {
+  async makeAddOfferedAssetTransaction(signer: Account, offerAsset: number, defaultRoyaltieEnforcerAddress: string, offerAppID: number): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -63,7 +63,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return addOfferedAssetAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async bid(signer: Account, bidAmount: number, bidderToRefundAddress: string): Promise<SignedTransaction[]> {
+  async makeBidTransaction(signer: Account, bidAmount: number, bidderToRefundAddress: string): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -98,7 +98,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return bidAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async changeBundleState(signer: Account, bundleState: boolean): Promise<SignedTransaction[]> {
+  async makeChangeBundleStateTransaction(signer: Account, bundleState: boolean): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -119,7 +119,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return changeBundleStateAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async createAuction(signer: Account, defaultsellerAddress: string): Promise<SignedTransaction[]> {
+  async makeCreateAuctionTransaction(signer: Account, defaultsellerAddress: string): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -153,7 +153,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return createAuctionAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async setBulkDetails(
+  async makeSetBulkDetailsTransaction(
       signer: algosdk.Account,
       creatorAddress: string,
       floorPrice: number,
@@ -187,7 +187,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return setBulkDetailsAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async setFloorPrice(signer: Account, floorPrice: number): Promise<SignedTransaction[]> {
+  async makeSetFloorPriceTransaction(signer: Account, floorPrice: number): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -208,7 +208,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return setFloorPriceAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async setMinimumPriceIncrement(signer: Account, minimumPriceIncrement: number): Promise<SignedTransaction[]> {
+  async makeSetMinimumPriceIncrementTransaction(signer: Account, minimumPriceIncrement: number): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -229,7 +229,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return setMinimumPriceIncrementAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async setSeller(signer: Account, sellerAddress: string): Promise<SignedTransaction[]> {
+  async makeSetSellerTransaction(signer: Account, sellerAddress: string): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -250,7 +250,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return setSellerAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async setStartRound(signer: Account, startRound: number): Promise<SignedTransaction[]> {
+  async makeSetStartRoundTransaction(signer: Account, startRound: number): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -271,7 +271,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return setStartRoundAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async settleBundledAuction(
+  async makeSettleBundledAuctionTransaction(
       signer: Account,
       sellerAddress: string,
       buyerAddress: string,
@@ -301,7 +301,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return settleBundledAuctionAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async settleUnbundledAuction(
+  async makeSettleUnbundledAuctionTransaction(
       signer: Account,
       creatorAddress: string,
       buyerAddress: string,
