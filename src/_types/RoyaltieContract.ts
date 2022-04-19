@@ -53,6 +53,11 @@ export interface RoyaltieContract {
     assetToRescindID: number
   ): Promise<SignedTransaction[]>;
 
+  makeAdminSetRoyaltieEnforcerHashTransaction(
+      signer: algosdk.Account,
+      royaltieEnforcerHash: string
+  ): Promise<SignedTransaction[]>;
+
   //inner_transfer(signer: algosdk.Account): Promise<SignedTransaction[]>
 
   // inner_royaltyFreeMove(): Promise<SignedTransaction[]>

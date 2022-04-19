@@ -206,6 +206,16 @@
             "returns": {
                 "type": "void"
             }
+        },
+        {
+            "name": "adminSetRoyaltieEnforcerHash",
+            "args": [{
+                "type": "string",
+                "name": "royaltieEnforcerHash"
+            }],
+            "returns": {
+                "type": "void"
+            }
         }
     ],
     "locals": [{
