@@ -69,4 +69,9 @@ export interface AuctionContract {
         royaltieEnforcerAddress: string,
         offeredAsset: number
     ): Promise<SignedTransaction[]>
+
+    makeAdminSetAuctionHashTransaction(
+        signer: algosdk.Account,
+        auctionHash: string,
+    ): Promise<SignedTransaction[]>
 }

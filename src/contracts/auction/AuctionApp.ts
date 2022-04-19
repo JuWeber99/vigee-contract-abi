@@ -330,4 +330,25 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     const settleUnbundledAuctionAbiGroup = await atomicTransactionComposer.gatherSignatures();
     return settleUnbundledAuctionAbiGroup.map(decodedSignedTransactionBuffer);
   }
+
+  async makeAdminSetAuctionHashTransaction( signer: algosdk.Account, auctionHash: string): Promise<SignedTransaction[]> {
+    const atomicTransactionComposer = new AtomicTransactionComposer();
+    const suggestedParams = await this.getSuggested(10);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
+
+    atomicTransactionComposer.addMethodCall({
+      appID: 0,
+      method: this.getMethodByName('adminSetAuctionHash'),
+      sender: signer.addr,
+      methodArgs: [
+        auctionHash
+      ],
+      suggestedParams: suggestedParams,
+      signer: makeBasicAccountTransactionSigner(signer),
+    });
+
+    const adminSetAuctionHashAbiGroup = await atomicTransactionComposer.gatherSignatures();
+    return adminSetAuctionHashAbiGroup.map(decodedSignedTransactionBuffer);
+  }
 }
