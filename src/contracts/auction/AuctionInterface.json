@@ -207,6 +207,18 @@
                 "type": "string",
                 "desc": "settlement hash SHA256/512(appid, round, seller, buyer) OR transferredAssetCount/offeredAssetCount"
             }
+        },
+        {
+            "name": "adminSetAuctionHash",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "auctionHash"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
         }
     ],
     "locals": [],
