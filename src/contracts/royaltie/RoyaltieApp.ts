@@ -424,6 +424,26 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     const getAbiGroup = await atomicTransactionComposer.gatherSignatures();
     return getAbiGroup.map(decodedSignedTransactionBuffer);
   }
+
+  async makeAdminSetRoyaltieEnforcerHashTransaction(signer: algosdk.Account, royaltieEnforcerHash: string): Promise<SignedTransaction[]> {
+    const atomicTransactionComposer = new AtomicTransactionComposer();
+    const suggestedParams = await this.getSuggested(10);
+
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
+
+    atomicTransactionComposer.addMethodCall({
+      appID: 0,
+      method: this.getMethodByName('adminSetRoyaltieEnforcerHash'),
+      sender: signer.addr,
+      methodArgs: [royaltieEnforcerHash],
+      suggestedParams: suggestedParams,
+      signer: makeBasicAccountTransactionSigner(signer),
+    });
+
+    const adminSetRoyaltieEnforcerHashAbiGroup = await atomicTransactionComposer.gatherSignatures();
+    return adminSetRoyaltieEnforcerHashAbiGroup.map(decodedSignedTransactionBuffer);
+  }
 }
 
 // function get_royaltie_approval_compiled(arg0: string): Uint8Array {
