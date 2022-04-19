@@ -1,28 +1,23 @@
 import algosdk, {
-  Algodv2,
-  Account,
-  SignedTransaction,
-  AtomicTransactionComposer,
-  TransactionWithSigner,
-  makePaymentTxnWithSuggestedParamsFromObject,
-  getApplicationAddress,
-  makeBasicAccountTransactionSigner
+  Account, Algodv2, AtomicTransactionComposer, getApplicationAddress,
+  makeBasicAccountTransactionSigner, makePaymentTxnWithSuggestedParamsFromObject, SignedTransaction, TransactionWithSigner
 } from 'algosdk';
+import { ALGORAND_ZERO_ADDRESS_STRING } from "algosdk/dist/types/src/encoding/address";
 import { AuctionContract } from '../../_types';
-import {BaseContract} from '../../_types/base';
+import { StateSchema } from '../../_types/algorand-typeextender';
+import { BaseContract } from '../../_types/base';
+import { decodedSignedTransactionBuffer } from "../utils";
 import auctionInterface from './AuctionInterface.json';
-import {ApplicationStateSchema} from "algosdk/dist/types/src/client/v2/algod/models/types";
-import {ALGORAND_ZERO_ADDRESS_STRING} from "algosdk/dist/types/src/encoding/address";
-import {decodedSignedTransactionBuffer} from "../utils";
 
 export class AuctionApp extends BaseContract implements AuctionContract {
   appID: number;
   constructor(appID = 0, client: Algodv2) {
     super(
-        auctionInterface,
-        client,
-        new ApplicationStateSchema(0, 1),
-        new ApplicationStateSchema(0, 2)
+      auctionInterface,
+      client,
+      appID,
+      new StateSchema(0, 1),
+      new StateSchema(0, 2)
     );
     this.appID = appID;
   }
@@ -154,13 +149,13 @@ export class AuctionApp extends BaseContract implements AuctionContract {
   }
 
   async makeSetBulkDetailsTransaction(
-      signer: algosdk.Account,
-      creatorAddress: string,
-      floorPrice: number,
-      minimumPriceIncrement: number,
-      startRound: number,
-      timeToLive: number,
-      auctionType: number): Promise<SignedTransaction[]> {
+    signer: algosdk.Account,
+    creatorAddress: string,
+    floorPrice: number,
+    minimumPriceIncrement: number,
+    startRound: number,
+    timeToLive: number,
+    auctionType: number): Promise<SignedTransaction[]> {
 
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -272,11 +267,11 @@ export class AuctionApp extends BaseContract implements AuctionContract {
   }
 
   async makeSettleBundledAuctionTransaction(
-      signer: Account,
-      sellerAddress: string,
-      buyerAddress: string,
-      royaltieEnforcerAddress: string,
-      offeredAsset: number): Promise<SignedTransaction[]> {
+    signer: Account,
+    sellerAddress: string,
+    buyerAddress: string,
+    royaltieEnforcerAddress: string,
+    offeredAsset: number): Promise<SignedTransaction[]> {
 
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -302,11 +297,11 @@ export class AuctionApp extends BaseContract implements AuctionContract {
   }
 
   async makeSettleUnbundledAuctionTransaction(
-      signer: Account,
-      creatorAddress: string,
-      buyerAddress: string,
-      royaltieEnforcerAddress: string,
-      offeredAsset: number): Promise<SignedTransaction[]> {
+    signer: Account,
+    creatorAddress: string,
+    buyerAddress: string,
+    royaltieEnforcerAddress: string,
+    offeredAsset: number): Promise<SignedTransaction[]> {
 
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -331,7 +326,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return settleUnbundledAuctionAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async makeAdminSetAuctionHashTransaction( signer: algosdk.Account, auctionHash: string): Promise<SignedTransaction[]> {
+  async makeAdminSetAuctionHashTransaction(signer: algosdk.Account, auctionHash: string): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
