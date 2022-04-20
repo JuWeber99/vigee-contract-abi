@@ -5,7 +5,7 @@
             "name": "createListing",
             "desc": "create an instance of the listing contract",
             "args": [{
-                    "type": "boolean",
+                    "type": "bool",
                     "name": "isNegotiatable",
                     "desc": "default: false"
                 },
@@ -42,7 +42,7 @@
                     "desc": "The address of the assets royaltieEnforcer"
                 },
                 {
-                    "type": "asset[]",
+                    "type": "asset",
                     "name": "offeredAssets",
                     "desc": "Array containing maximum possible offeredAssets for each call"
                 }
@@ -147,11 +147,25 @@
         {
             "name": "changeBundleState",
             "args": [{
-                "type": "boolean"
+                "type": "bool"
             }],
             "returns": {
                 "type": "void"
             }
+        },
+        {
+            "name": "adminSetListingHash",
+            "args": [
+                {
+                "type": "string",
+                "name": "listingHash"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
         }
-    ]
+    ],
+    "globals": [],
+    "locals": []
 }
