@@ -8,9 +8,8 @@ import {
 import { ListingContract } from '../../_types';
 import { BaseContract } from '../../_types/base';
 import listingInterface from './ListingInterface.json';
-import {StateSchema} from "../../_types/algorand-typeextender";
-import {ALGORAND_ZERO_ADDRESS_STRING} from "algosdk/dist/types/src/encoding/address";
-import {decodedSignedTransactionBuffer} from "../utils";
+import { StateSchema } from "../../_types/algorand-typeextender";
+import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils";
 
 export class ListingApp extends BaseContract implements ListingContract {
   appID: number;
@@ -26,10 +25,10 @@ export class ListingApp extends BaseContract implements ListingContract {
   }
 
   async makeAddOfferedAssetTransaction(
-      signer: Account,
-      platformCall: TransactionWithSigner,
-      offerAsset: number,
-      royaltieEnforcerAddress: string): Promise<SignedTransaction[]> {
+    signer: Account,
+    platformCall: TransactionWithSigner,
+    offerAsset: number,
+    royaltieEnforcerAddress: string): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -74,9 +73,9 @@ export class ListingApp extends BaseContract implements ListingContract {
   }
 
   async makeCreateListingTransaction(
-      signer: Account,
-      isNegotiatable: boolean,
-      sellerAccountAddress: string): Promise<SignedTransaction[]> {
+    signer: Account,
+    isNegotiatable: boolean,
+    sellerAccountAddress: string): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -120,11 +119,11 @@ export class ListingApp extends BaseContract implements ListingContract {
   }
 
   async makePurchaseListingBundledTransaction(
-      signer: Account,
-      sellerAccountAddress: string,
-      buyerAccountAddress: string,
-      royaltieEnforcerAddress: string,
-      offeredAssets: number): Promise<SignedTransaction[]> {
+    signer: Account,
+    sellerAccountAddress: string,
+    buyerAccountAddress: string,
+    royaltieEnforcerAddress: string,
+    offeredAssets: number): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -137,7 +136,7 @@ export class ListingApp extends BaseContract implements ListingContract {
         to: getApplicationAddress(this.appID),
         amount: purchaseListingColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS_STRING,
+        rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
     };
@@ -162,11 +161,11 @@ export class ListingApp extends BaseContract implements ListingContract {
   }
 
   async makePurchaseListingUnbundledTransaction(
-      signer: Account,
-      sellerAccountAddress: string,
-      buyerAccountAddress: string,
-      royaltieEnforcerAddress: string,
-      offeredAsset: number): Promise<SignedTransaction[]> {
+    signer: Account,
+    sellerAccountAddress: string,
+    buyerAccountAddress: string,
+    royaltieEnforcerAddress: string,
+    offeredAsset: number): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -174,14 +173,14 @@ export class ListingApp extends BaseContract implements ListingContract {
 
     const purchaseListingColleteral = 100000 + 64 * 50000;
     const taxPaymentTransaction: TransactionWithSigner = {
-    txn: makePaymentTxnWithSuggestedParamsFromObject({
-      from: signer.addr,
-      to: getApplicationAddress(this.appID),
-      amount: purchaseListingColleteral,
-      suggestedParams,
-      rekeyTo: ALGORAND_ZERO_ADDRESS_STRING,
-    }),
-    signer: makeBasicAccountTransactionSigner(signer),
+      txn: makePaymentTxnWithSuggestedParamsFromObject({
+        from: signer.addr,
+        to: getApplicationAddress(this.appID),
+        amount: purchaseListingColleteral,
+        suggestedParams,
+        rekeyTo: ALGORAND_ZERO_ADDRESS,
+      }),
+      signer: makeBasicAccountTransactionSigner(signer),
     };
 
     atomicTransactionComposer.addMethodCall({

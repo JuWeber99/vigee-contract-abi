@@ -2,13 +2,11 @@ import algosdk, {
   Account, Algodv2, AtomicTransactionComposer, getApplicationAddress,
   makeBasicAccountTransactionSigner, makePaymentTxnWithSuggestedParamsFromObject, SignedTransaction, TransactionWithSigner
 } from 'algosdk';
-import { ALGORAND_ZERO_ADDRESS_STRING } from "algosdk/dist/types/src/encoding/address";
 import { AuctionContract } from '../../_types';
 import { StateSchema } from '../../_types/algorand-typeextender';
 import { BaseContract } from '../../_types/base';
-import { decodedSignedTransactionBuffer } from "../utils";
+import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils";
 import auctionInterface from './AuctionInterface.json';
-
 export class AuctionApp extends BaseContract implements AuctionContract {
   appID: number;
   constructor(appID = 0, client: Algodv2) {
@@ -21,6 +19,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     );
     this.appID = appID;
   }
+
 
   async makeAddOfferedAssetTransaction(signer: Account, offerAsset: number, defaultRoyaltieEnforcerAddress: string, offerAppID: number): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
@@ -35,7 +34,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS_STRING,
+        rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
     };
@@ -71,7 +70,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS_STRING,
+        rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
     };
@@ -127,7 +126,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS_STRING,
+        rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
     };

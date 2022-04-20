@@ -68,8 +68,8 @@ export abstract class BaseContract extends algosdk.ABIContract {
   }
 
   async getCompiledProgram(
-    programCompilationContext: ContractProgramCompilationContext,
-    TYPE: PROGRAM_TYPE
+    TYPE: PROGRAM_TYPE,
+    programCompilationContext?: ContractProgramCompilationContext
   ): Promise<Uint8Array> {
     const compiled = await this.client
       .compile(

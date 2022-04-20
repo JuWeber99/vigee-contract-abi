@@ -21,6 +21,7 @@ import {
   ALGORAND_ZERO_ADDRESS,
   decodedSignedTransactionBuffer
 } from '../utils';
+import { royaltieB64 } from './royaltieConstant';
 import royaltieInterface from './RoyaltieInterface.json';
 
 export class RoyaltieApp extends BaseContract implements RoyaltieContract {
@@ -33,6 +34,12 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       new StateSchema(0, 2),
     );
     this.appID = appID;
+  }
+
+  getCompiledProgram(TYPE: PROGRAM_TYPE, programCompilationContext?: ContractProgramCompilationContext): Promise<Uint8Array> {
+    programCompilationContext.templateVariables = { "TMPL_VID": 1 }
+    programCompilationContext.programTemplate = Buffer.from(royaltieB64, "base64").toString()
+    return super.getCompiledProgram(TYPE, programCompilationContext)
   }
 
   async makeSignedSetupTransaction(
