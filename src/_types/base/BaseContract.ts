@@ -7,7 +7,7 @@ export enum PROGRAM_TYPE {
 }
 
 
-export abstract class BaseContract extends algosdk.ABIContract {
+export class BaseContract extends algosdk.ABIContract {
   client: Algodv2;
   localSchema: StateSchema;
   globalSchema: StateSchema;
@@ -29,6 +29,7 @@ export abstract class BaseContract extends algosdk.ABIContract {
     approvalTemplate?: string,
     clearTemplate?: string
   ) {
+
     super(contractAbiDefinition);
     delete contractAbiDefinition.globals;
     delete contractAbiDefinition.locals;

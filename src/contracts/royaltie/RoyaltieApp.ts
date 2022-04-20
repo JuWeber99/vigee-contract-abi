@@ -40,7 +40,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   async makeSignedSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
-    defaultRoyaltieShareAddress: string
+    defaultRoyaltieShare: number
   ): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -74,7 +74,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       methodArgs: [
         taxPaymentTransaction,
         defaultRoyaltieReceiverAddress,
-        defaultRoyaltieShareAddress,
+        defaultRoyaltieShare,
       ],
       suggestedParams: suggestedParams,
       numLocalByteSlices: this.localSchema.numByteSlice as number,

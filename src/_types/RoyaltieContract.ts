@@ -1,13 +1,10 @@
 import algosdk, { Account, SignedTransaction } from 'algosdk';
-import { ContractProgramCompilationContext } from './base';
 
 export interface RoyaltieContract {
   makeSignedSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
-    defaultRoyaltieShareAddress: string,
-    approvalCompilationContext: ContractProgramCompilationContext,
-    clearCompilationContext: ContractProgramCompilationContext
+    defaultRoyaltieShare: number
   ): Promise<SignedTransaction[]>;
 
   makeSignedCreateNFTTransaction(
@@ -54,8 +51,8 @@ export interface RoyaltieContract {
   ): Promise<SignedTransaction[]>;
 
   makeAdminSetRoyaltieEnforcerHashTransaction(
-      signer: algosdk.Account,
-      royaltieEnforcerHash: string
+    signer: algosdk.Account,
+    royaltieEnforcerHash: string
   ): Promise<SignedTransaction[]>;
 
   //inner_transfer(signer: algosdk.Account): Promise<SignedTransaction[]>
