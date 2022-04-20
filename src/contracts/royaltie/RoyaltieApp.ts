@@ -42,9 +42,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   async makeSignedSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
-    defaultRoyaltieShareAddress: string,
-    approvalCompilationContext: ContractProgramCompilationContext,
-    clearCompilationContext: ContractProgramCompilationContext
+    defaultRoyaltieShareAddress: string
   ): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -69,11 +67,11 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       sender: signer.addr,
       approvalProgram: await this.getCompiledProgram(
         PROGRAM_TYPE.APPROVAL,
-        approvalCompilationContext
+        this.approvalTemplate
       ),
       clearProgram: await this.getCompiledProgram(
         PROGRAM_TYPE.CLEAR,
-        clearCompilationContext
+        this.clearTemplate
       ),
       methodArgs: [
         taxPaymentTransaction,
