@@ -21,25 +21,22 @@ import {
   ALGORAND_ZERO_ADDRESS,
   decodedSignedTransactionBuffer
 } from '../utils';
-import { royaltieB64 } from './royaltieConstant';
+import { royaltieB64, royaltieClearB64 } from './royaltieConstant';
 import royaltieInterface from './RoyaltieInterface.json';
 
 export class RoyaltieApp extends BaseContract implements RoyaltieContract {
-  constructor(appID: number = 0, client: Algodv2) {
+  mainAppID: number
+  constructor(appID: number = 0, mainAppID: number, client: Algodv2) {
     super(
       royaltieInterface,
       client,
       appID,
       new StateSchema(0, 1),
       new StateSchema(0, 2),
+      royaltieB64,
+      royaltieClearB64
     );
-    this.appID = appID;
-  }
-
-  getCompiledProgram(TYPE: PROGRAM_TYPE, programCompilationContext?: ContractProgramCompilationContext): Promise<Uint8Array> {
-    programCompilationContext.templateVariables = { "TMPL_VID": 1 }
-    programCompilationContext.programTemplate = Buffer.from(royaltieB64, "base64").toString()
-    return super.getCompiledProgram(TYPE, programCompilationContext)
+    this.mainAppID = mainAppID
   }
 
   async makeSignedSetupTransaction(
@@ -71,12 +68,12 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       method: this.getMethodByName('setup'),
       sender: signer.addr,
       approvalProgram: await this.getCompiledProgram(
-        approvalCompilationContext,
-        PROGRAM_TYPE.APPROVAL
+        PROGRAM_TYPE.APPROVAL,
+        approvalCompilationContext
       ),
       clearProgram: await this.getCompiledProgram(
-        clearCompilationContext,
-        PROGRAM_TYPE.CLEAR
+        PROGRAM_TYPE.CLEAR,
+        clearCompilationContext
       ),
       methodArgs: [
         taxPaymentTransaction,

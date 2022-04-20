@@ -1,7 +1,4 @@
-import algosdk, { ABIContractParams, Algodv2, SignedTransaction, SuggestedParams } from 'algosdk';
-import { Transaction } from 'algosdk';
-import { getApplicationAddress } from 'algosdk';
-import { ContractProgramCompilationContext } from '.';
+import algosdk, { ABIContractParams, Algodv2, getApplicationAddress, SignedTransaction, SuggestedParams, Transaction } from 'algosdk';
 import { ABIStateSchema, StateSchema } from '../algorand-typeextender';
 
 export enum PROGRAM_TYPE {
@@ -18,6 +15,8 @@ export abstract class BaseContract extends algosdk.ABIContract {
   address: string
 
   static abiInterface: ABIContractParams & Partial<ABIStateSchema>;
+  approvalTemplate: string = "";
+  clearTemplate: string = "";
   approvalProgram: Uint8Array = new Uint8Array();
   clearProgram: Uint8Array = new Uint8Array();
 
@@ -27,7 +26,8 @@ export abstract class BaseContract extends algosdk.ABIContract {
     appID: number = 0,
     localSchema = new StateSchema(0, 0),
     globalSchema = new StateSchema(0, 0),
-
+    approvalTemplate?: string,
+    clearTemplate?: string
   ) {
     super(contractAbiDefinition);
     delete contractAbiDefinition.globals;
@@ -37,6 +37,8 @@ export abstract class BaseContract extends algosdk.ABIContract {
     this.globalSchema = globalSchema;
     this.localSchema = localSchema;
     this.address = getApplicationAddress(appID)
+    this.approvalTemplate = approvalTemplate
+    this.clearTemplate = clearTemplate
   }
 
   static getTransactionsFromGroup(signedArray: SignedTransaction[]): Transaction[] {
@@ -69,13 +71,13 @@ export abstract class BaseContract extends algosdk.ABIContract {
 
   async getCompiledProgram(
     TYPE: PROGRAM_TYPE,
-    programCompilationContext?: ContractProgramCompilationContext
+    templateVars: any
   ): Promise<Uint8Array> {
     const compiled = await this.client
       .compile(
         this.populateContract(
-          programCompilationContext.programTemplate,
-          programCompilationContext.templateVariables
+          Buffer.from(this.approvalTemplate, "base64").toString(),
+          templateVars
         )
       )
       .do()

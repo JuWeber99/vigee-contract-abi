@@ -6,6 +6,7 @@ import { AuctionContract } from '../../_types';
 import { StateSchema } from '../../_types/algorand-typeextender';
 import { BaseContract } from '../../_types/base';
 import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils";
+import { auctionB64, auctionClearB64 } from './auctionConstant';
 import auctionInterface from './AuctionInterface.json';
 export class AuctionApp extends BaseContract implements AuctionContract {
   appID: number;
@@ -15,7 +16,9 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       client,
       appID,
       new StateSchema(0, 1),
-      new StateSchema(0, 2)
+      new StateSchema(0, 2),
+      auctionB64,
+      auctionClearB64
     );
     this.appID = appID;
   }

@@ -12,7 +12,8 @@ import { SolidarityContract } from '../../_types';
 import { StateSchema } from '../../_types/algorand-typeextender';
 import { BaseContract } from '../../_types/base';
 import solidarityInterface from './SolidarityInterface.json';
-import {ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer} from "../utils";
+import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils";
+import { solidarityB64, solidarityClearB64 } from './solidarityConstant';
 
 export class SolidarityApp extends BaseContract implements SolidarityContract {
   constructor(appID: number = 0, client: Algodv2) {
@@ -22,14 +23,16 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       appID,
       new StateSchema(0, 1),
       new StateSchema(0, 2),
+      solidarityB64,
+      solidarityClearB64
     );
     this.appID = appID;
   }
 
   async makeAddSolidarityForUserTransaction(
-      signer: Account,
-      solidaritySenderAddress: string,
-      appName: string): Promise<SignedTransaction[]> {
+    signer: Account,
+    solidaritySenderAddress: string,
+    appName: string): Promise<SignedTransaction[]> {
 
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -54,9 +57,9 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       method: this.getMethodByName('addSolidarityForUser'),
       sender: signer.addr,
       methodArgs: [
-          taxPaymentTransaction,
-          solidaritySenderAddress,
-          appName
+        taxPaymentTransaction,
+        solidaritySenderAddress,
+        appName
       ],
       suggestedParams: suggestedParams,
       signer: transactionSigner,
@@ -67,9 +70,9 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
   }
 
   async makeChangeIndividualSolidarityTransaction(
-      signer: Account,
-      solidarityAddress: string,
-      basisPoints: number): Promise<SignedTransaction[]> {
+    signer: Account,
+    solidarityAddress: string,
+    basisPoints: number): Promise<SignedTransaction[]> {
 
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -82,7 +85,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       sender: signer.addr,
       methodArgs: [
         solidarityAddress,
-          basisPoints
+        basisPoints
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
