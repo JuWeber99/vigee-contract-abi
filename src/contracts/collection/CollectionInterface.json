@@ -56,6 +56,20 @@
             "returns": {
                 "type": "void"
             }
+        },
+        {
+            "name": "adminSetCollectionHash",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "collectionHash"
+                }
+            ],
+            "returns": {
+                "type": "void"
+            }
         }
-    ]
+    ],
+    "globals": [],
+    "locals": []
 }
