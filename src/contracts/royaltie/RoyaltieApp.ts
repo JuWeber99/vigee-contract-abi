@@ -13,7 +13,7 @@ import algosdk, {
 import { RoyaltieContract } from '../../_types';
 import { StateSchema } from '../../_types/algorand-typeextender';
 import {
-  BaseContract
+  BaseContract, PROGRAM_TYPE
 } from '../../_types/base';
 import {
   ALGORAND_ZERO_ADDRESS,
@@ -36,6 +36,8 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       royaltieClearB64
     );
     this.mainAppID = mainAppID
+    this.getCompiledProgram(PROGRAM_TYPE.APPROVAL, { "TMPL_VID": this.mainAppID })
+    this.getCompiledProgram(PROGRAM_TYPE.CLEAR)
   }
 
   async makeSignedSetupTransaction(
