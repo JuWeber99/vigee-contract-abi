@@ -37,13 +37,6 @@ export class BaseContract {
     this.address = getApplicationAddress(appID);
     this.approvalTemplate = approvalTemplate;
     this.clearTemplate = clearTemplate;
-    this.getCompiledProgram(
-      PROGRAM_TYPE.APPROVAL,
-      this.approvalTemplate
-    );
-    this.getCompiledProgram(
-      PROGRAM_TYPE.CLEAR
-    );
   }
 
   static getTransactionsFromGroup(signedArray: SignedTransaction[]): Transaction[] {
@@ -63,7 +56,7 @@ export class BaseContract {
     return { ...txParams, lastRound: txParams.firstRound + rounds };
   }
 
-  populateContract(template: string, vars: any): string {
+  populateContract(template: string, vars?: any): string {
     if (!vars) {
       return template
     } else {
