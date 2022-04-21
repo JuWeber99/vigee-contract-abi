@@ -36,7 +36,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       royaltieClearB64
     );
     this.mainAppID = mainAppID
-    this.getCompiledProgram(PROGRAM_TYPE.APPROVAL, { "TMPL_VID": this.mainAppID })
+    this.getCompiledProgram(PROGRAM_TYPE.APPROVAL, [{ "TMPL_VID": this.mainAppID }])
     this.getCompiledProgram(PROGRAM_TYPE.CLEAR)
   }
 
