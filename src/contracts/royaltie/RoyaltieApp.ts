@@ -13,7 +13,7 @@ import algosdk, {
 import { RoyaltieContract } from '../../_types';
 import { StateSchema } from '../../_types/algorand-typeextender';
 import {
-  BaseContract, PROGRAM_TYPE
+  BaseContract
 } from '../../_types/base';
 import {
   ALGORAND_ZERO_ADDRESS,

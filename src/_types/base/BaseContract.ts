@@ -81,7 +81,7 @@ export class BaseContract {
     templateVars: any
   ): Uint8Array {
     let programBytes = new Uint8Array()
-    const compiled = this.client
+    this.client
       .compile(
         this.populateContract(
           Buffer.from(this.approvalTemplate, "base64").toString(),
