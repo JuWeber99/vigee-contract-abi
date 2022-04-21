@@ -1,5 +1,5 @@
 import algosdk, { ABIContractParams, Algodv2, getApplicationAddress, SignedTransaction, SuggestedParams, Transaction } from 'algosdk';
-import { ABIStateSchema, StateSchema } from '../algorand-typeextender';
+import { StateSchema } from '../algorand-typeextender';
 
 export enum PROGRAM_TYPE {
   APPROVAL,
@@ -14,14 +14,14 @@ export class BaseContract extends algosdk.ABIContract {
   appID: number
   address: string
 
-  static abiInterface: ABIContractParams & Partial<ABIStateSchema>;
+  abiInterface: ABIContractParams;
   approvalTemplate: string = "";
   clearTemplate: string = "";
   approvalProgram: Uint8Array = new Uint8Array();
   clearProgram: Uint8Array = new Uint8Array();
 
   constructor(
-    contractAbiDefinition: ABIContractParams & Partial<ABIStateSchema>,
+    abiInterface: ABIContractParams,
     client: Algodv2,
     appID: number = 0,
     localSchema = new StateSchema(0, 0),
@@ -29,10 +29,8 @@ export class BaseContract extends algosdk.ABIContract {
     approvalTemplate?: string,
     clearTemplate?: string
   ) {
-
-    super(contractAbiDefinition);
-    delete contractAbiDefinition.globals;
-    delete contractAbiDefinition.locals;
+    super(abiInterface);
+    console.log(abiInterface)
     this.appID = appID
     this.client = client;
     this.globalSchema = globalSchema;

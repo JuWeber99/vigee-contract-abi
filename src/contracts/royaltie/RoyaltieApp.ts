@@ -24,7 +24,8 @@ import royaltieInterface from './RoyaltieInterface.json';
 
 export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   mainAppID: number
-  constructor(appID: number = 0, mainAppID: number, client: Algodv2) {
+
+  constructor(mainAppID: number, client: Algodv2, appID: number = 0) {
     super(
       royaltieInterface,
       client,
