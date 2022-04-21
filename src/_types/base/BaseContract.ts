@@ -63,6 +63,7 @@ export class BaseContract {
         val = 'dummy'; // TODO
       }
       template = template.replace(new RegExp(v, 'g'), val);
+      console.log(template)
     }
     return template;
   }
