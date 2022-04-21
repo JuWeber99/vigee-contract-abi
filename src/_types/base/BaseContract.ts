@@ -37,6 +37,14 @@ export class BaseContract {
     this.address = getApplicationAddress(appID);
     this.approvalTemplate = approvalTemplate;
     this.clearTemplate = clearTemplate;
+    this.getCompiledProgram(
+      PROGRAM_TYPE.APPROVAL,
+      this.approvalTemplate
+    );
+    this.getCompiledProgram(
+      PROGRAM_TYPE.CLEAR,
+      this.clearTemplate
+    );
   }
 
   static getTransactionsFromGroup(signedArray: SignedTransaction[]): Transaction[] {
@@ -68,11 +76,12 @@ export class BaseContract {
     return template;
   }
 
-  async getCompiledProgram(
+  getCompiledProgram(
     TYPE: PROGRAM_TYPE,
     templateVars: any
-  ): Promise<Uint8Array> {
-    const compiled = await this.client
+  ): Uint8Array {
+    let programBytes = new Uint8Array()
+    const compiled = this.client
       .compile(
         this.populateContract(
           Buffer.from(this.approvalTemplate, "base64").toString(),
@@ -80,21 +89,29 @@ export class BaseContract {
         )
       )
       .do()
-      .then();
-    const programBytes = new Uint8Array(Buffer.from(compiled.result, 'base64'));
+      .then(
+        compiled => {
+          console.log(compiled)
+          programBytes = new Uint8Array(Buffer.from(compiled.result, 'base64'));
 
-    switch (TYPE) {
-      case PROGRAM_TYPE.APPROVAL:
-        this.approvalProgram = programBytes;
-        break;
-      case PROGRAM_TYPE.CLEAR:
-        this.clearProgram = programBytes;
-        break;
-      default:
-        throw Error('WRONG INPUT');
-    }
+          switch (TYPE) {
+            case PROGRAM_TYPE.APPROVAL:
+              this.approvalProgram = programBytes;
+              break;
+            case PROGRAM_TYPE.CLEAR:
+              this.clearProgram = programBytes;
+              break;
+            default:
+              throw Error('WRONG INPUT');
+          }
 
-    return programBytes;
+          return programBytes;
+        }
+      ).catch(
+        err => console.log(err)
+      )
+
+    return programBytes
   }
 }
 

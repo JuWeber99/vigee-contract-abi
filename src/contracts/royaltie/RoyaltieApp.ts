@@ -60,18 +60,14 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       signer: makeBasicAccountTransactionSigner(signer),
     };
 
+
+
     atomicTransactionComposer.addMethodCall({
       appID: 0,
       method: this.getMethodByName('setup'),
       sender: signer.addr,
-      approvalProgram: await this.getCompiledProgram(
-        PROGRAM_TYPE.APPROVAL,
-        this.approvalTemplate
-      ),
-      clearProgram: await this.getCompiledProgram(
-        PROGRAM_TYPE.CLEAR,
-        this.clearTemplate
-      ),
+      approvalProgram: this.approvalProgram,
+      clearProgram: this.clearProgram,
       methodArgs: [
         taxPaymentTransaction,
         defaultRoyaltieReceiverAddress,
