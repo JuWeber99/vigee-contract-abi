@@ -7,14 +7,14 @@ export enum PROGRAM_TYPE {
 }
 
 
-export class BaseContract extends algosdk.ABIContract {
+export class BaseContract {
   client: Algodv2;
   localSchema: StateSchema;
   globalSchema: StateSchema;
   appID: number
   address: string
 
-  abiInterface: ABIContractParams;
+  handle: algosdk.ABIContract;
   approvalTemplate: string = "";
   clearTemplate: string = "";
   approvalProgram: Uint8Array = new Uint8Array();
@@ -29,15 +29,14 @@ export class BaseContract extends algosdk.ABIContract {
     approvalTemplate?: string,
     clearTemplate?: string
   ) {
-    super(abiInterface);
-    console.log(abiInterface)
-    this.appID = appID
+    this.handle = new algosdk.ABIContract(abiInterface);
+    this.appID = appID;
     this.client = client;
     this.globalSchema = globalSchema;
     this.localSchema = localSchema;
-    this.address = getApplicationAddress(appID)
-    this.approvalTemplate = approvalTemplate
-    this.clearTemplate = clearTemplate
+    this.address = getApplicationAddress(appID);
+    this.approvalTemplate = approvalTemplate;
+    this.clearTemplate = clearTemplate;
   }
 
   static getTransactionsFromGroup(signedArray: SignedTransaction[]): Transaction[] {
