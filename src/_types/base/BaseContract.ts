@@ -103,8 +103,6 @@ export class BaseContract {
         err => console.log(err)
       )
 
-
-    return programBytes
   }
 }
 
