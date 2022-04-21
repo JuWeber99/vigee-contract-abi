@@ -57,24 +57,21 @@ export class BaseContract {
   }
 
   populateContract(template: string, vars?: any): string {
-    if (!vars) {
-      return template
-    } else {
-      for (const v of vars) {
-        console.log(v)
-        console.log(vars)
-        let val = vars[v];
-        console.log(v, val)
-        template = template.replace(new RegExp(v, 'g'), val);
-      }
-      return template;
+
+    for (const v of vars) {
+      let val = vars[v];
+      console.log(v, val)
+      template = template.replace(new RegExp(v, 'g'), val);
     }
+    return template;
   }
+
 
   getCompiledProgram(
     TYPE: PROGRAM_TYPE,
     templateVars?: any
-  ): Uint8Array {
+  ): void {
+    console.log(templateVars)
     let programBytes = new Uint8Array()
     this.client
       .compile(
