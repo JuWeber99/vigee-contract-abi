@@ -70,8 +70,9 @@ export class BaseContract {
       if (val === '') {
         val = 'dummy'; // TODO
       }
+      console.log("before" + template)
       template = template.replace(new RegExp(v, 'g'), val);
-      console.log(template)
+      console.log("after" + template)
     }
     return template;
   }
