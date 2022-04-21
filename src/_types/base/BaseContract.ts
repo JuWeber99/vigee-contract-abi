@@ -66,11 +66,11 @@ export class BaseContract {
 
   populateContract(template: string, vars: any): string {
     for (const v of vars) {
+      console.log(v)
+      console.log(vars)
       let val = vars[v];
       console.log(v, val)
-      console.log("before" + template)
       template = template.replace(new RegExp(v, 'g'), val);
-      console.log("after" + template)
     }
     return template;
   }
