@@ -44,7 +44,7 @@ export class BaseContract {
   }
 
   getMethodByName(name: string): algosdk.ABIMethod {
-    const m = this.methods.find((mt: algosdk.ABIMethod) => {
+    const m = this.handle.methods.find((mt: algosdk.ABIMethod) => {
       return mt.name == name;
     });
     if (m === undefined) throw Error('Method undefined: ' + name);
