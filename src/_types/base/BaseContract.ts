@@ -42,8 +42,7 @@ export class BaseContract {
       this.approvalTemplate
     );
     this.getCompiledProgram(
-      PROGRAM_TYPE.CLEAR,
-      this.clearTemplate
+      PROGRAM_TYPE.CLEAR
     );
   }
 
@@ -65,19 +64,23 @@ export class BaseContract {
   }
 
   populateContract(template: string, vars: any): string {
-    for (const v of vars) {
-      console.log(v)
-      console.log(vars)
-      let val = vars[v];
-      console.log(v, val)
-      template = template.replace(new RegExp(v, 'g'), val);
+    if (!vars) {
+      return template
+    } else {
+      for (const v of vars) {
+        console.log(v)
+        console.log(vars)
+        let val = vars[v];
+        console.log(v, val)
+        template = template.replace(new RegExp(v, 'g'), val);
+      }
+      return template;
     }
-    return template;
   }
 
   getCompiledProgram(
     TYPE: PROGRAM_TYPE,
-    templateVars: any
+    templateVars?: any
   ): Uint8Array {
     let programBytes = new Uint8Array()
     this.client
@@ -109,6 +112,7 @@ export class BaseContract {
       ).catch(
         err => console.log(err)
       )
+
 
     return programBytes
   }
