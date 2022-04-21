@@ -164,7 +164,7 @@
                 },
                 {
                     "name": "allowed",
-                    "type": "boolean"
+                    "type": "bool"
                 }
             ],
             "returns": {
