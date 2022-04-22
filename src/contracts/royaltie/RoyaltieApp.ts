@@ -92,7 +92,6 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       numLocalInts: this.localSchema.numUint as number,
       numGlobalByteSlices: this.globalSchema.numByteSlice as number,
       numGlobalInts: this.globalSchema.numUint as number,
-
       signer: transactionSigner,
     });
     return atomicTransactionComposer
