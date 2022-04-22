@@ -86,8 +86,8 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         taxPaymentTransaction,
         defaultRoyaltieReceiverAddress,
         defaultRoyaltieShare,
-        algosdk.getApplicationAddress(this.mainAppID),
-        this.mainAppID
+        1,
+        1
       ],
       suggestedParams: suggestedParams,
       numLocalByteSlices: this.localSchema.numByteSlice as number,

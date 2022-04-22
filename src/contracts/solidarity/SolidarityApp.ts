@@ -51,7 +51,22 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       this.globalSchema.numUint as number,
       this.globalSchema.numByteSlice as number
     )
-    atomicTransactionComposer.addTransaction({ txn: appCreateTxn, signer: transactionSigner })
+    atomicTransactionComposer.addMethodCall({
+      appID: 0,
+      method: this.getMethodByName("create"),
+      methodArgs: [],
+      approvalProgram: new Uint8Array(
+        Buffer.from(await SolidarityApp.getCompiledProgram(this.approvalTemplate, SolidarityApp.client), "base64")
+      ),
+      clearProgram: new Uint8Array(
+        Buffer.from(await SolidarityApp.getCompiledProgram(this.clearTemplate, SolidarityApp.client), "base64")
+      ),
+      onComplete: algosdk.OnApplicationComplete.NoOpOC,
+      signer: transactionSigner,
+      sender: signer.addr,
+      suggestedParams: suggestedParams
+    })
+    // atomicTransactionComposer.addTransaction({ txn: appCreateTxn, signer: transactionSigner })
     return atomicTransactionComposer
   }
 
