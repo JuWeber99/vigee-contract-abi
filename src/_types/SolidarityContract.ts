@@ -1,6 +1,10 @@
-import algosdk, { SignedTransaction } from 'algosdk';
+import algosdk, { AtomicTransactionComposer, SignedTransaction } from 'algosdk';
 
 export interface SolidarityContract {
+    makeSignedCreationTransaction(
+        signer: algosdk.Account
+    ): Promise<AtomicTransactionComposer>
+
     makeChangeIndividualSolidarityTransaction(
         signer: algosdk.Account,
         solidarityAddress: string,

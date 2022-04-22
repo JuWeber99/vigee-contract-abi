@@ -1,8 +1,9 @@
-import {
+import algosdk, {
   Account,
   Algodv2,
   AtomicTransactionComposer,
   getApplicationAddress,
+  makeApplicationCreateTxn,
   makeBasicAccountTransactionSigner,
   makePaymentTxnWithSuggestedParamsFromObject,
   SignedTransaction,
@@ -27,6 +28,33 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       solidarityClearB64
     );
     this.appID = appID;
+  }
+  async makeSignedCreationTransaction(signer: Account): Promise<AtomicTransactionComposer> {
+
+    const atomicTransactionComposer = new AtomicTransactionComposer();
+    const suggestedParams = await this.getSuggested(10);
+    const transactionSigner = makeBasicAccountTransactionSigner(signer);
+
+    const appCreateTxn = makeApplicationCreateTxn(
+      signer.addr,
+      suggestedParams,
+      algosdk.OnApplicationComplete.NoOpOC,
+      new Uint8Array(
+        Buffer.from(await SolidarityApp.getCompiledProgram(this.approvalTemplate, SolidarityApp.client), "base64")
+      ),
+      new Uint8Array(
+        Buffer.from(await SolidarityApp.getCompiledProgram(this.clearTemplate, SolidarityApp.client), "base64")
+      ),
+      this.localSchema.numUint as number,
+      this.localSchema.numByteSlice as number,
+      this.globalSchema.numUint as number,
+      this.globalSchema.numByteSlice as number
+    )
+
+    return atomicTransactionComposer.addTransaction({ txn: appCreateTxn, signer: transactionSigner })
+
+
+
   }
 
   async makeAddSolidarityForUserTransaction(

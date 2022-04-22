@@ -42,7 +42,10 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShare: number
   ): Promise<AtomicTransactionComposer> {
+
     const atomicTransactionComposer = new AtomicTransactionComposer();
+    const transactionSigner = makeBasicAccountTransactionSigner(signer);
+
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
     suggestedParams.fee = 0; //get txnfees
@@ -56,7 +59,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         suggestedParams,
         rekeyTo: undefined
       }),
-      signer: makeBasicAccountTransactionSigner(signer),
+      signer: transactionSigner,
     };
 
     const approvalProgram: Uint8Array = new Uint8Array(
@@ -90,7 +93,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       numGlobalByteSlices: this.globalSchema.numByteSlice as number,
       numGlobalInts: this.globalSchema.numUint as number,
 
-      signer: makeBasicAccountTransactionSigner(signer),
+      signer: transactionSigner,
     });
     return atomicTransactionComposer
   }
