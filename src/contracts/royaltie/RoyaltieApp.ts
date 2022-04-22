@@ -61,7 +61,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     };
 
     const approvalProgram = await BaseContract.getCompiledProgram(
-      this.approvalTemplate, RoyaltieApp.client, { "TMPL_VID": 1 }
+      this.approvalTemplate, RoyaltieApp.client, { "TMPL_VID": this.mainAppID }
     )
     const clearProgram = await BaseContract.getCompiledProgram(
       this.approvalTemplate, RoyaltieApp.client
