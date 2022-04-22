@@ -86,7 +86,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         taxPaymentTransaction,
         defaultRoyaltieReceiverAddress,
         defaultRoyaltieShare,
-        1,
+        signer.addr,
         1
       ],
       suggestedParams: suggestedParams,
