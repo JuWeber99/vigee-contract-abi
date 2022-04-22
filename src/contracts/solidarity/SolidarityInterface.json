@@ -42,7 +42,7 @@
                 "name": "solidarityAccount"
             }],
             "returns": {
-                "type": "(uint64, uint64)",
+                "type": "(uint64,uint64)",
                 "desc": "(amount of auctions, amount of listings)"
             }
         },
