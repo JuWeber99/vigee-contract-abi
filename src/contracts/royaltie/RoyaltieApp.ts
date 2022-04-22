@@ -54,7 +54,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS,
+        rekeyTo: undefined
       }),
       signer: makeBasicAccountTransactionSigner(signer),
     };
@@ -62,7 +62,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     const approvalProgram: Uint8Array = new Uint8Array(
       Buffer.from(
         await RoyaltieApp.getCompiledProgram(
-          this.clearTemplate, RoyaltieApp.client, { "TMPL_VID": this.mainAppID }), "base64"
+          this.approvalTemplate, RoyaltieApp.client, { "TMPL_VID": this.mainAppID }), "base64"
       )
     )
 
@@ -72,9 +72,6 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
           this.clearTemplate, RoyaltieApp.client), "base64"
       )
     )
-
-    console.log(approvalProgram)
-    console.log(clearProgram)
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -94,8 +91,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       numGlobalInts: this.globalSchema.numUint as number,
       signer: makeBasicAccountTransactionSigner(signer),
     });
-    console.log(atomicTransactionComposer)
-    return atomicTransactionComposer.clone()
+    return atomicTransactionComposer
   }
 
   async makeSignedCreateNFTTransaction(
