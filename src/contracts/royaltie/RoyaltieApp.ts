@@ -13,7 +13,7 @@ import algosdk, {
 import { RoyaltieContract } from '../../_types';
 import { StateSchema } from '../../_types/algorand-typeextender';
 import {
-  BaseContract, PROGRAM_TYPE
+  BaseContract
 } from '../../_types/base';
 import {
   ALGORAND_ZERO_ADDRESS,
@@ -36,8 +36,6 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       royaltieClearB64
     );
     this.mainAppID = mainAppID
-    this.getCompiledProgram(PROGRAM_TYPE.APPROVAL, [{ "TMPL_VID": this.mainAppID }])
-    this.getCompiledProgram(PROGRAM_TYPE.CLEAR)
   }
 
   async makeSignedSetupTransaction(
@@ -62,14 +60,19 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       signer: makeBasicAccountTransactionSigner(signer),
     };
 
-
+    const approvalProgram = await BaseContract.getCompiledProgram(
+      this.approvalTemplate, RoyaltieApp.client, { "TMPL_VID": 1 }
+    )
+    const clearProgram = await BaseContract.getCompiledProgram(
+      this.approvalTemplate, RoyaltieApp.client
+    )
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
       method: this.getMethodByName('setup'),
       sender: signer.addr,
-      approvalProgram: this.approvalProgram,
-      clearProgram: this.clearProgram,
+      approvalProgram: approvalProgram,
+      clearProgram: clearProgram,
       methodArgs: [
         taxPaymentTransaction,
         defaultRoyaltieReceiverAddress,

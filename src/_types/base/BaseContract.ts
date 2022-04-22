@@ -8,7 +8,7 @@ export enum PROGRAM_TYPE {
 
 
 export class BaseContract {
-  client: Algodv2;
+  static client: Algodv2;
   localSchema: StateSchema;
   globalSchema: StateSchema;
   appID: number
@@ -17,8 +17,6 @@ export class BaseContract {
   handle: algosdk.ABIContract;
   approvalTemplate: string = "";
   clearTemplate: string = "";
-  approvalProgram: Uint8Array = new Uint8Array();
-  clearProgram: Uint8Array = new Uint8Array();
 
   constructor(
     abiInterface: ABIContractParams,
@@ -31,7 +29,7 @@ export class BaseContract {
   ) {
     this.handle = new algosdk.ABIContract(abiInterface);
     this.appID = appID;
-    this.client = client;
+    BaseContract.client = client;
     this.globalSchema = globalSchema;
     this.localSchema = localSchema;
     this.address = getApplicationAddress(appID);
@@ -52,13 +50,13 @@ export class BaseContract {
   }
 
   async getSuggested(rounds: number): Promise<SuggestedParams> {
-    const txParams = await this.client.getTransactionParams().do();
+    const txParams = await BaseContract.client.getTransactionParams().do();
     return { ...txParams, lastRound: txParams.firstRound + rounds };
   }
 
-  static populateContract(template: string, vars?: any): string {
+  static populateContract(template: string, vars?: Record<string, any>): string {
 
-    for (const v of vars) {
+    for (let v in vars) {
       let val = vars[v];
       console.log(v, val)
       template = template.replace(new RegExp(v, 'g'), val);
@@ -69,8 +67,8 @@ export class BaseContract {
 
   static async getCompiledProgram(
     template: string,
-    templateVars: Record<string, unknown>,
-    client: Algodv2
+    client: Algodv2,
+    templateVars?: Record<string, any>
   ): Promise<Uint8Array> {
 
     let filledTemplate = Buffer.from(template, "base64").toString()
