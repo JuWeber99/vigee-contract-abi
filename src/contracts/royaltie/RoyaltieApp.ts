@@ -7,8 +7,7 @@ import algosdk, {
   makeAssetCreateTxnWithSuggestedParamsFromObject,
   makeBasicAccountTransactionSigner,
   makePaymentTxnWithSuggestedParamsFromObject,
-  SignedTransaction,
-  TransactionWithSigner
+  SignedTransaction, TransactionWithSigner
 } from 'algosdk';
 import { RoyaltieContract } from '../../_types';
 import { StateSchema } from '../../_types/algorand-typeextender';
@@ -42,7 +41,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShare: number
-  ): Promise<SignedTransaction[]> {
+  ): Promise<AtomicTransactionComposer> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -86,8 +85,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       signer: makeBasicAccountTransactionSigner(signer),
     });
     console.log(atomicTransactionComposer)
-    const setupAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return setupAbiGroup.map(decodedSignedTransactionBuffer);
+    return atomicTransactionComposer.clone()
   }
 
   async makeSignedCreateNFTTransaction(

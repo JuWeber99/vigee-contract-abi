@@ -1,11 +1,12 @@
 import algosdk, { Account, SignedTransaction } from 'algosdk';
+import { AtomicTransactionComposer } from 'algosdk';
 
 export interface RoyaltieContract {
   makeSignedSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShare: number
-  ): Promise<SignedTransaction[]>;
+  ): Promise<AtomicTransactionComposer>;
 
   makeSignedCreateNFTTransaction(
     signer: algosdk.Account,
