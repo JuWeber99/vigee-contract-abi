@@ -8,12 +8,20 @@
                     "type": "pay",
                     "name": "taxTransaction"
                 }, {
-                    "type": "account",
+                    "type": "string",
                     "name": "royaltieReceiverDefault"
                 },
                 {
                     "type": "uint64",
                     "name": "royaltieShareDefault"
+                },
+                {
+                    "type": "account",
+                    "name": "solidarityAccount"
+                },
+                {
+                    "type": "app",
+                    "name": "solidarityApp"
                 }
             ],
             "returns": {
