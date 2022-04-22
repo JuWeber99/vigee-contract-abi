@@ -2,9 +2,7 @@ import algosdk, {
   Account,
   Algodv2,
   AtomicTransactionComposer,
-  getApplicationAddress,
-  makeApplicationCreateTxn,
-  makeBasicAccountTransactionSigner,
+  getApplicationAddress, makeBasicAccountTransactionSigner,
   makePaymentTxnWithSuggestedParamsFromObject,
   SignedTransaction,
   TransactionWithSigner
