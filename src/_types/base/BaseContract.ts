@@ -69,7 +69,7 @@ export class BaseContract {
     template: string,
     client: Algodv2,
     templateVars?: Record<string, any>
-  ): Promise<Uint8Array> {
+  ): Promise<string> {
 
     let filledTemplate = Buffer.from(template, "base64").toString()
     if (templateVars) {
@@ -77,9 +77,7 @@ export class BaseContract {
     }
     const compiledContract = await client.compile(filledTemplate).do()
 
-    const result = new Uint8Array(Buffer.from(compiledContract.result, "base64"))
-    console.log(result)
-    return result
+    return compiledContract.result
   }
 }
 

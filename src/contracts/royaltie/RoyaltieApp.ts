@@ -59,11 +59,14 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       signer: makeBasicAccountTransactionSigner(signer),
     };
 
-    const approvalProgram: Uint8Array = await RoyaltieApp.getCompiledProgram(
-      this.approvalTemplate, RoyaltieApp.client, { "TMPL_VID": this.mainAppID }
+    const approvalProgram: Uint8Array = new Uint8Array(
+      Buffer.from(await RoyaltieApp.getCompiledProgram(
+        this.clearTemplate, RoyaltieApp.client, { "TMPL_VID": this.mainAppID }), "base64")
     )
-    const clearProgram: Uint8Array = await RoyaltieApp.getCompiledProgram(
-      this.clearTemplate, RoyaltieApp.client
+
+    const clearProgram: Uint8Array = new Uint8Array(
+      Buffer.from(await RoyaltieApp.getCompiledProgram(
+        this.clearTemplate, RoyaltieApp.client), "base64")
     )
 
     atomicTransactionComposer.addMethodCall({
