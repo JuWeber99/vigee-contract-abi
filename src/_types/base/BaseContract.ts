@@ -56,7 +56,7 @@ export class BaseContract {
     return { ...txParams, lastRound: txParams.firstRound + rounds };
   }
 
-  populateContract(template: string, vars?: any): string {
+  static populateContract(template: string, vars?: any): string {
 
     for (const v of vars) {
       let val = vars[v];
@@ -67,42 +67,20 @@ export class BaseContract {
   }
 
 
-  getCompiledProgram(
-    TYPE: PROGRAM_TYPE,
-    templateVars?: any
-  ): void {
-    console.log(templateVars)
-    let programBytes = new Uint8Array()
-    this.client
-      .compile(
-        this.populateContract(
-          Buffer.from(this.approvalTemplate, "base64").toString(),
-          templateVars
-        )
-      )
-      .do()
-      .then(
-        compiled => {
-          console.log(compiled)
-          programBytes = new Uint8Array(Buffer.from(compiled.result, 'base64'));
+  static async getCompiledProgram(
+    template: string,
+    templateVars: Record<string, unknown>,
+    client: Algodv2
+  ): Promise<Uint8Array> {
 
-          switch (TYPE) {
-            case PROGRAM_TYPE.APPROVAL:
-              this.approvalProgram = programBytes;
-              break;
-            case PROGRAM_TYPE.CLEAR:
-              this.clearProgram = programBytes;
-              break;
-            default:
-              throw Error('WRONG INPUT');
-          }
+    let filledTemplate = Buffer.from(template, "base64").toString()
+    if (templateVars) {
+      filledTemplate = BaseContract.populateContract(filledTemplate, templateVars)
+    }
+    const compiledContract = await client.compile(filledTemplate).do()
+    console.log(compiledContract)
 
-          return programBytes;
-        }
-      ).catch(
-        err => console.log(err)
-      )
-
+    return compiledContract
   }
 }
 
