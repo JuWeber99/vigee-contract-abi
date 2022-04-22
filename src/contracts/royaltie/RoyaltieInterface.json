@@ -20,7 +20,7 @@
                     "name": "solidarityAccount"
                 },
                 {
-                    "type": "app",
+                    "type": "application",
                     "name": "solidarityApp"
                 }
             ],
