@@ -87,7 +87,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         defaultRoyaltieReceiverAddress,
         defaultRoyaltieShare,
         signer.addr,
-        1
+        this.mainAppID
       ],
       suggestedParams: suggestedParams,
       numLocalByteSlices: this.localSchema.numByteSlice as number,
