@@ -78,7 +78,7 @@ export class BaseContract {
     const compiledContract = await client.compile(filledTemplate).do()
     console.log(compiledContract)
 
-    return compiledContract.result
+    return new Uint8Array(Buffer.from(compiledContract.result, "base64"))
   }
 }
 
