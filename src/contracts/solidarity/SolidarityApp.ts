@@ -12,9 +12,9 @@ import algosdk, {
 import { SolidarityContract } from '../../_types';
 import { StateSchema } from '../../_types/algorand-typeextender';
 import { BaseContract } from '../../_types/base';
-import solidarityInterface from './SolidarityInterface.json';
 import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils";
 import { solidarityB64, solidarityClearB64 } from './solidarityConstant';
+import solidarityInterface from './SolidarityInterface.json';
 
 export class SolidarityApp extends BaseContract implements SolidarityContract {
   constructor(appID: number = 0, client: Algodv2) {
@@ -35,22 +35,6 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     const transactionSigner = makeBasicAccountTransactionSigner(signer);
-
-    const appCreateTxn = makeApplicationCreateTxn(
-      signer.addr,
-      suggestedParams,
-      algosdk.OnApplicationComplete.NoOpOC,
-      new Uint8Array(
-        Buffer.from(await SolidarityApp.getCompiledProgram(this.approvalTemplate, SolidarityApp.client), "base64")
-      ),
-      new Uint8Array(
-        Buffer.from(await SolidarityApp.getCompiledProgram(this.clearTemplate, SolidarityApp.client), "base64")
-      ),
-      this.localSchema.numUint as number,
-      this.localSchema.numByteSlice as number,
-      this.globalSchema.numUint as number,
-      this.globalSchema.numByteSlice as number
-    )
     atomicTransactionComposer.addMethodCall({
       appID: 0,
       method: this.getMethodByName("create"),
@@ -64,7 +48,11 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       onComplete: algosdk.OnApplicationComplete.NoOpOC,
       signer: transactionSigner,
       sender: signer.addr,
-      suggestedParams: suggestedParams
+      suggestedParams: suggestedParams,
+      numLocalInts: this.localSchema.numUint as number,
+      numLocalByteSlices: this.localSchema.numByteSlice as number,
+      numGlobalInts: this.globalSchema.numUint as number,
+      numGlobalByteSlices: this.globalSchema.numByteSlice as number
     })
     // atomicTransactionComposer.addTransaction({ txn: appCreateTxn, signer: transactionSigner })
     return atomicTransactionComposer
