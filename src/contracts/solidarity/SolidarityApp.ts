@@ -50,11 +50,8 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       this.globalSchema.numUint as number,
       this.globalSchema.numByteSlice as number
     )
-
-    return atomicTransactionComposer.addTransaction({ txn: appCreateTxn, signer: transactionSigner })
-
-
-
+    atomicTransactionComposer.addTransaction({ txn: appCreateTxn, signer: transactionSigner })
+    return atomicTransactionComposer
   }
 
   async makeAddSolidarityForUserTransaction(
