@@ -85,7 +85,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       numGlobalInts: this.globalSchema.numUint as number,
       signer: makeBasicAccountTransactionSigner(signer),
     });
-
+    console.log(atomicTransactionComposer)
     const setupAbiGroup = await atomicTransactionComposer.gatherSignatures();
     return setupAbiGroup.map(decodedSignedTransactionBuffer);
   }
