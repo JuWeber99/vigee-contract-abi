@@ -23,7 +23,6 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       solidarityB64,
       solidarityClearB64
     );
-    this.appID = appID;
   }
 
   async makeSignedCreationTransaction(signer: Account): Promise<AtomicTransactionComposer> {
