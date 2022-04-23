@@ -105,7 +105,6 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
 
     atomicTransactionComposer.addMethodCall({
       appID: this.appID,
-      onComplete: algosdk.OnApplicationComplete.NoOpOC,
       method: this.getMethodByName('changeIndividualSolidarity'),
       sender: signer.addr,
       methodArgs: [
@@ -123,8 +122,8 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
   async makeGetOfferCountTransaction(signer: Account, solidarityAddress: string): Promise<AtomicTransactionComposer> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    // suggestedParams.flatFee = false;
+    // suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,

@@ -55,10 +55,8 @@ export class BaseContract {
   }
 
   static populateContract(template: string, vars?: Record<string, any>): string {
-
     for (let v in vars) {
       let val = vars[v];
-      console.log(v, val)
       template = template.replace(new RegExp(v, 'g'), val);
     }
     return template;
@@ -70,7 +68,7 @@ export class BaseContract {
     client: Algodv2,
     templateVars?: Record<string, any>
   ): Promise<string> {
-
+    console.log(templateVars)
     let filledTemplate = Buffer.from(template, "base64").toString()
     if (templateVars) {
       filledTemplate = BaseContract.populateContract(filledTemplate, templateVars)
