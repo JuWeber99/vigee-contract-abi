@@ -13,7 +13,7 @@ import { solidarityB64, solidarityClearB64 } from './solidarityConstant';
 import solidarityInterface from './SolidarityInterface.json';
 
 export class SolidarityApp extends BaseContract implements SolidarityContract {
-  constructor(appID: number = 0, client: Algodv2) {
+  constructor(client: Algodv2, appID: number = 0) {
     super(
       solidarityInterface,
       client,
@@ -78,7 +78,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
     };
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('addSolidarityForUser'),
       sender: signer.addr,
       methodArgs: [
@@ -106,6 +106,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
 
     atomicTransactionComposer.addMethodCall({
       appID: this.appID,
+      onComplete: algosdk.OnApplicationComplete.NoOpOC,
       method: this.getMethodByName('changeIndividualSolidarity'),
       sender: signer.addr,
       methodArgs: [
