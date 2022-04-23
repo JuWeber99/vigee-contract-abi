@@ -3,14 +3,12 @@ import algosdk, {
   Algodv2,
   AtomicTransactionComposer,
   getApplicationAddress, makeBasicAccountTransactionSigner,
-  makePaymentTxnWithSuggestedParamsFromObject,
-  SignedTransaction,
-  TransactionWithSigner
+  makePaymentTxnWithSuggestedParamsFromObject, TransactionWithSigner
 } from 'algosdk';
 import { SolidarityContract } from '../../_types';
 import { StateSchema } from '../../_types/algorand-typeextender';
 import { BaseContract } from '../../_types/base';
-import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils";
+import { ALGORAND_ZERO_ADDRESS } from "../utils";
 import { solidarityB64, solidarityClearB64 } from './solidarityConstant';
 import solidarityInterface from './SolidarityInterface.json';
 
@@ -59,7 +57,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
   async makeAddSolidarityForUserTransaction(
     signer: Account,
     solidaritySenderAddress: string,
-    appName: string): Promise<SignedTransaction[]> {
+    appName: string): Promise<AtomicTransactionComposer> {
 
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -92,22 +90,22 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       signer: transactionSigner,
     });
 
-    const addSolidarityForUserAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return addSolidarityForUserAbiGroup.map(decodedSignedTransactionBuffer);
+    return atomicTransactionComposer
   }
 
   async makeChangeIndividualSolidarityTransaction(
     signer: Account,
     solidarityAddress: string,
-    basisPoints: number): Promise<SignedTransaction[]> {
+    basisPoints: number): Promise<AtomicTransactionComposer> {
 
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    // suggestedParams.flatFee = false;
+    // suggestedParams.fee = 0; //get txnfees
+    const transactionSigner = makeBasicAccountTransactionSigner(signer)
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('changeIndividualSolidarity'),
       sender: signer.addr,
       methodArgs: [
@@ -115,14 +113,14 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
         basisPoints
       ],
       suggestedParams: suggestedParams,
-      signer: makeBasicAccountTransactionSigner(signer),
+      signer: transactionSigner
     });
 
-    const changeIndividualSolidarityAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return changeIndividualSolidarityAbiGroup.map(decodedSignedTransactionBuffer);
+    return atomicTransactionComposer
+    // return changeIndividualSolidarityAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async makeGetOfferCountTransaction(signer: Account, solidarityAddress: string): Promise<SignedTransaction[]> {
+  async makeGetOfferCountTransaction(signer: Account, solidarityAddress: string): Promise<AtomicTransactionComposer> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -139,11 +137,10 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       signer: makeBasicAccountTransactionSigner(signer),
     });
 
-    const getOfferCountAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return getOfferCountAbiGroup.map(decodedSignedTransactionBuffer);
+    return atomicTransactionComposer
   }
 
-  async makeRaiseCollectionCountTransaction(signer: Account, solidarityAddress: string): Promise<SignedTransaction[]> {
+  async makeRaiseCollectionCountTransaction(signer: Account, solidarityAddress: string): Promise<AtomicTransactionComposer> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -160,11 +157,10 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       signer: makeBasicAccountTransactionSigner(signer),
     });
 
-    const raiseCollectionCountAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return raiseCollectionCountAbiGroup.map(decodedSignedTransactionBuffer);
+    return atomicTransactionComposer
   }
 
-  async makeRaiseOfferCountTransaction(signer: Account, solidarityAddress: string): Promise<SignedTransaction[]> {
+  async makeRaiseOfferCountTransaction(signer: Account, solidarityAddress: string): Promise<AtomicTransactionComposer> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     suggestedParams.flatFee = false;
@@ -181,8 +177,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       signer: makeBasicAccountTransactionSigner(signer),
     });
 
-    const raiseOfferCountAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return raiseOfferCountAbiGroup.map(decodedSignedTransactionBuffer);
+    return atomicTransactionComposer
   }
 
 }

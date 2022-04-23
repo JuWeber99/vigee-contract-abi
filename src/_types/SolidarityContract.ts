@@ -9,26 +9,26 @@ export interface SolidarityContract {
         signer: algosdk.Account,
         solidarityAddress: string,
         basisPoints: number
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeAddSolidarityForUserTransaction(
         signer: algosdk.Account,
         solidaritySenderAddress: string,
         appName: string
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeGetOfferCountTransaction(
         signer: algosdk.Account,
         solidarityAddress: string
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeRaiseOfferCountTransaction(
         signer: algosdk.Account,
         solidarityAddress: string
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeRaiseCollectionCountTransaction(
         signer: algosdk.Account,
         solidarityAddress: string
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 }
