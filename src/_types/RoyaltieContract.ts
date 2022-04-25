@@ -2,6 +2,10 @@ import algosdk, { Account, SignedTransaction } from 'algosdk';
 import { AtomicTransactionComposer } from 'algosdk';
 
 export interface RoyaltieContract {
+  makeSignedCreateTransaction(
+    signer: algosdk.Account
+  ): Promise<AtomicTransactionComposer>;
+
   makeSignedSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,

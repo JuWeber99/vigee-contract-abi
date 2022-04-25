@@ -2,6 +2,12 @@
     "name": "Vigee Royaltie Enforcer",
 
     "methods": [{
+            "name": "create",
+            "args": [],
+            "returns": {
+                "type": "uint64"
+            }
+        }, {
             "name": "setup",
             "desc": "setup royaltie enforcer with policy",
             "args": [{

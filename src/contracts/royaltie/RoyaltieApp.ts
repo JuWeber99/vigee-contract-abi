@@ -3,6 +3,8 @@ import algosdk, {
   Algodv2,
   AtomicTransactionComposer,
   getApplicationAddress,
+  makeApplicationCreateTxn,
+  makeApplicationCreateTxnFromObject,
   makeAssetConfigTxnWithSuggestedParamsFromObject,
   makeAssetCreateTxnWithSuggestedParamsFromObject,
   makeBasicAccountTransactionSigner,
@@ -37,6 +39,46 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     this.mainAppID = mainAppID
   }
 
+  async makeSignedCreateTransaction(signer: algosdk.Account): Promise<algosdk.AtomicTransactionComposer> {
+    const atomicTransactionComposer = new AtomicTransactionComposer();
+    const transactionSigner = makeBasicAccountTransactionSigner(signer);
+
+    const suggestedParams = await this.getSuggested(10);
+    // suggestedParams.flatFee = false;
+    // suggestedParams.fee = 0; //get txnfees
+
+    const approvalProgram: Uint8Array = new Uint8Array(
+      Buffer.from(
+        await RoyaltieApp.getCompiledProgram(
+          this.approvalTemplate, RoyaltieApp.client, { "TMPL_VID": this.mainAppID }), "base64"
+      )
+    )
+
+    const clearProgram: Uint8Array = new Uint8Array(
+      Buffer.from(
+        await RoyaltieApp.getCompiledProgram(
+          this.clearTemplate, RoyaltieApp.client), "base64"
+      )
+    )
+
+    atomicTransactionComposer.addMethodCall({
+      method: this.getMethodByName("create"),
+      sender: signer.addr,
+      appID: 0,
+      signer: transactionSigner,
+      suggestedParams: suggestedParams,
+      onComplete: algosdk.OnApplicationComplete.NoOpOC,
+      approvalProgram: approvalProgram,
+      clearProgram: clearProgram,
+      numLocalByteSlices: this.localSchema.numByteSlice as number,
+      numLocalInts: this.localSchema.numUint as number,
+      numGlobalByteSlices: this.globalSchema.numByteSlice as number,
+      numGlobalInts: this.globalSchema.numUint as number,
+    })
+
+    return atomicTransactionComposer
+  }
+
   async makeSignedSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
@@ -62,26 +104,10 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       signer: transactionSigner,
     };
 
-    const approvalProgram: Uint8Array = new Uint8Array(
-      Buffer.from(
-        await RoyaltieApp.getCompiledProgram(
-          this.approvalTemplate, RoyaltieApp.client, { "TMPL_VID": this.mainAppID }), "base64"
-      )
-    )
-
-    const clearProgram: Uint8Array = new Uint8Array(
-      Buffer.from(
-        await RoyaltieApp.getCompiledProgram(
-          this.clearTemplate, RoyaltieApp.client), "base64"
-      )
-    )
-
     atomicTransactionComposer.addMethodCall({
       appID: 0,
       method: this.getMethodByName('setup'),
       sender: signer.addr,
-      approvalProgram: approvalProgram,
-      clearProgram: clearProgram,
       methodArgs: [
         defaultRoyaltieReceiverAddress,
         defaultRoyaltieShare,
@@ -90,12 +116,9 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         taxPaymentTransaction
       ],
       suggestedParams: suggestedParams,
-      numLocalByteSlices: this.localSchema.numByteSlice as number,
-      numLocalInts: this.localSchema.numUint as number,
-      numGlobalByteSlices: this.globalSchema.numByteSlice as number,
-      numGlobalInts: this.globalSchema.numUint as number,
       signer: transactionSigner,
     });
+
     return atomicTransactionComposer
   }
 

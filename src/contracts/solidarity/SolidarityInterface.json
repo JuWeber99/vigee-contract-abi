@@ -1,9 +1,7 @@
 {
     "name": "Vigee Main App",
     "desc": "Interface for the main application of the vigee platform",
-    "methods": [
-
-        {
+    "methods": [{
             "name": "create",
             "args": [],
             "returns": {
