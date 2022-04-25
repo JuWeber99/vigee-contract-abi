@@ -95,7 +95,8 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         from: signer.addr,
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
-        suggestedParams
+        suggestedParams,
+        rekeyTo: undefined
       }),
       signer: transactionSigner,
     };
@@ -112,6 +113,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         taxPaymentTransaction
       ],
       suggestedParams: suggestedParams,
+      rekeyTo: undefined,
       signer: transactionSigner,
     });
 
