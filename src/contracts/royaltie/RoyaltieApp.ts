@@ -102,13 +102,13 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     };
 
     atomicTransactionComposer.addMethodCall({
-      appID: this.appID,
+      appID: this.mainAppID,
       method: this.getMethodByName('setup'),
       sender: signer.addr,
       methodArgs: [
         defaultRoyaltieReceiverAddress,
         defaultRoyaltieShare,
-        getApplicationAddress(this.appID),
+        getApplicationAddress(this.mainAppID),
         this.mainAppID,
         taxPaymentTransaction
       ],
