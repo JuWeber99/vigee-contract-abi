@@ -108,7 +108,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       methodArgs: [
         defaultRoyaltieReceiverAddress,
         defaultRoyaltieShare,
-        signer.addr,
+        getApplicationAddress(this.appID),
         this.mainAppID,
         taxPaymentTransaction
       ],
