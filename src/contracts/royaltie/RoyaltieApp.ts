@@ -83,11 +83,11 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       approvalProgram: approvalProgram,
       clearProgram: clearProgram,
       methodArgs: [
-        taxPaymentTransaction,
         defaultRoyaltieReceiverAddress,
         defaultRoyaltieShare,
         signer.addr,
-        this.mainAppID
+        this.mainAppID,
+        taxPaymentTransaction
       ],
       suggestedParams: suggestedParams,
       numLocalByteSlices: this.localSchema.numByteSlice as number,
