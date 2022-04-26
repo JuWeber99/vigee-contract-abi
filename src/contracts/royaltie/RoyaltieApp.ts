@@ -148,16 +148,17 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       signer: transactionSigner,
     };
 
+    const selfAddress = getApplicationAddress(this.appID)
     const assetCreateTransaction = {
       txn: makeAssetCreateTxnWithSuggestedParamsFromObject({
         from: signer.addr,
         suggestedParams,
         assetName: mintInformation.assetName,
         unitName: mintInformation.unitName,
-        manager: this.address,
-        clawback: this.address,
-        freeze: this.address,
-        reserve: this.address,
+        manager: selfAddress,
+        clawback: selfAddress,
+        freeze: selfAddress,
+        reserve: selfAddress,
         total: mintInformation.total,
         decimals: mintInformation.decimals,
         defaultFrozen: true,

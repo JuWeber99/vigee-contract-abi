@@ -32,7 +32,6 @@ export class BaseContract {
     BaseContract.client = client;
     this.globalSchema = globalSchema;
     this.localSchema = localSchema;
-    this.address = getApplicationAddress(appID);
     this.approvalTemplate = approvalTemplate;
     this.clearTemplate = clearTemplate;
   }
