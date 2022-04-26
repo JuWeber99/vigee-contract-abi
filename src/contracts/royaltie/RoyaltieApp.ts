@@ -143,7 +143,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieMintColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS
+        rekeyTo: undefined
       }),
       signer: transactionSigner,
     };
@@ -164,7 +164,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         defaultFrozen: true,
         assetMetadataHash: mintInformation.assetMetadataHash,
         assetURL: mintInformation.metadataInfoURL,
-        rekeyTo: ALGORAND_ZERO_ADDRESS
+        rekeyTo: undefined
       }),
       signer: transactionSigner,
     };
@@ -175,7 +175,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       sender: signer.addr,
       methodArgs: [taxPaymentTransaction, assetCreateTransaction],
       suggestedParams: suggestedParams,
-      signer: transactionSigner,
+      signer: transactionSigner
     });
 
     return atomicTransactionComposer
@@ -199,7 +199,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
         suggestedParams: suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS,
+        rekeyTo: undefined,
       }),
       signer: transactionSigner,
     };
@@ -214,7 +214,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
         assetIndex: assetID,
         suggestedParams,
         strictEmptyAddressChecking: true,
-        rekeyTo: ALGORAND_ZERO_ADDRESS,
+        rekeyTo: undefined,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
     };
