@@ -169,7 +169,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     };
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('createNFT'),
       sender: signer.addr,
       methodArgs: [taxPaymentTransaction, assetCreateTransaction],
@@ -219,7 +219,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     };
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('createNFT'),
       sender: signer.addr,
       methodArgs: [taxPaymentTransaction, assetReconfigurationTxn],
@@ -241,7 +241,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('addToCollection'),
       sender: signer.addr,
       methodArgs: [collectionAppID],
@@ -266,7 +266,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('lockForOffer'),
       sender: signer.addr,
       methodArgs: [royaltyAsset, royaltyAssetAmount, authorizedAddress],
@@ -289,7 +289,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('rescind'),
       sender: signer.addr,
       methodArgs: [assetToRescindID],
@@ -315,7 +315,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('royaltyFreeMove'),
       sender: signer.addr,
       methodArgs: [royaltyAsset, royaltyAssetAmount, from.addr, to.addr],
@@ -371,7 +371,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('setPaymentAsset'),
       sender: signer.addr,
       methodArgs: [assetID],
@@ -394,7 +394,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('setBasisPoints'),
       sender: signer.addr,
       methodArgs: [royaltieShare],
@@ -417,7 +417,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('setRoyaltieReceiver'),
       sender: signer.addr,
       methodArgs: [royaltieReceiver],
@@ -441,7 +441,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('getOffer'),
       sender: signer.addr,
       methodArgs: [royaltyAsset, from.addr],
@@ -464,7 +464,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('getPolicy'),
       sender: signer.addr,
       methodArgs: [royaltyAsset],
@@ -484,7 +484,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     suggestedParams.fee = 0; //get txnfees
 
     atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('adminSetRoyaltieEnforcerHash'),
       sender: signer.addr,
       methodArgs: [royaltieEnforcerHash],
