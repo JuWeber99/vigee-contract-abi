@@ -1,4 +1,4 @@
-import algosdk, { ABIContractParams, Algodv2, getApplicationAddress, SignedTransaction, SuggestedParams, Transaction } from 'algosdk';
+import algosdk, { ABIContractParams, Algodv2, SignedTransaction, SuggestedParams, Transaction } from 'algosdk';
 import { StateSchema } from '../algorand-typeextender';
 
 export enum PROGRAM_TYPE {
