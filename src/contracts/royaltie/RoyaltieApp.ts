@@ -189,8 +189,8 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 
     const transactionSigner = makeBasicAccountTransactionSigner(signer);
 
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    // suggestedParams.flatFee = false;
+    // suggestedParams.fee = 0; //get txnfees
     const royaltieSetupColleteral = 100000;
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
