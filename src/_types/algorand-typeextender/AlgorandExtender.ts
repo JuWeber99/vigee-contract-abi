@@ -17,3 +17,12 @@ export interface ABIStateSchema {
     locals: ABIStateEntry[];
     globals: ABIStateEntry[];
 }
+
+export interface MintInformation {
+    assetName: string,
+    unitName: string,
+    total: number | bigint,
+    metadataInfoURL: string,
+    assetMetadataHash: string,
+    decimals: number
+}

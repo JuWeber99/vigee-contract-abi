@@ -1,5 +1,6 @@
 import algosdk, { Account, SignedTransaction } from 'algosdk';
 import { AtomicTransactionComposer } from 'algosdk';
+import { MintInformation } from './algorand-typeextender';
 
 export interface RoyaltieContract {
   makeCreateTransaction(
@@ -14,7 +15,7 @@ export interface RoyaltieContract {
 
   makeCreateNFTTransaction(
     signer: algosdk.Account,
-    nftdata: any
+    nftdata: MintInformation
   ): Promise<AtomicTransactionComposer>;
 
   makeSwapinNFTTransaction(

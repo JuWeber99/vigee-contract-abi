@@ -9,7 +9,7 @@ import algosdk, {
   SignedTransaction, TransactionWithSigner
 } from 'algosdk';
 import { RoyaltieContract } from '../../_types';
-import { StateSchema } from '../../_types/algorand-typeextender';
+import { MintInformation, StateSchema } from '../../_types/algorand-typeextender';
 import {
   BaseContract
 } from '../../_types/base';
@@ -128,21 +128,14 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 
   async makeCreateNFTTransaction(
     signer: algosdk.Account,
-    mintInformation: {
-      assetName: string,
-      unitName: string,
-      total: number | bigint,
-      metadataInfoURL: string,
-      assetMetadataHash: string,
-      decimals: number
-    }
-  ): Promise<SignedTransaction[]> {
+    mintInformation: MintInformation
+  ): Promise<AtomicTransactionComposer> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
     const transactionSigner = makeBasicAccountTransactionSigner(signer);
 
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    // suggestedParams.flatFee = false;
+    // suggestedParams.fee = 0; //get txnfees
     const royaltieMintColleteral = 100000;
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
@@ -184,8 +177,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       signer: transactionSigner,
     });
 
-    const createNFTAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return createNFTAbiGroup.map(decodedSignedTransactionBuffer);
+    return atomicTransactionComposer
   }
 
   async makeSwapinNFTTransaction(
