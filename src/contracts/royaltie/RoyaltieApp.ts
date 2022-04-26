@@ -37,7 +37,9 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   }
 
   makeSetAdminTransaction(signer: algosdk.Account, newAdmin: string): Promise<algosdk.SignedTransaction[]> {
-    throw new Error('Method not implemented.');
+    console.log(signer)
+    console.log(newAdmin)
+    throw new Error("signer.addr.join(newAdmin)");
   }
 
   async makeCreateTransaction(signer: algosdk.Account): Promise<algosdk.AtomicTransactionComposer> {
