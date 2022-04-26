@@ -14,7 +14,6 @@ import {
   BaseContract
 } from '../../_types/base';
 import {
-  ALGORAND_ZERO_ADDRESS,
   decodedSignedTransactionBuffer
 } from '../utils';
 import { royaltieB64, royaltieClearB64 } from './royaltieConstant';
