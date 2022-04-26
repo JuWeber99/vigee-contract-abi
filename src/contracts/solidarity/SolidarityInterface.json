@@ -67,7 +67,7 @@
                 "type": "account",
                 "name": "solidarityAccount"
             }, {
-                "type": "app",
+                "type": "application",
                 "name": "offerApp"
             }],
             "returns": {
