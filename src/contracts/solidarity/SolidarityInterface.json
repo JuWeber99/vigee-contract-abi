@@ -62,7 +62,30 @@
             }
         },
         {
+            "name": "removeOfferFromUser",
+            "args": [{
+                "type": "account",
+                "name": "solidarityAccount"
+            }, {
+                "type": "app",
+                "name": "offerApp"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
             "name": "raiseCollectionCount",
+            "args": [{
+                "type": "account",
+                "name": "solidarityAccount"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "raisePolicyCount",
             "args": [{
                 "type": "account",
                 "name": "solidarityAccount"

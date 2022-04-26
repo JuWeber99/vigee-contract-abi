@@ -62,27 +62,36 @@
                 "type": "void"
             }
         }, {
-            "name": "addToCollection",
+            "name": "addSpecificationPlugin",
             "args": [{
                 "type": "application",
-                "name": "collectionApp"
+                "name": "specificationPlugin"
+            }, {
+                "type": "string",
+                "name": "specType"
             }],
             "returns": {
                 "name": "asset_id",
                 "type": "uint64"
             }
         }, {
-            "name": "setPolicy",
-            "desc": "Sets the royalty policy for a given asset id",
+            "name": "setBasisPoints",
+            "desc": "Sets the royalty basis points (rate) for the policy",
             "args": [{
-                    "name": "royalty_receiver",
-                    "type": "address"
-                },
-                {
-                    "name": "royalty_share",
-                    "type": "uint64"
-                }
-            ],
+                "name": "royaltyBasisPoints",
+                "type": "uint64"
+            }],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "setRoyaltieReceiver",
+            "desc": "Sets the royalty receiver for this policy",
+            "args": [{
+                "name": "receiverfe",
+                "type": "account"
+            }],
             "returns": {
                 "type": "void"
             }
@@ -171,17 +180,12 @@
             }
         },
         {
-            "name": "setPaymentAsset",
+            "name": "addPaymentAsset",
             "desc": "Triggers the contract account to opt in or out of an asset that should be used for payment of royalties",
             "args": [{
-                    "name": "paymentAsset",
-                    "type": "asset"
-                },
-                {
-                    "name": "allowed",
-                    "type": "bool"
-                }
-            ],
+                "name": "paymentAsset",
+                "type": "asset"
+            }],
             "returns": {
                 "type": "void"
             }

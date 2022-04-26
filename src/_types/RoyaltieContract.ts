@@ -2,17 +2,17 @@ import algosdk, { Account, SignedTransaction } from 'algosdk';
 import { AtomicTransactionComposer } from 'algosdk';
 
 export interface RoyaltieContract {
-  makeSignedCreateTransaction(
+  makeCreateTransaction(
     signer: algosdk.Account
   ): Promise<AtomicTransactionComposer>;
 
-  makeSignedSetupTransaction(
+  makeSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShare: number
   ): Promise<AtomicTransactionComposer>;
 
-  makeSignedCreateNFTTransaction(
+  makeCreateNFTTransaction(
     signer: algosdk.Account,
     nftdata: any
   ): Promise<SignedTransaction[]>;
@@ -27,27 +27,30 @@ export interface RoyaltieContract {
     collectionAppID: number
   ): Promise<SignedTransaction[]>;
 
-  makeSetPolicyTransaction(
+  makeSetBasisPointsTransaction(
     signer: algosdk.Account,
-    royaltieShare: number,
+    basisPoints: number,
+  ): Promise<SignedTransaction[]>;
+
+  makeSetRoyaltieReceiverTransaction(
+    signer: algosdk.Account,
     royaltieReceiver: string
   ): Promise<SignedTransaction[]>;
 
-  makegetPolicyTransaction(
+  makeGetBasisPointsTransaction(
     signer: algosdk.Account,
     assetID: number
   ): Promise<SignedTransaction[]>;
 
-  makeGetOfferTransaction(
+  makeGetOffersTransaction(
     signer: algosdk.Account,
     assetID: number,
     stateAccountAddr: Account
   ): Promise<SignedTransaction[]>;
 
-  makeSetPaymentAssetTransaction(
+  makeAddPaymentAssetTransaction(
     signer: algosdk.Account,
-    assetID: number,
-    isNowAllowed: boolean
+    assetID: number
   ): Promise<SignedTransaction[]>;
 
   makeOfferRescindTransaction(
@@ -55,9 +58,9 @@ export interface RoyaltieContract {
     assetToRescindID: number
   ): Promise<SignedTransaction[]>;
 
-  makeAdminSetRoyaltieEnforcerHashTransaction(
+  makeSetAdminTransaction(
     signer: algosdk.Account,
-    royaltieEnforcerHash: string
+    newAdmin: string
   ): Promise<SignedTransaction[]>;
 
   //inner_transfer(signer: algosdk.Account): Promise<SignedTransaction[]>

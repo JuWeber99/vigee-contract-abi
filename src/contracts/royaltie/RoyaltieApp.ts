@@ -29,14 +29,18 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       client,
       appID,
       new StateSchema(0, 1),
-      new StateSchema(0, 2),
+      new StateSchema(1, 4),
       royaltieB64,
       royaltieClearB64
     );
     this.mainAppID = mainAppID
   }
 
-  async makeSignedCreateTransaction(signer: algosdk.Account): Promise<algosdk.AtomicTransactionComposer> {
+  makeSetAdminTransaction(signer: algosdk.Account, newAdmin: string): Promise<algosdk.SignedTransaction[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  async makeCreateTransaction(signer: algosdk.Account): Promise<algosdk.AtomicTransactionComposer> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const transactionSigner = makeBasicAccountTransactionSigner(signer);
 
@@ -76,7 +80,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return atomicTransactionComposer
   }
 
-  async makeSignedSetupTransaction(
+  async makeSetupTransaction(
     signer: algosdk.Account,
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShare: number
@@ -120,7 +124,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return atomicTransactionComposer
   }
 
-  async makeSignedCreateNFTTransaction(
+  async makeCreateNFTTransaction(
     signer: algosdk.Account,
     mintInformation: {
       assetName: string,
@@ -362,10 +366,9 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   //   return transferAssetAbiGroup.map(decodedSignedTransactionBuffer)
   // }
 
-  async makeSetPaymentAssetTransaction(
+  async makeAddPaymentAssetTransaction(
     signer: algosdk.Account,
     assetID: number,
-    isNowAllowed: boolean
   ): Promise<algosdk.SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -377,7 +380,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       appID: 0,
       method: this.getMethodByName('setPaymentAsset'),
       sender: signer.addr,
-      methodArgs: [assetID, isNowAllowed],
+      methodArgs: [assetID],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
     });
@@ -386,10 +389,9 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return setPolicyGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async makeSetPolicyTransaction(
+  async makeSetBasisPointsTransaction(
     signer: algosdk.Account,
-    royaltieShare: number,
-    royaltyReceiver: string
+    royaltieShare: number
   ): Promise<SignedTransaction[]> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
@@ -399,9 +401,9 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
-      method: this.getMethodByName('setPolicy'),
+      method: this.getMethodByName('setBasisPoints'),
       sender: signer.addr,
-      methodArgs: [royaltyReceiver, royaltieShare],
+      methodArgs: [royaltieShare],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
     });
@@ -410,7 +412,30 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return setPolicyGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async makeGetOfferTransaction(
+  async makeSetRoyaltieReceiverTransaction(
+    signer: algosdk.Account,
+    royaltieReceiver: string
+  ): Promise<SignedTransaction[]> {
+    const atomicTransactionComposer = new AtomicTransactionComposer();
+    const suggestedParams = await this.getSuggested(10);
+
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
+
+    atomicTransactionComposer.addMethodCall({
+      appID: 0,
+      method: this.getMethodByName('setRoyaltieReceiver'),
+      sender: signer.addr,
+      methodArgs: [royaltieReceiver],
+      suggestedParams: suggestedParams,
+      signer: makeBasicAccountTransactionSigner(signer),
+    });
+
+    const setPolicyGroup = await atomicTransactionComposer.gatherSignatures();
+    return setPolicyGroup.map(decodedSignedTransactionBuffer);
+  }
+
+  async makeGetOffersTransaction(
     signer: algosdk.Account,
     royaltyAsset: number,
     from: Account
@@ -434,7 +459,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     return getOfferGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async makegetPolicyTransaction(
+  async makeGetBasisPointsTransaction(
     signer: algosdk.Account,
     royaltyAsset: number
   ): Promise<SignedTransaction[]> {
