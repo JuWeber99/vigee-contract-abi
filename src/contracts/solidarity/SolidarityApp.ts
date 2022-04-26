@@ -18,8 +18,8 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       solidarityInterface,
       client,
       appID,
-      new StateSchema(0, 1),
-      new StateSchema(0, 2),
+      new StateSchema(5, 0),
+      new StateSchema(4, 4),
       solidarityB64,
       solidarityClearB64
     );
