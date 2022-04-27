@@ -133,8 +133,8 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     const suggestedParams = await this.getSuggested(10);
     const transactionSigner = makeBasicAccountTransactionSigner(signer);
 
-    // suggestedParams.flatFee = false;
-    // suggestedParams.fee = 0; //get txnfees
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 5000
     const royaltieMintColleteral = 100000;
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
@@ -146,7 +146,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       }),
       signer: transactionSigner,
     };
-
+    suggestedParams.fee = 0
     const selfAddress = getApplicationAddress(this.appID)
     const assetCreateTransaction = {
       txn: makeAssetCreateTxnWithSuggestedParamsFromObject({
@@ -172,7 +172,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       appID: this.appID,
       method: this.getMethodByName('createNFT'),
       sender: signer.addr,
-      methodArgs: [taxPaymentTransaction, assetCreateTransaction],
+      methodArgs: [taxPaymentTransaction, assetCreateTransaction, this.mainAppID],
       suggestedParams: suggestedParams,
       signer: transactionSigner
     });
