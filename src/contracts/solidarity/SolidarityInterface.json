@@ -9,6 +9,13 @@
             }
         },
         {
+            "name": "initiatePlatform",
+            "args": [],
+            "returns": {
+                "type": "uint64"
+            }
+        },
+        {
             "name": "changeIndividualSolidarity",
             "args": [{
                 "type": "account",
