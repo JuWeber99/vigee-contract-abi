@@ -20,11 +20,11 @@
                 },
                 {
                     "type": "account",
-                    "name": "solidarityAccount"
+                    "name": "mainAccount"
                 },
                 {
                     "type": "application",
-                    "name": "solidarityApp"
+                    "name": "mainApp"
                 },
                 {
                     "type": "pay",
@@ -46,7 +46,10 @@
                 "name": "assetCreateTransaction"
             }, {
                 "type": "application",
-                "name": "solidarityApp"
+                "name": "mainApp"
+            }, {
+                "type": "account",
+                "name": "mainAppAccount"
             }],
             "returns": {
                 "name": "asset_id",
