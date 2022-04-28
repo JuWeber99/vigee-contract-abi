@@ -135,7 +135,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 
     suggestedParams.flatFee = false;
     suggestedParams.fee = 5000
-    const royaltieMintColleteral = 100000;
+    const royaltieMintColleteral = 100000 + 100000 * 0.18;
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
         from: signer.addr,
