@@ -39,6 +39,10 @@
                     "name": "solidaritySender"
                 },
                 {
+                    "type": "account",
+                    "name": "solidarityFund"
+                },
+                {
                     "type": "string",
                     "name": "appName"
                 }
