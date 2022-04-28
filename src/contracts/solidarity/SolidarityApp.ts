@@ -56,8 +56,8 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
   async makeInitiateApplicationTransaction(signer: algosdk.Account): Promise<algosdk.AtomicTransactionComposer> {
     const atomicTransactionComposer = new AtomicTransactionComposer();
     const suggestedParams = await this.getSuggested(10);
-    // suggestedParams.flatFee = false;
-    // suggestedParams.fee = 0; //get txnfees
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 3000; //get txnfees
     const transactionSigner = makeBasicAccountTransactionSigner(signer)
 
     atomicTransactionComposer.addMethodCall({
