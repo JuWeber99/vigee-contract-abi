@@ -15,7 +15,8 @@ export interface RoyaltieContract {
 
   makeCreateNFTTransaction(
     signer: algosdk.Account,
-    nftdata: MintInformation
+    nftdata: MintInformation,
+    solidarityAssetID: number
   ): Promise<AtomicTransactionComposer>
 
   makeSwapinNFTTransaction(

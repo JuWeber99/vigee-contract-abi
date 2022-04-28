@@ -127,7 +127,8 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 
   async makeCreateNFTTransaction(
     signer: algosdk.Account,
-    mintInformation: MintInformation
+    mintInformation: MintInformation,
+    solidarityAssetID: number
   ): Promise<AtomicTransactionComposer> {
     const atomicTransactionComposer = new AtomicTransactionComposer()
     const suggestedParams = await this.getSuggested(10)
@@ -173,7 +174,11 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       method: this.getMethodByName('createNFT'),
       sender: signer.addr,
       methodArgs: [
-        taxPaymentTransaction, assetCreateTransaction, this.mainAppID, getApplicationAddress(this.mainAppID)
+        taxPaymentTransaction,
+        assetCreateTransaction,
+        this.mainAppID,
+        getApplicationAddress(this.mainAppID),
+        solidarityAssetID
       ],
       suggestedParams: suggestedParams,
       signer: transactionSigner
