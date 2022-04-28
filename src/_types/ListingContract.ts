@@ -1,4 +1,4 @@
-import {Account, SignedTransaction, TransactionWithSigner} from "algosdk";
+import { Account, SignedTransaction, TransactionWithSigner } from "algosdk"
 
 
 export interface ListingContract {
@@ -6,7 +6,7 @@ export interface ListingContract {
         signer: Account,
         isNegotiatable: boolean,
         sellerAccountAddress: string
-    ):Promise<SignedTransaction[]>
+    ): Promise<SignedTransaction[]>
 
     makePurchaseListingBundledTransaction(
         signer: Account,
@@ -14,7 +14,7 @@ export interface ListingContract {
         buyerAccountAddress: string,
         royaltieEnforcerAddress: string,
         offeredAssets: number
-    ):Promise<SignedTransaction[]>
+    ): Promise<SignedTransaction[]>
 
     makePurchaseListingUnbundledTransaction(
         signer: Account,
@@ -22,35 +22,35 @@ export interface ListingContract {
         buyerAccountAddress: string,
         royaltieEnforcerAddress: string,
         offeredAsset: number
-    ):Promise<SignedTransaction[]>
+    ): Promise<SignedTransaction[]>
 
     makeProposeAlternativePriceTransaction(
         signer: Account,
         proposedPrice: number
-    ):Promise<SignedTransaction[]>
+    ): Promise<SignedTransaction[]>
 
     makeAddOfferedAssetTransaction(
         signer: Account,
         platformCall: TransactionWithSigner,
         offerAsset: number,
         royaltieEnforcerAddress: string
-    ):Promise<SignedTransaction[]>
+    ): Promise<SignedTransaction[]>
 
     makeSetFloorPriceTransaction(
         signer: Account,
         floorPrice: number
-    ):Promise<SignedTransaction[]>
+    ): Promise<SignedTransaction[]>
 
     makeSetStartRoundTransaction(
         signer: Account,
         startRound: number
-    ):Promise<SignedTransaction[]>
+    ): Promise<SignedTransaction[]>
 
     makeSetSellerTransaction(
         signer: Account,
         platformCall: TransactionWithSigner,
         sellerAccountAddress: number
-    ):Promise<SignedTransaction[]>
+    ): Promise<SignedTransaction[]>
 
     makeChangeBundleStateTransaction(
         signer: Account,

@@ -1,10 +1,10 @@
-import algosdk, {SignedTransaction} from "algosdk";
+import algosdk, { SignedTransaction } from "algosdk"
 
 export interface AuctionContract {
     makeCreateAuctionTransaction(
         signer: algosdk.Account,
         defaultsellerAddress: string
-    ): Promise<SignedTransaction[]>;
+    ): Promise<SignedTransaction[]>
 
     makeSetBulkDetailsTransaction(
         signer: algosdk.Account,
@@ -14,7 +14,7 @@ export interface AuctionContract {
         startRound: number,
         timeToLive: number,
         auctionType: number
-    ): Promise<SignedTransaction[]>;
+    ): Promise<SignedTransaction[]>
 
     makeAddOfferedAssetTransaction(
         signer: algosdk.Account,

@@ -1,5 +1,5 @@
-import algosdk, { ABIContractParams, Algodv2, SignedTransaction, SuggestedParams, Transaction } from 'algosdk';
-import { StateSchema } from '../algorand-typeextender';
+import algosdk, { ABIContractParams, Algodv2, SignedTransaction, SuggestedParams, Transaction } from 'algosdk'
+import { StateSchema } from '../algorand-typeextender'
 
 export enum PROGRAM_TYPE {
   APPROVAL,
@@ -8,13 +8,13 @@ export enum PROGRAM_TYPE {
 
 
 export class BaseContract {
-  static client: Algodv2;
-  localSchema: StateSchema;
-  globalSchema: StateSchema;
+  static client: Algodv2
+  localSchema: StateSchema
+  globalSchema: StateSchema
   appID: number
   address: string
 
-  handle: algosdk.ABIContract;
+  handle: algosdk.ABIContract
   approvalTemplate: string = "";
   clearTemplate: string = "";
 
@@ -27,13 +27,13 @@ export class BaseContract {
     approvalTemplate?: string,
     clearTemplate?: string
   ) {
-    this.handle = new algosdk.ABIContract(abiInterface);
-    this.appID = appID;
-    BaseContract.client = client;
-    this.globalSchema = globalSchema;
-    this.localSchema = localSchema;
-    this.approvalTemplate = approvalTemplate;
-    this.clearTemplate = clearTemplate;
+    this.handle = new algosdk.ABIContract(abiInterface)
+    this.appID = appID
+    BaseContract.client = client
+    this.globalSchema = globalSchema
+    this.localSchema = localSchema
+    this.approvalTemplate = approvalTemplate
+    this.clearTemplate = clearTemplate
   }
 
   static getTransactionsFromGroup(signedArray: SignedTransaction[]): Transaction[] {
@@ -42,23 +42,23 @@ export class BaseContract {
 
   getMethodByName(name: string): algosdk.ABIMethod {
     const m = this.handle.methods.find((mt: algosdk.ABIMethod) => {
-      return mt.name == name;
-    });
-    if (m === undefined) throw Error('Method undefined: ' + name);
-    return m;
+      return mt.name == name
+    })
+    if (m === undefined) throw Error('Method undefined: ' + name)
+    return m
   }
 
   async getSuggested(rounds: number): Promise<SuggestedParams> {
-    const txParams = await BaseContract.client.getTransactionParams().do();
-    return { ...txParams, lastRound: txParams.firstRound + rounds };
+    const txParams = await BaseContract.client.getTransactionParams().do()
+    return { ...txParams, lastRound: txParams.firstRound + rounds }
   }
 
   static populateContract(template: string, vars?: Record<string, any>): string {
     for (let v in vars) {
-      let val = vars[v];
-      template = template.replace(new RegExp(v, 'g'), val);
+      let val = vars[v]
+      template = template.replace(new RegExp(v, 'g'), val)
     }
-    return template;
+    return template
   }
 
 

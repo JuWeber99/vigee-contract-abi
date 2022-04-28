@@ -39,18 +39,23 @@
             "name": "createNFT",
             "desc": "Create an nft with appropriate parameters, return its id",
             "args": [{
-                "type": "pay",
-                "name": "taxTransaction"
-            }, {
-                "type": "acfg",
-                "name": "assetCreateTransaction"
-            }, {
-                "type": "application",
-                "name": "mainApp"
-            }, {
-                "type": "account",
-                "name": "mainAppAccount"
-            }],
+                    "type": "pay",
+                    "name": "taxTransaction"
+                }, {
+                    "type": "acfg",
+                    "name": "assetCreateTransaction"
+                }, {
+                    "type": "application",
+                    "name": "mainApp"
+                }, {
+                    "type": "account",
+                    "name": "mainAppAccount"
+                }, {
+                    "type": "asset",
+                    "name": "solidarityAsset"
+                }
+
+            ],
             "returns": {
                 "name": "asset_id",
                 "type": "uint64"

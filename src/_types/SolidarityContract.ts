@@ -1,4 +1,4 @@
-import algosdk, { AtomicTransactionComposer } from 'algosdk';
+import algosdk, { AtomicTransactionComposer } from 'algosdk'
 
 export interface SolidarityContract {
     makeCreateTransaction(

@@ -1,2 +1,2 @@
-export * from './BaseContract';
-export * from './ContractCompilationContext';
+export * from './BaseContract'
+export * from './ContractCompilationContext'

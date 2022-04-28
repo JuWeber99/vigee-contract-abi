@@ -1,15 +1,15 @@
 import algosdk, {
   Account, Algodv2, AtomicTransactionComposer, getApplicationAddress,
   makeBasicAccountTransactionSigner, makePaymentTxnWithSuggestedParamsFromObject, SignedTransaction, TransactionWithSigner
-} from 'algosdk';
-import { AuctionContract } from '../../_types';
-import { StateSchema } from '../../_types/algorand-typeextender';
-import { BaseContract } from '../../_types/base';
-import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils";
-import { auctionB64, auctionClearB64 } from './auctionConstant';
-import auctionInterface from './AuctionInterface.json';
+} from 'algosdk'
+import { AuctionContract } from '../../_types'
+import { StateSchema } from '../../_types/algorand-typeextender'
+import { BaseContract } from '../../_types/base'
+import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils"
+import { auctionB64, auctionClearB64 } from './auctionConstant'
+import auctionInterface from './AuctionInterface.json'
 export class AuctionApp extends BaseContract implements AuctionContract {
-  appID: number;
+  appID: number
   constructor(appID = 0, client: Algodv2) {
     super(
       auctionInterface,
@@ -19,18 +19,18 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       new StateSchema(0, 2),
       auctionB64,
       auctionClearB64
-    );
-    this.appID = appID;
+    )
+    this.appID = appID
   }
 
 
   async makeAddOfferedAssetTransaction(signer: Account, offerAsset: number, defaultRoyaltieEnforcerAddress: string, offerAppID: number): Promise<SignedTransaction[]> {
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
-    const royaltieSetupColleteral = 100000 + 64 * 50000;
+    const royaltieSetupColleteral = 100000 + 64 * 50000
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
         from: signer.addr,
@@ -40,7 +40,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
-    };
+    }
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -54,19 +54,19 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const addOfferedAssetAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return addOfferedAssetAbiGroup.map(decodedSignedTransactionBuffer);
+    const addOfferedAssetAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return addOfferedAssetAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeBidTransaction(signer: Account, bidAmount: number, bidderToRefundAddress: string): Promise<SignedTransaction[]> {
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
-    const royaltieSetupColleteral = 100000 + 64 * 50000;
+    const royaltieSetupColleteral = 100000 + 64 * 50000
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
         from: signer.addr,
@@ -76,7 +76,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
-    };
+    }
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -89,17 +89,17 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const bidAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return bidAbiGroup.map(decodedSignedTransactionBuffer);
+    const bidAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return bidAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeChangeBundleStateTransaction(signer: Account, bundleState: boolean): Promise<SignedTransaction[]> {
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -110,19 +110,19 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const changeBundleStateAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return changeBundleStateAbiGroup.map(decodedSignedTransactionBuffer);
+    const changeBundleStateAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return changeBundleStateAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeCreateAuctionTransaction(signer: Account, defaultsellerAddress: string): Promise<SignedTransaction[]> {
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
-    const royaltieSetupColleteral = 100000 + 64 * 50000;
+    const royaltieSetupColleteral = 100000 + 64 * 50000
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
         from: signer.addr,
@@ -132,7 +132,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         rekeyTo: ALGORAND_ZERO_ADDRESS,
       }),
       signer: makeBasicAccountTransactionSigner(signer),
-    };
+    }
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -144,10 +144,10 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const createAuctionAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return createAuctionAbiGroup.map(decodedSignedTransactionBuffer);
+    const createAuctionAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return createAuctionAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeSetBulkDetailsTransaction(
@@ -159,10 +159,10 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     timeToLive: number,
     auctionType: number): Promise<SignedTransaction[]> {
 
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -178,17 +178,17 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const setBulkDetailsAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return setBulkDetailsAbiGroup.map(decodedSignedTransactionBuffer);
+    const setBulkDetailsAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return setBulkDetailsAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeSetFloorPriceTransaction(signer: Account, floorPrice: number): Promise<SignedTransaction[]> {
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -199,17 +199,17 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const setFloorPriceAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return setFloorPriceAbiGroup.map(decodedSignedTransactionBuffer);
+    const setFloorPriceAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return setFloorPriceAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeSetMinimumPriceIncrementTransaction(signer: Account, minimumPriceIncrement: number): Promise<SignedTransaction[]> {
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -220,17 +220,17 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const setMinimumPriceIncrementAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return setMinimumPriceIncrementAbiGroup.map(decodedSignedTransactionBuffer);
+    const setMinimumPriceIncrementAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return setMinimumPriceIncrementAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeSetSellerTransaction(signer: Account, sellerAddress: string): Promise<SignedTransaction[]> {
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -241,17 +241,17 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const setSellerAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return setSellerAbiGroup.map(decodedSignedTransactionBuffer);
+    const setSellerAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return setSellerAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeSetStartRoundTransaction(signer: Account, startRound: number): Promise<SignedTransaction[]> {
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -262,10 +262,10 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const setStartRoundAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return setStartRoundAbiGroup.map(decodedSignedTransactionBuffer);
+    const setStartRoundAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return setStartRoundAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeSettleBundledAuctionTransaction(
@@ -275,10 +275,10 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     royaltieEnforcerAddress: string,
     offeredAsset: number): Promise<SignedTransaction[]> {
 
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -292,10 +292,10 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const settleBundledAuctionAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return settleBundledAuctionAbiGroup.map(decodedSignedTransactionBuffer);
+    const settleBundledAuctionAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return settleBundledAuctionAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeSettleUnbundledAuctionTransaction(
@@ -305,10 +305,10 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     royaltieEnforcerAddress: string,
     offeredAsset: number): Promise<SignedTransaction[]> {
 
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -322,17 +322,17 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const settleUnbundledAuctionAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return settleUnbundledAuctionAbiGroup.map(decodedSignedTransactionBuffer);
+    const settleUnbundledAuctionAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return settleUnbundledAuctionAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
   async makeAdminSetAuctionHashTransaction(signer: algosdk.Account, auctionHash: string): Promise<SignedTransaction[]> {
-    const atomicTransactionComposer = new AtomicTransactionComposer();
-    const suggestedParams = await this.getSuggested(10);
-    suggestedParams.flatFee = false;
-    suggestedParams.fee = 0; //get txnfees
+    const atomicTransactionComposer = new AtomicTransactionComposer()
+    const suggestedParams = await this.getSuggested(10)
+    suggestedParams.flatFee = false
+    suggestedParams.fee = 0 //get txnfees
 
     atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -343,9 +343,9 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       ],
       suggestedParams: suggestedParams,
       signer: makeBasicAccountTransactionSigner(signer),
-    });
+    })
 
-    const adminSetAuctionHashAbiGroup = await atomicTransactionComposer.gatherSignatures();
-    return adminSetAuctionHashAbiGroup.map(decodedSignedTransactionBuffer);
+    const adminSetAuctionHashAbiGroup = await atomicTransactionComposer.gatherSignatures()
+    return adminSetAuctionHashAbiGroup.map(decodedSignedTransactionBuffer)
   }
 }

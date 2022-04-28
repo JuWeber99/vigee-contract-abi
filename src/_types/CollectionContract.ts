@@ -1,4 +1,4 @@
-import {Account, SignedTransaction} from "algosdk";
+import { Account, SignedTransaction } from "algosdk"
 
 export interface CollectionContract {
     makeCreateTransaction(

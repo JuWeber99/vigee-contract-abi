@@ -210,12 +210,10 @@
         },
         {
             "name": "adminSetAuctionHash",
-            "args": [
-                {
-                    "type": "string",
-                    "name": "auctionHash"
-                }
-            ],
+            "args": [{
+                "type": "string",
+                "name": "auctionHash"
+            }],
             "returns": {
                 "type": "void"
             }
