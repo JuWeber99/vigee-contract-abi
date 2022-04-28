@@ -172,7 +172,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       appID: this.appID,
       method: this.getMethodByName('createNFT'),
       sender: signer.addr,
-      methodArgs: [taxPaymentTransaction, assetCreateTransaction, this.mainAppID],
+      methodArgs: [taxPaymentTransaction, assetCreateTransaction, this.mainAppID, getApplicationAddress(this.mainAppID)],
       suggestedParams: suggestedParams,
       signer: transactionSigner
     });
