@@ -103,8 +103,22 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       signer: signer,
     }
 
+    const approvalProgram: Uint8Array = new Uint8Array(
+      Buffer.from(
+        await RoyaltieApp.getCompiledProgram(
+          this.approvalTemplate, RoyaltieApp.client, { "TMPL_VID": this.mainAppID }), "base64"
+      )
+    )
+
+    const clearProgram: Uint8Array = new Uint8Array(
+      Buffer.from(
+        await RoyaltieApp.getCompiledProgram(
+          this.clearTemplate, RoyaltieApp.client), "base64"
+      )
+    )
+
     this.atomicTransactionComposer.addMethodCall({
-      appID: this.appID,
+      appID: 0,
       method: this.getMethodByName('setup'),
       sender: senderAddress,
       methodArgs: [
@@ -117,6 +131,13 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       suggestedParams: suggestedParams,
       rekeyTo: undefined,
       signer: signer,
+      onComplete: algosdk.OnApplicationComplete.NoOpOC,
+      approvalProgram: approvalProgram,
+      clearProgram: clearProgram,
+      numLocalByteSlices: this.localSchema.numByteSlice as number,
+      numLocalInts: this.localSchema.numUint as number,
+      numGlobalByteSlices: this.globalSchema.numByteSlice as number,
+      numGlobalInts: this.globalSchema.numUint as number,
     })
 
     return this.atomicTransactionComposer
