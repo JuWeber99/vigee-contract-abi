@@ -124,7 +124,7 @@ export class BaseContract {
 //   return {
 //     appID: ac.application.id,
 //     sender: acct.addr,
-//     suggestedParams: await getSuggested(10),
+//     suggestedParams: await getSuggested(1000),
 //     signer: algosdk.makeBasicAccountTransactionSigner(acct)
 //   }
 // }

@@ -28,7 +28,7 @@ export class ListingApp extends BaseContract implements ListingContract {
     offerAsset: number,
     royaltieEnforcerAddress: string): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -51,7 +51,7 @@ export class ListingApp extends BaseContract implements ListingContract {
 
   async makeChangeBundleStateTransaction(signer: TransactionSigner, senderAddress: string, isBundleState: boolean): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -75,7 +75,7 @@ export class ListingApp extends BaseContract implements ListingContract {
     isNegotiatable: boolean,
     sellerAccountAddress: string): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -97,7 +97,7 @@ export class ListingApp extends BaseContract implements ListingContract {
 
   async makeProposeAlternativePriceTransaction(signer: TransactionSigner, senderAddress: string, proposedPrice: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -123,7 +123,7 @@ export class ListingApp extends BaseContract implements ListingContract {
     royaltieEnforcerAddress: string,
     offeredAssets: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -165,7 +165,7 @@ export class ListingApp extends BaseContract implements ListingContract {
     royaltieEnforcerAddress: string,
     offeredAsset: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -202,7 +202,7 @@ export class ListingApp extends BaseContract implements ListingContract {
 
   async makeSetFloorPriceTransaction(signer: TransactionSigner, senderAddress: string, floorPrice: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -223,7 +223,7 @@ export class ListingApp extends BaseContract implements ListingContract {
 
   async makeSetSellerTransaction(signer: TransactionSigner, senderAddress: string, platformCall: TransactionWithSigner, sellerAccountAddress: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -245,7 +245,7 @@ export class ListingApp extends BaseContract implements ListingContract {
 
   async makeSetStartRoundTransaction(signer: TransactionSigner, senderAddress: string, startRound: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -266,7 +266,7 @@ export class ListingApp extends BaseContract implements ListingContract {
 
   async makeAdminSetListingHashTransaction(signer: TransactionSigner, senderAddress: string, listingHash: string): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 

@@ -43,7 +43,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   async makeCreateTransaction(signer: TransactionSigner, senderAddress: string): Promise<algosdk.AtomicTransactionComposer> {
 
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
@@ -87,7 +87,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 
 
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
@@ -149,7 +149,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     solidarityAssetID: number
   ): Promise<AtomicTransactionComposer> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 5000
@@ -209,7 +209,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     assetID: number
   ): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
@@ -257,7 +257,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     collectionAppID: number
   ): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
@@ -282,7 +282,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     authorizedAddress: string
   ): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
@@ -305,7 +305,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     assetToRescindID: number
   ): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
@@ -331,7 +331,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     to: Account
   ): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
@@ -351,7 +351,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 
   // async transfer(signer: TransactionSigner, senderAddress: string, royaltyAsset: number, royaltyAssetAmount: number, royaltyReceiver, from, to, payment:, paymentAsset:): Promise<SignedTransaction[]> {
   //   
-  //   const suggestedParams = await this.getSuggested(10)
+  //   const suggestedParams = await this.getSuggested(1000)
 
   //   suggestedParams.flatFee = false
   //   suggestedParams.fee = 0 //get txnfees
@@ -387,7 +387,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     assetID: number,
   ): Promise<algosdk.SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
@@ -410,7 +410,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     royaltieShare: number
   ): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
@@ -433,7 +433,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     royaltieReceiver: string
   ): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
@@ -457,7 +457,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     stateHolderAddress: string
   ): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
@@ -480,7 +480,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     royaltyAsset: number
   ): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
@@ -500,7 +500,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 
   async makeAdminSetRoyaltieEnforcerHashTransaction(signer: TransactionSigner, senderAddress: string, royaltieEnforcerHash: string): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees

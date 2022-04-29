@@ -23,7 +23,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeAddOfferedAssetTransaction(signer: TransactionSigner, senderAddress: string, offerAsset: number, royaltieEnforcer: string, offerAppID: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -59,7 +59,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeBidTransaction(signer: TransactionSigner, senderAddress: string, bidAmount: number, bidderToRefundAddress: string): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -94,7 +94,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeChangeBundleStateTransaction(signer: TransactionSigner, senderAddress: string, bundleState: boolean): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -115,7 +115,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeCreateAuctionTransaction(signer: TransactionSigner, senderAddress: string, defaultsellerAddress: string): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -157,7 +157,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     auctionType: number): Promise<SignedTransaction[]> {
 
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -183,7 +183,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeSetFloorPriceTransaction(signer: TransactionSigner, senderAddress: string, floorPrice: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -204,7 +204,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeSetMinimumPriceIncrementTransaction(signer: TransactionSigner, senderAddress: string, minimumPriceIncrement: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -225,7 +225,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeSetSellerTransaction(signer: TransactionSigner, senderAddress: string, sellerAddress: string): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -246,7 +246,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeSetStartRoundTransaction(signer: TransactionSigner, senderAddress: string, startRound: number): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -273,7 +273,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     offeredAsset: number): Promise<SignedTransaction[]> {
 
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -303,7 +303,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     offeredAsset: number): Promise<SignedTransaction[]> {
 
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 
@@ -327,7 +327,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeAdminSetAuctionHashTransaction(signer: TransactionSigner, senderAddress: string, auctionHash: string): Promise<SignedTransaction[]> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 0 //get txnfees
 

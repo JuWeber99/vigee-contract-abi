@@ -26,7 +26,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
 
   async makeCreateTransaction(signer: TransactionSigner, senderAddress: string): Promise<AtomicTransactionComposer> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     this.atomicTransactionComposer.addMethodCall({
       appID: 0,
       method: this.getMethodByName("create"),
@@ -52,7 +52,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
 
   async makeInitiateApplicationTransaction(signer: TransactionSigner, senderAddress: string): Promise<algosdk.AtomicTransactionComposer> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
     suggestedParams.fee = 3000 //get txnfees
 
@@ -75,7 +75,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
     appName: string): Promise<AtomicTransactionComposer> {
 
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
 
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
@@ -113,7 +113,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
     basisPoints: number): Promise<AtomicTransactionComposer> {
 
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
@@ -135,7 +135,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
 
   async makeGetOfferCountTransaction(signer: TransactionSigner, senderAddress: string, userAccount: string): Promise<AtomicTransactionComposer> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
@@ -155,7 +155,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
 
   async makeRaiseCollectionCountTransaction(signer: TransactionSigner, senderAddress: string, solidarityAddress: string): Promise<AtomicTransactionComposer> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
@@ -175,7 +175,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
 
   async makeRaiseOfferCountTransaction(signer: TransactionSigner, senderAddress: string, userAccount: string): Promise<AtomicTransactionComposer> {
 
-    const suggestedParams = await this.getSuggested(10)
+    const suggestedParams = await this.getSuggested(1000)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
