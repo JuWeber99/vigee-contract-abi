@@ -25,10 +25,6 @@
                 {
                     "type": "application",
                     "name": "mainApp"
-                },
-                {
-                    "type": "pay",
-                    "name": "taxTransaction"
                 }
             ],
             "returns": {
