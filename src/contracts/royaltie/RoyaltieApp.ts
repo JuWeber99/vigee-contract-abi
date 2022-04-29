@@ -91,17 +91,17 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
-    const royaltieSetupColleteral = 100000 + 5 * 50000
-    const taxPaymentTransaction: TransactionWithSigner = {
-      txn: makePaymentTxnWithSuggestedParamsFromObject({
-        from: senderAddress,
-        to: getApplicationAddress(this.appID),
-        amount: royaltieSetupColleteral,
-        suggestedParams,
-        rekeyTo: undefined
-      }),
-      signer: signer,
-    }
+    // const royaltieSetupColleteral = 100000 + 5 * 50000
+    // const taxPaymentTransaction: TransactionWithSigner = {
+    //   txn: makePaymentTxnWithSuggestedParamsFromObject({
+    //     from: senderAddress,
+    //     to: getApplicationAddress(this.appID),
+    //     amount: royaltieSetupColleteral,
+    //     suggestedParams,
+    //     rekeyTo: undefined
+    //   }),
+    //   signer: signer,
+    // }
 
     const approvalProgram: Uint8Array = new Uint8Array(
       Buffer.from(
