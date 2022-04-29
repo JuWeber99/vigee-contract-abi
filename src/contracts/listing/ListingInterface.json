@@ -5,15 +5,10 @@
             "name": "createListing",
             "desc": "create an instance of the listing contract",
             "args": [{
-                    "type": "bool",
-                    "name": "isNegotiatable",
-                    "desc": "default: false"
-                },
-                {
-                    "type": "account",
-                    "name": "sellerAccount"
-                }
-            ],
+                "type": "bool",
+                "name": "isNegotiatable",
+                "desc": "default: false"
+            }],
             "returns": {
                 "type": "uint64",
                 "desc": "id of the created listing app"
@@ -79,8 +74,7 @@
                 }
             ],
             "returns": {
-                "type": "string",
-                "desc": "settlement hash SHA256/512(appid, round, seller, buyer)"
+                "type": "void"
             }
         },
         {
@@ -99,8 +93,8 @@
             "name": "addOfferedAsset",
             "desc": "place a bid on the auction",
             "args": [{
-                "type": "txn",
-                "name": "platformCall"
+                "type": "pay",
+                "name": "taxTransaction"
             }, {
                 "type": "asset",
                 "name": "offerAsset"
@@ -110,7 +104,7 @@
                 "desc": "The address of the assets royaltieEnforcer"
             }],
             "returns": {
-                "type": "uint64[]",
+                "type": "void",
                 "desc": "array containing all now offered assets"
             }
         }, {
@@ -155,12 +149,10 @@
         },
         {
             "name": "adminSetListingHash",
-            "args": [
-                {
+            "args": [{
                 "type": "string",
                 "name": "listingHash"
-                }
-            ],
+            }],
             "returns": {
                 "type": "void"
             }

@@ -1,38 +1,39 @@
-import algosdk, { AtomicTransactionComposer } from 'algosdk'
+import { AtomicTransactionComposer, TransactionSigner } from 'algosdk'
 
 export interface SolidarityContract {
     makeCreateTransaction(
-        signer: algosdk.Account
+        signer: TransactionSigner, senderAddress: string
     ): Promise<AtomicTransactionComposer>
 
     makeInitiateApplicationTransaction(
-        signer: algosdk.Account
+        signer: TransactionSigner, senderAddress: string
     ): Promise<AtomicTransactionComposer>
 
     makeChangeIndividualSolidarityTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         solidarityAddress: string,
         basisPoints: number
     ): Promise<AtomicTransactionComposer>
 
     makeAddSolidarityForUserTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner,
+        senderAddress: string,
         solidaritySenderAddress: string,
         appName: string
     ): Promise<AtomicTransactionComposer>
 
     makeGetOfferCountTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         solidarityAddress: string
     ): Promise<AtomicTransactionComposer>
 
     makeRaiseOfferCountTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         solidarityAddress: string
     ): Promise<AtomicTransactionComposer>
 
     makeRaiseCollectionCountTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         solidarityAddress: string
     ): Promise<AtomicTransactionComposer>
 }

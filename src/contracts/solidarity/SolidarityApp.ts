@@ -1,9 +1,7 @@
 import algosdk, {
-  Account,
   Algodv2,
   AtomicTransactionComposer,
-  getApplicationAddress, makeBasicAccountTransactionSigner,
-  makePaymentTxnWithSuggestedParamsFromObject, TransactionWithSigner
+  getApplicationAddress, makePaymentTxnWithSuggestedParamsFromObject, TransactionSigner, TransactionWithSigner
 } from 'algosdk'
 import { SolidarityContract } from '../../_types'
 import { StateSchema } from '../../_types/algorand-typeextender'
@@ -19,18 +17,17 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
       client,
       appID,
       new StateSchema(5, 0),
-      new StateSchema(4, 4),
+      new StateSchema(5, 4),
       solidarityB64,
       solidarityClearB64
     )
   }
 
-  async makeCreateTransaction(signer: Account): Promise<AtomicTransactionComposer> {
 
-    const atomicTransactionComposer = new AtomicTransactionComposer()
+  async makeCreateTransaction(signer: TransactionSigner, senderAddress: string): Promise<AtomicTransactionComposer> {
+
     const suggestedParams = await this.getSuggested(10)
-    const transactionSigner = makeBasicAccountTransactionSigner(signer)
-    atomicTransactionComposer.addMethodCall({
+    this.atomicTransactionComposer.addMethodCall({
       appID: 0,
       method: this.getMethodByName("create"),
       methodArgs: [],
@@ -41,161 +38,159 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
         Buffer.from(await SolidarityApp.getCompiledProgram(this.clearTemplate, SolidarityApp.client), "base64")
       ),
       onComplete: algosdk.OnApplicationComplete.NoOpOC,
-      signer: transactionSigner,
-      sender: signer.addr,
+      signer: signer,
+      sender: senderAddress,
       suggestedParams: suggestedParams,
       numLocalInts: this.localSchema.numUint as number,
       numLocalByteSlices: this.localSchema.numByteSlice as number,
       numGlobalInts: this.globalSchema.numUint as number,
       numGlobalByteSlices: this.globalSchema.numByteSlice as number
     })
-    // atomicTransactionComposer.addTransaction({ txn: appCreateTxn, signer: transactionSigner })
-    return atomicTransactionComposer
+    // this.atomicTransactionComposer.addTransaction({ txn: appCreateTxn, signer: signer })
+    return this.atomicTransactionComposer
   }
 
-  async makeInitiateApplicationTransaction(signer: algosdk.Account): Promise<algosdk.AtomicTransactionComposer> {
-    const atomicTransactionComposer = new AtomicTransactionComposer()
+  async makeInitiateApplicationTransaction(signer: TransactionSigner, senderAddress: string): Promise<algosdk.AtomicTransactionComposer> {
+
     const suggestedParams = await this.getSuggested(10)
     suggestedParams.flatFee = false
     suggestedParams.fee = 3000 //get txnfees
-    const transactionSigner = makeBasicAccountTransactionSigner(signer)
 
-    atomicTransactionComposer.addMethodCall({
+    this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('initiatePlatform'),
-      sender: signer.addr,
+      sender: senderAddress,
       methodArgs: [],
       suggestedParams: suggestedParams,
-      signer: transactionSigner
+      signer: signer
     })
 
-    return atomicTransactionComposer
+    return this.atomicTransactionComposer
   }
 
   async makeAddSolidarityForUserTransaction(
-    signer: Account,
+    signer: TransactionSigner,
+    senderAddress: string,
     solidaritySenderAddress: string,
     appName: string): Promise<AtomicTransactionComposer> {
 
-    const atomicTransactionComposer = new AtomicTransactionComposer()
+
     const suggestedParams = await this.getSuggested(10)
-    const transactionSigner = makeBasicAccountTransactionSigner(signer)
 
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
     const royaltieMintColleteral = 100000
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
-        from: signer.addr,
+        from: senderAddress,
         to: getApplicationAddress(this.appID),
         amount: royaltieMintColleteral,
         suggestedParams,
         rekeyTo: ALGORAND_ZERO_ADDRESS
       }),
-      signer: transactionSigner,
+      signer: signer,
     }
 
-    atomicTransactionComposer.addMethodCall({
+    this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('addSolidarityForUser'),
-      sender: signer.addr,
+      sender: senderAddress,
       methodArgs: [
         taxPaymentTransaction,
         solidaritySenderAddress,
         appName
       ],
       suggestedParams: suggestedParams,
-      signer: transactionSigner,
+      signer: signer,
     })
 
-    return atomicTransactionComposer
+    return this.atomicTransactionComposer
   }
 
   async makeChangeIndividualSolidarityTransaction(
-    signer: Account,
+    signer: TransactionSigner, senderAddress: string,
     userAccount: string,
     basisPoints: number): Promise<AtomicTransactionComposer> {
 
-    const atomicTransactionComposer = new AtomicTransactionComposer()
+
     const suggestedParams = await this.getSuggested(10)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
-    const transactionSigner = makeBasicAccountTransactionSigner(signer)
 
-    atomicTransactionComposer.addMethodCall({
+    this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('changeIndividualSolidarity'),
-      sender: signer.addr,
+      sender: senderAddress,
       methodArgs: [
         userAccount,
         basisPoints
       ],
       suggestedParams: suggestedParams,
-      signer: transactionSigner
+      signer: signer
     })
 
-    return atomicTransactionComposer
+    return this.atomicTransactionComposer
     // return changeIndividualSolidarityAbiGroup.map(decodedSignedTransactionBuffer);
   }
 
-  async makeGetOfferCountTransaction(signer: Account, userAccount: string): Promise<AtomicTransactionComposer> {
-    const atomicTransactionComposer = new AtomicTransactionComposer()
+  async makeGetOfferCountTransaction(signer: TransactionSigner, senderAddress: string, userAccount: string): Promise<AtomicTransactionComposer> {
+
     const suggestedParams = await this.getSuggested(10)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
-    atomicTransactionComposer.addMethodCall({
+    this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('getOfferCount'),
-      sender: signer.addr,
+      sender: senderAddress,
       methodArgs: [
         userAccount
       ],
       suggestedParams: suggestedParams,
-      signer: makeBasicAccountTransactionSigner(signer),
+      signer: signer,
     })
 
-    return atomicTransactionComposer
+    return this.atomicTransactionComposer
   }
 
-  async makeRaiseCollectionCountTransaction(signer: Account, solidarityAddress: string): Promise<AtomicTransactionComposer> {
-    const atomicTransactionComposer = new AtomicTransactionComposer()
+  async makeRaiseCollectionCountTransaction(signer: TransactionSigner, senderAddress: string, solidarityAddress: string): Promise<AtomicTransactionComposer> {
+
     const suggestedParams = await this.getSuggested(10)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
-    atomicTransactionComposer.addMethodCall({
+    this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('raiseCollectionCount'),
-      sender: signer.addr,
+      sender: senderAddress,
       methodArgs: [
         solidarityAddress
       ],
       suggestedParams: suggestedParams,
-      signer: makeBasicAccountTransactionSigner(signer),
+      signer: signer,
     })
 
-    return atomicTransactionComposer
+    return this.atomicTransactionComposer
   }
 
-  async makeRaiseOfferCountTransaction(signer: Account, userAccount: string): Promise<AtomicTransactionComposer> {
-    const atomicTransactionComposer = new AtomicTransactionComposer()
+  async makeRaiseOfferCountTransaction(signer: TransactionSigner, senderAddress: string, userAccount: string): Promise<AtomicTransactionComposer> {
+
     const suggestedParams = await this.getSuggested(10)
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
 
-    atomicTransactionComposer.addMethodCall({
+    this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('raiseOfferCount'),
-      sender: signer.addr,
+      sender: senderAddress,
       methodArgs: [
         userAccount
       ],
       suggestedParams: suggestedParams,
-      signer: makeBasicAccountTransactionSigner(signer),
+      signer: signer,
     })
 
-    return atomicTransactionComposer
+    return this.atomicTransactionComposer
   }
 
 }

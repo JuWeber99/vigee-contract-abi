@@ -1,4 +1,4 @@
-import algosdk, { ABIContractParams, Algodv2, SignedTransaction, SuggestedParams, Transaction } from 'algosdk'
+import algosdk, { ABIContractParams, Algodv2, AtomicTransactionComposer, SignedTransaction, SuggestedParams, Transaction } from 'algosdk'
 import { StateSchema } from '../algorand-typeextender'
 
 export enum PROGRAM_TYPE {
@@ -13,8 +13,8 @@ export class BaseContract {
   globalSchema: StateSchema
   appID: number
   address: string
-
   handle: algosdk.ABIContract
+  atomicTransactionComposer: AtomicTransactionComposer
   approvalTemplate: string = "";
   clearTemplate: string = "";
 
@@ -34,6 +34,7 @@ export class BaseContract {
     this.localSchema = localSchema
     this.approvalTemplate = approvalTemplate
     this.clearTemplate = clearTemplate
+    this.atomicTransactionComposer = new AtomicTransactionComposer()
   }
 
   static getTransactionsFromGroup(signedArray: SignedTransaction[]): Transaction[] {

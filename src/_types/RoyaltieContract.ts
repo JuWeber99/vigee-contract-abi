@@ -1,67 +1,67 @@
-import algosdk, { Account, SignedTransaction } from 'algosdk'
-import { AtomicTransactionComposer } from 'algosdk'
+import { AtomicTransactionComposer, SignedTransaction, TransactionSigner } from 'algosdk'
 import { MintInformation } from './algorand-typeextender'
 
 export interface RoyaltieContract {
   makeCreateTransaction(
-    signer: algosdk.Account
+    signer: TransactionSigner,
+    senderAddress: string
   ): Promise<AtomicTransactionComposer>
 
   makeSetupTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShare: number
   ): Promise<AtomicTransactionComposer>
 
   makeCreateNFTTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     nftdata: MintInformation,
     solidarityAssetID: number
   ): Promise<AtomicTransactionComposer>
 
   makeSwapinNFTTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     assetID: number
   ): Promise<SignedTransaction[]>
 
   makeAddToCollectionTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     collectionAppID: number
   ): Promise<SignedTransaction[]>
 
   makeSetBasisPointsTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     basisPoints: number,
   ): Promise<SignedTransaction[]>
 
   makeSetRoyaltieReceiverTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     royaltieReceiver: string
   ): Promise<SignedTransaction[]>
 
   makeGetBasisPointsTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     assetID: number
   ): Promise<SignedTransaction[]>
 
   makeGetOffersTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     assetID: number,
-    stateAccountAddr: Account
+    stateHolderAddress: string
   ): Promise<SignedTransaction[]>
 
   makeAddPaymentAssetTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     assetID: number
   ): Promise<SignedTransaction[]>
 
   makeOfferRescindTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     assetToRescindID: number
   ): Promise<SignedTransaction[]>
 
   makeSetAdminTransaction(
-    signer: algosdk.Account,
+    signer: TransactionSigner, senderAddress: string,
     newAdmin: string
   ): Promise<SignedTransaction[]>
 

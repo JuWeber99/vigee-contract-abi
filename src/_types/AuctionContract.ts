@@ -1,13 +1,13 @@
-import algosdk, { SignedTransaction } from "algosdk"
+import { SignedTransaction, TransactionSigner } from "algosdk"
 
 export interface AuctionContract {
     makeCreateAuctionTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         defaultsellerAddress: string
     ): Promise<SignedTransaction[]>
 
     makeSetBulkDetailsTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         creatorAddress: string,
         floorPrice: number,
         minimumPriceIncrement: number,
@@ -17,45 +17,45 @@ export interface AuctionContract {
     ): Promise<SignedTransaction[]>
 
     makeAddOfferedAssetTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         offerAsset: number,
         defaultRoyaltieEnforcerAddress: string,
         offerAppID: number
     ): Promise<SignedTransaction[]>
 
     makeSetMinimumPriceIncrementTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         minimumPriceIncrement: number
     ): Promise<SignedTransaction[]>
 
     makeSetFloorPriceTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         floorPrice: number
     ): Promise<SignedTransaction[]>
 
     makeSetStartRoundTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         startRound: number
     ): Promise<SignedTransaction[]>
 
     makeSetSellerTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         sellerAddress: string
     ): Promise<SignedTransaction[]>
 
     makeChangeBundleStateTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         bundleState: boolean
     ): Promise<SignedTransaction[]>
 
     makeBidTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         bidAmount: number,
         bidderToRefundAddress: string
     ): Promise<SignedTransaction[]>
 
     makeSettleUnbundledAuctionTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         creatorAddress: string,
         buyerAddress: string,
         royaltieEnforcerAddress: string,
@@ -63,7 +63,7 @@ export interface AuctionContract {
     ): Promise<SignedTransaction[]>
 
     makeSettleBundledAuctionTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         sellerAddress: string,
         buyerAddress: string,
         royaltieEnforcerAddress: string,
@@ -71,7 +71,7 @@ export interface AuctionContract {
     ): Promise<SignedTransaction[]>
 
     makeAdminSetAuctionHashTransaction(
-        signer: algosdk.Account,
+        signer: TransactionSigner, senderAddress: string,
         auctionHash: string,
     ): Promise<SignedTransaction[]>
 }

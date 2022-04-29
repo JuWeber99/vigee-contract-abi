@@ -120,7 +120,7 @@
             }
         },
         {
-            "name": "lockForOffer",
+            "name": "createVigeeOffer",
             "desc": "Flags that an asset is offered for sale and sets address authorized to submit the transfer",
             "args": [{
                     "name": "royalty_asset",
@@ -133,6 +133,14 @@
                 {
                     "name": "authorized_address",
                     "type": "account"
+                },
+                {
+                    "name": "offered_amount",
+                    "type": "uint64"
+                },
+                {
+                    "name": "offered_auth_addr",
+                    "type": "address"
                 }
             ],
             "returns": {
@@ -184,6 +192,10 @@
                 {
                     "name": "to",
                     "type": "account"
+                },
+                {
+                    "name": "prevOfferAmount",
+                    "type": "uint64"
                 }
             ],
             "returns": {
@@ -202,7 +214,7 @@
             }
         },
         {
-            "name": "transfer",
+            "name": "marketTransfer",
             "desc": "Transfers an Asset from one account to another and enforces royalty payments. If payment is in Algos, payment_asset should be 0",
             "args": [{
                     "name": "royalty_asset",
@@ -225,8 +237,8 @@
                     "type": "uint64"
                 },
                 {
-                    "name": "payment",
-                    "type": "txn"
+                    "name": "purchaseTxn",
+                    "type": "pay"
                 },
                 {
                     "name": "payment_asset",

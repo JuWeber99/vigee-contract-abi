@@ -221,15 +221,9 @@
     ],
     "locals": [],
     "globals": [{
-            "name": "aggregatedSolidarity",
-            "desc": "aggregated amount of apps solidarity issued ",
-            "type": "uint64"
-        },
-        {
-            "name": "auctionDetails",
-            "desc": "bytearray containing auction type,start round + rounds to live after start, leading bidder, highestBid and status of the auction",
-            "type": "(uint8, uint8, uint16, address, uint64)"
-        }
-    ]
+        "name": "auctionDetails",
+        "desc": "bytearray containing auction type,start round + rounds to live after start, leading bidder, highestBid and status of the auction",
+        "type": "(uint8, uint8, uint16, address, uint64)"
+    }]
 
 }
