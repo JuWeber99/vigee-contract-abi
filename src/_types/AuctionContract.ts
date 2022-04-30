@@ -1,4 +1,4 @@
-import { SignedTransaction, TransactionSigner } from "algosdk"
+import { AtomicTransactionComposer, TransactionSigner } from "algosdk"
 
 export enum AUCTION_TYPES {
     DUTCH = 1,
@@ -8,7 +8,7 @@ export interface AuctionContract {
     // makeCreateAuctionTransaction(
     //     signer: TransactionSigner, senderAddress: string,
     //     defaultsellerAddress: string
-    // ): Promise<SignedTransaction[]>
+    // ): Promise<AtomicTransactionComposer>
 
     makeCreateAuctionWithDetailsTransaction(
         signer: TransactionSigner, senderAddress: string,
@@ -17,45 +17,45 @@ export interface AuctionContract {
         startRound: number,
         timeToLive: number,
         auctionType: number
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeAddOfferedAssetTransaction(
         signer: TransactionSigner,
         senderAddress: string,
         offerAsset: number,
         royaltieAppID: number)
-        : Promise<SignedTransaction[]>
+        : Promise<AtomicTransactionComposer>
 
     makeSetMinimumPriceIncrementTransaction(
         signer: TransactionSigner, senderAddress: string,
         minimumPriceIncrement: number
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeSetFloorPriceTransaction(
         signer: TransactionSigner, senderAddress: string,
         floorPrice: number
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeSetStartRoundTransaction(
         signer: TransactionSigner, senderAddress: string,
         startRound: number
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeSetSellerTransaction(
         signer: TransactionSigner, senderAddress: string,
         sellerAddress: string
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeChangeBundleStateTransaction(
         signer: TransactionSigner, senderAddress: string,
         bundleState: boolean
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeBidTransaction(
         signer: TransactionSigner, senderAddress: string,
         bidAmount: number,
         bidderToRefundAddress: string
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeSettleUnbundledAuctionTransaction(
         signer: TransactionSigner, senderAddress: string,
@@ -63,7 +63,7 @@ export interface AuctionContract {
         buyerAddress: string,
         royaltieEnforcerAddress: string,
         offeredAsset: number
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeSettleBundledAuctionTransaction(
         signer: TransactionSigner, senderAddress: string,
@@ -71,10 +71,10 @@ export interface AuctionContract {
         buyerAddress: string,
         royaltieEnforcerAddress: string,
         offeredAsset: number
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 
     makeAdminSetAuctionHashTransaction(
         signer: TransactionSigner, senderAddress: string,
         auctionHash: string,
-    ): Promise<SignedTransaction[]>
+    ): Promise<AtomicTransactionComposer>
 }
