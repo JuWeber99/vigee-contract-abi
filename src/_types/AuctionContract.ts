@@ -12,7 +12,6 @@ export interface AuctionContract {
 
     makeCreateAuctionWithDetailsTransaction(
         signer: TransactionSigner, senderAddress: string,
-        creatorAddress: string,
         floorPrice: number,
         minimumPriceIncrement: number,
         startRound: number,

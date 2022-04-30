@@ -114,7 +114,6 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
   async makeCreateAuctionWithDetailsTransaction(
     signer: TransactionSigner, senderAddress: string,
-    creatorAddress: string,
     floorPrice: number,
     minimumPriceIncrement: number,
     startRound: number,
