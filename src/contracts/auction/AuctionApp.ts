@@ -12,7 +12,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       client,
       appID,
       new StateSchema(0, 1),
-      new StateSchema(4, 2),
+      new StateSchema(4, 3),
       auctionB64,
       auctionClearB64
     )
