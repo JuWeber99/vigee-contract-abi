@@ -2,7 +2,7 @@ import { Algodv2, getApplicationAddress, makePaymentTxnWithSuggestedParamsFromOb
 import { AuctionContract, AUCTION_TYPES } from '../../_types'
 import { StateSchema } from '../../_types/algorand-typeextender'
 import { BaseContract } from '../../_types/base'
-import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils"
+import { decodedSignedTransactionBuffer } from "../utils"
 import { auctionB64, auctionClearB64 } from './auctionConstant'
 import auctionInterface from './AuctionInterface.json'
 export class AuctionApp extends BaseContract implements AuctionContract {
@@ -13,7 +13,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       client,
       appID,
       new StateSchema(0, 1),
-      new StateSchema(0, 2),
+      new StateSchema(4, 2),
       auctionB64,
       auctionClearB64
     )
@@ -23,8 +23,8 @@ export class AuctionApp extends BaseContract implements AuctionContract {
   async makeAddOfferedAssetTransaction(signer: TransactionSigner, senderAddress: string, offerAsset: number, royaltieAppID: number): Promise<SignedTransaction[]> {
 
     const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+    // suggestedParams.flatFee = false
+    // suggestedParams.fee = 0 //get txnfees
 
     const royaltieSetupColleteral = 100000 + 64 * 50000
     const taxPaymentTransaction: TransactionWithSigner = {
@@ -33,7 +33,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS,
+        rekeyTo: undefined,
       }),
       signer: signer,
     }
@@ -69,7 +69,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         to: getApplicationAddress(this.appID),
         amount: royaltieSetupColleteral,
         suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS,
+        rekeyTo: undefined,
       }),
       signer: signer,
     }
