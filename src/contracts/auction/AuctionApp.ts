@@ -1,8 +1,7 @@
-import { Algodv2, AtomicTransactionComposer, getApplicationAddress, makePaymentTxnWithSuggestedParamsFromObject, SignedTransaction, TransactionSigner, TransactionWithSigner } from 'algosdk'
+import { Algodv2, AtomicTransactionComposer, getApplicationAddress, makePaymentTxnWithSuggestedParamsFromObject, TransactionSigner, TransactionWithSigner } from 'algosdk'
 import { AuctionContract, AUCTION_TYPES } from '../../_types'
 import { StateSchema } from '../../_types/algorand-typeextender'
 import { BaseContract } from '../../_types/base'
-import { decodedSignedTransactionBuffer } from "../utils"
 import { auctionB64, auctionClearB64 } from './auctionConstant'
 import auctionInterface from './AuctionInterface.json'
 export class AuctionApp extends BaseContract implements AuctionContract {
@@ -116,9 +115,6 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
 
     const suggestedParams = await this.getSuggested(1000)
-    // suggestedParams.flatFee = false
-    // suggestedParams.fee = 0 //get txnfees
-
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
