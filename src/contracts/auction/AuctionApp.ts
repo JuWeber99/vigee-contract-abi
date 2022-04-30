@@ -127,7 +127,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
     this.atomicTransactionComposer.addMethodCall({
       appID: 0,
-      method: this.getMethodByName('createWithDetails'),
+      method: this.getMethodByName('create'),
       sender: senderAddress,
       methodArgs: [
         senderAddress,
