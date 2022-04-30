@@ -141,7 +141,6 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       method: this.getMethodByName('create'),
       sender: senderAddress,
       methodArgs: [
-        senderAddress,
         floorPrice,
         minimumPriceIncrement,
         startRound,
