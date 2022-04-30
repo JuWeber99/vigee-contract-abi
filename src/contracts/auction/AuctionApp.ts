@@ -1,4 +1,4 @@
-import { Algodv2, AtomicTransactionComposer, getApplicationAddress, makePaymentTxnWithSuggestedParamsFromObject, TransactionSigner, TransactionWithSigner } from 'algosdk'
+import { Algodv2, AtomicTransactionComposer, getApplicationAddress, makePaymentTxnWithSuggestedParamsFromObject, OnApplicationComplete, TransactionSigner, TransactionWithSigner } from 'algosdk'
 import { AuctionContract, AUCTION_TYPES } from '../../_types'
 import { StateSchema } from '../../_types/algorand-typeextender'
 import { BaseContract } from '../../_types/base'
@@ -115,21 +115,18 @@ export class AuctionApp extends BaseContract implements AuctionContract {
 
 
     const suggestedParams = await this.getSuggested(1000)
+    const approvalProgram = new Uint8Array(
+      Buffer.from(await AuctionApp.getCompiledProgram(this.approvalTemplate, AuctionApp.client), "base64")
+    )
+    const clearProgram = new Uint8Array(
+      Buffer.from(await AuctionApp.getCompiledProgram(this.clearTemplate, AuctionApp.client), "base64")
+    )
 
     this.atomicTransactionComposer.addMethodCall({
-      appID: this.appID,
-      approvalProgram: new Uint8Array(
-        Buffer.from(await AuctionApp.getCompiledProgram(this.approvalTemplate, AuctionApp.client), "base64")
-      ),
-      clearProgram: new Uint8Array(
-        Buffer.from(await AuctionApp.getCompiledProgram(this.clearTemplate, AuctionApp.client), "base64")
-      ),
-      numLocalByteSlices: this.localSchema.numByteSlice as number,
-      numLocalInts: this.localSchema.numUint as number,
-      numGlobalByteSlices: this.globalSchema.numByteSlice as number,
-      numGlobalInts: this.globalSchema.numUint as number,
+      appID: 0,
       method: this.getMethodByName('create'),
       sender: senderAddress,
+      onComplete: OnApplicationComplete.NoOpOC,
       methodArgs: [
         floorPrice,
         minimumPriceIncrement,
@@ -137,6 +134,12 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         timeToLive,
         auctionType
       ],
+      approvalProgram: approvalProgram,
+      clearProgram: clearProgram,
+      numLocalByteSlices: this.localSchema.numByteSlice as number,
+      numLocalInts: this.localSchema.numUint as number,
+      numGlobalByteSlices: this.globalSchema.numByteSlice as number,
+      numGlobalInts: this.globalSchema.numUint as number,
       suggestedParams: suggestedParams,
       signer: signer,
     })
