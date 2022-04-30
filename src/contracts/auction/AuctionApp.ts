@@ -125,8 +125,19 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     // suggestedParams.flatFee = false
     // suggestedParams.fee = 0 //get txnfees
 
+
     this.atomicTransactionComposer.addMethodCall({
       appID: 0,
+      approvalProgram: new Uint8Array(
+        Buffer.from(await AuctionApp.getCompiledProgram(this.approvalTemplate, AuctionApp.client), "base64")
+      ),
+      clearProgram: new Uint8Array(
+        Buffer.from(await AuctionApp.getCompiledProgram(this.clearTemplate, AuctionApp.client), "base64")
+      ),
+      numLocalByteSlices: this.localSchema.numByteSlice as number,
+      numLocalInts: this.localSchema.numUint as number,
+      numGlobalByteSlices: this.globalSchema.numByteSlice as number,
+      numGlobalInts: this.globalSchema.numUint as number,
       method: this.getMethodByName('create'),
       sender: senderAddress,
       methodArgs: [
