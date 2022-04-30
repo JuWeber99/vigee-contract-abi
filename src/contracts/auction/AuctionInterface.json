@@ -2,29 +2,9 @@
     "name": "Vigee Main App",
     "desc": "Interface for the auction of the vigee platform",
     "methods": [{
-            "name": "createAuction",
+            "name": "create",
             "desc": "create an instance of the auction contract",
             "args": [{
-                "type": "pay",
-                "name": "taxTransaction"
-            }, {
-                "type": "account",
-                "name": "sellerAccount"
-
-            }],
-            "returns": {
-                "type": "uint64",
-                "desc": "The appid of the auction application"
-            }
-        },
-        {
-            "name": "setBulkDetails",
-            "desc": "create an instance of the auction contract",
-            "args": [{
-                    "type": "account",
-                    "name": "creator_main_account"
-                },
-                {
                     "type": "uint64",
                     "name": "floorPrice"
                 },
@@ -44,13 +24,13 @@
                     "desc": "The timestamp which represents the minumum end-timestamp possible."
                 },
                 {
-                    "type": "uint64",
+                    "type": "uint8",
                     "name": "auctionType",
                     "desc": "type 1 for dutch, type 2 for candle"
                 }
             ],
             "returns": {
-                "type": "void"
+                "type": "uint64"
             }
         },
         {
@@ -59,24 +39,27 @@
             "args": [{
                     "type": "pay",
                     "name": "taxTransaction"
-                }, {
+                },
+                {
+                    "type": "application",
+                    "name": "roylatieApp"
+                },
+                {
                     "type": "asset",
                     "name": "offerAsset"
                 },
                 {
-                    "type": "account",
-                    "name": "royaltieEnforcer",
-                    "desc": "The address of the assets royaltieEnforcer"
+                    "type": "uint64",
+                    "name": "amount"
                 },
                 {
-                    "type": "application",
-                    "name": "offer_appid",
-                    "desc": "The appid of the offer to add the asset to"
+                    "type": "account",
+                    "name": "royaltieaccount",
+                    "desc": "for call to lock it in the enforcer"
                 }
             ],
             "returns": {
-                "type": "uint64[]",
-                "desc": "array containing all now offered assets"
+                "type": "void"
             }
         },
         {

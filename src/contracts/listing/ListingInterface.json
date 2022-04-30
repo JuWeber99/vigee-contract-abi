@@ -99,13 +99,15 @@
                 "type": "asset",
                 "name": "offerAsset"
             }, {
-                "type": "account",
-                "name": "royaltieEnforcer",
-                "desc": "The address of the assets royaltieEnforcer"
+                "type": "uint64",
+                "name": "amount"
+            }, {
+                "type": "appl",
+                "name": "createVigeeOffer",
+                "desc": "call to lock it in the enforcer"
             }],
             "returns": {
-                "type": "void",
-                "desc": "array containing all now offered assets"
+                "type": "void"
             }
         }, {
             "name": "setFloorPrice",

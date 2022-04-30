@@ -17,7 +17,7 @@ export class ListingApp extends BaseContract implements ListingContract {
       client,
       appID,
       new StateSchema(0, 1),
-      new StateSchema(0, 2)
+      new StateSchema(3, 3)
     )
     this.appID = appID
   }
@@ -29,8 +29,8 @@ export class ListingApp extends BaseContract implements ListingContract {
     royaltieEnforcerAddress: string): Promise<SignedTransaction[]> {
 
     const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+    // suggestedParams.flatFee = false
+    // suggestedParams.fee = 0 //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: 0,

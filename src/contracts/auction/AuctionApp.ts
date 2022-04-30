@@ -1,5 +1,5 @@
 import { Algodv2, getApplicationAddress, makePaymentTxnWithSuggestedParamsFromObject, SignedTransaction, TransactionSigner, TransactionWithSigner } from 'algosdk'
-import { AuctionContract } from '../../_types'
+import { AuctionContract, AUCTION_TYPES } from '../../_types'
 import { StateSchema } from '../../_types/algorand-typeextender'
 import { BaseContract } from '../../_types/base'
 import { ALGORAND_ZERO_ADDRESS, decodedSignedTransactionBuffer } from "../utils"
@@ -20,8 +20,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     this.appID = appID
   }
 
-
-  async makeAddOfferedAssetTransaction(signer: TransactionSigner, senderAddress: string, offerAsset: number, royaltieEnforcer: string, offerAppID: number): Promise<SignedTransaction[]> {
+  async makeAddOfferedAssetTransaction(signer: TransactionSigner, senderAddress: string, offerAsset: number, royaltieAppID: number): Promise<SignedTransaction[]> {
 
     const suggestedParams = await this.getSuggested(1000)
     suggestedParams.flatFee = false
@@ -40,14 +39,14 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     }
 
     this.atomicTransactionComposer.addMethodCall({
-      appID: 0,
+      appID: this.appID,
       method: this.getMethodByName('addOfferedAsset'),
       sender: senderAddress,
       methodArgs: [
         taxPaymentTransaction,
+        royaltieAppID,
         offerAsset,
-        royaltieEnforcer,
-        offerAppID
+        1
       ],
       suggestedParams: suggestedParams,
       signer: signer,
@@ -113,57 +112,23 @@ export class AuctionApp extends BaseContract implements AuctionContract {
     return changeBundleStateAbiGroup.map(decodedSignedTransactionBuffer)
   }
 
-  async makeCreateAuctionTransaction(signer: TransactionSigner, senderAddress: string, defaultsellerAddress: string): Promise<SignedTransaction[]> {
-
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
-
-    const royaltieSetupColleteral = 100000 + 64 * 50000
-    const taxPaymentTransaction: TransactionWithSigner = {
-      txn: makePaymentTxnWithSuggestedParamsFromObject({
-        from: senderAddress,
-        to: getApplicationAddress(this.appID),
-        amount: royaltieSetupColleteral,
-        suggestedParams,
-        rekeyTo: ALGORAND_ZERO_ADDRESS,
-      }),
-      signer: signer,
-    }
-
-    this.atomicTransactionComposer.addMethodCall({
-      appID: 0,
-      method: this.getMethodByName('createAuction'),
-      sender: senderAddress,
-      methodArgs: [
-        taxPaymentTransaction,
-        defaultsellerAddress
-      ],
-      suggestedParams: suggestedParams,
-      signer: signer,
-    })
-
-    const createAuctionAbiGroup = await this.atomicTransactionComposer.gatherSignatures()
-    return createAuctionAbiGroup.map(decodedSignedTransactionBuffer)
-  }
-
-  async makeSetBulkDetailsTransaction(
+  async makeCreateAuctionWithDetailsTransaction(
     signer: TransactionSigner, senderAddress: string,
     creatorAddress: string,
     floorPrice: number,
     minimumPriceIncrement: number,
     startRound: number,
     timeToLive: number,
-    auctionType: number): Promise<SignedTransaction[]> {
+    auctionType: AUCTION_TYPES): Promise<SignedTransaction[]> {
 
 
     const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+    // suggestedParams.flatFee = false
+    // suggestedParams.fee = 0 //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: 0,
-      method: this.getMethodByName('setBulkDetails'),
+      method: this.getMethodByName('createWithDetails'),
       sender: senderAddress,
       methodArgs: [
         creatorAddress,

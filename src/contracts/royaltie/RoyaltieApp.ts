@@ -288,7 +288,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
-      method: this.getMethodByName('lockForOffer'),
+      method: this.getMethodByName('createVigeeOffer'),
       sender: senderAddress,
       methodArgs: [royaltyAsset, royaltyAssetAmount, authorizedAddress],
       suggestedParams: suggestedParams,

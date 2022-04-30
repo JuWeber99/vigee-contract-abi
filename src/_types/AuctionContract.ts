@@ -1,12 +1,16 @@
 import { SignedTransaction, TransactionSigner } from "algosdk"
 
+export enum AUCTION_TYPES {
+    DUTCH = 1,
+    CANDLE = 2
+}
 export interface AuctionContract {
-    makeCreateAuctionTransaction(
-        signer: TransactionSigner, senderAddress: string,
-        defaultsellerAddress: string
-    ): Promise<SignedTransaction[]>
+    // makeCreateAuctionTransaction(
+    //     signer: TransactionSigner, senderAddress: string,
+    //     defaultsellerAddress: string
+    // ): Promise<SignedTransaction[]>
 
-    makeSetBulkDetailsTransaction(
+    makeCreateAuctionWithDetailsTransaction(
         signer: TransactionSigner, senderAddress: string,
         creatorAddress: string,
         floorPrice: number,
@@ -17,11 +21,11 @@ export interface AuctionContract {
     ): Promise<SignedTransaction[]>
 
     makeAddOfferedAssetTransaction(
-        signer: TransactionSigner, senderAddress: string,
+        signer: TransactionSigner,
+        senderAddress: string,
         offerAsset: number,
-        defaultRoyaltieEnforcerAddress: string,
-        offerAppID: number
-    ): Promise<SignedTransaction[]>
+        royaltieAppID: number)
+        : Promise<SignedTransaction[]>
 
     makeSetMinimumPriceIncrementTransaction(
         signer: TransactionSigner, senderAddress: string,
