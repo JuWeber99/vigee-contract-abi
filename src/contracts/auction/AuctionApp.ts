@@ -23,8 +23,6 @@ export class AuctionApp extends BaseContract implements AuctionContract {
   async makeAddOfferedAssetTransaction(signer: TransactionSigner, senderAddress: string, offerAsset: number, royaltieAppID: number): Promise<SignedTransaction[]> {
 
     const suggestedParams = await this.getSuggested(1000)
-    // suggestedParams.flatFee = false
-    // suggestedParams.fee = 0 //get txnfees
 
     const royaltieSetupColleteral = 100000 + 64 * 50000
     const taxPaymentTransaction: TransactionWithSigner = {
