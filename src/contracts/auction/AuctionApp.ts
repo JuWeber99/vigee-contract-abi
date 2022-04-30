@@ -43,7 +43,8 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         taxPaymentTransaction,
         royaltieAppID,
         offerAsset,
-        1
+        1,
+        getApplicationAddress(royaltieAppID)
       ],
       suggestedParams: suggestedParams,
       signer: signer,
