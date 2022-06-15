@@ -1,1 +1,1 @@
-export * from "./AlgorandExtender"
+export * from './AlgorandExtender';

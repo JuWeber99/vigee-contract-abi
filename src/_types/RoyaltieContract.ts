@@ -1,69 +1,84 @@
-import { AtomicTransactionComposer, SignedTransaction, TransactionSigner } from 'algosdk'
-import { MintInformation } from './algorand-typeextender'
+import {
+  AtomicTransactionComposer,
+  SignedTransaction,
+  TransactionSigner,
+} from 'algosdk';
+import { MintInformation } from './algorand-typeextender';
 
 export interface RoyaltieContract {
   makeCreateTransaction(
     signer: TransactionSigner,
     senderAddress: string
-  ): Promise<AtomicTransactionComposer>
+  ): Promise<AtomicTransactionComposer>;
 
   makeSetupTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShare: number
-  ): Promise<AtomicTransactionComposer>
+  ): Promise<AtomicTransactionComposer>;
 
   makeCreateNFTTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     nftdata: MintInformation,
     solidarityAssetID: number
-  ): Promise<AtomicTransactionComposer>
+  ): Promise<AtomicTransactionComposer>;
 
   makeSwapinNFTTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     assetID: number
-  ): Promise<SignedTransaction[]>
+  ): Promise<SignedTransaction[]>;
 
   makeAddToCollectionTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     collectionAppID: number
-  ): Promise<SignedTransaction[]>
+  ): Promise<SignedTransaction[]>;
 
   makeSetBasisPointsTransaction(
-    signer: TransactionSigner, senderAddress: string,
-    basisPoints: number,
-  ): Promise<SignedTransaction[]>
+    signer: TransactionSigner,
+    senderAddress: string,
+    basisPoints: number
+  ): Promise<SignedTransaction[]>;
 
   makeSetRoyaltieReceiverTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     royaltieReceiver: string
-  ): Promise<SignedTransaction[]>
+  ): Promise<SignedTransaction[]>;
 
   makeGetBasisPointsTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     assetID: number
-  ): Promise<SignedTransaction[]>
+  ): Promise<SignedTransaction[]>;
 
   makeGetOffersTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     assetID: number,
     stateHolderAddress: string
-  ): Promise<SignedTransaction[]>
+  ): Promise<SignedTransaction[]>;
 
   makeAddPaymentAssetTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     assetID: number
-  ): Promise<SignedTransaction[]>
+  ): Promise<SignedTransaction[]>;
 
   makeOfferRescindTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     assetToRescindID: number
-  ): Promise<SignedTransaction[]>
+  ): Promise<SignedTransaction[]>;
 
   makeSetAdminTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     newAdmin: string
-  ): Promise<SignedTransaction[]>
+  ): Promise<SignedTransaction[]>;
 
   //inner_transfer(signer: algosdk.Account): Promise<SignedTransaction[]>
 
