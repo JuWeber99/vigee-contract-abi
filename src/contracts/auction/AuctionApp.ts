@@ -1,29 +1,41 @@
-import { Algodv2, AtomicTransactionComposer, getApplicationAddress, makePaymentTxnWithSuggestedParamsFromObject, OnApplicationComplete, TransactionSigner, TransactionWithSigner } from 'algosdk'
-import { AuctionContract, AUCTION_TYPES } from '../../_types'
-import { StateSchema } from '../../_types/algorand-typeextender'
-import { BaseContract } from '../../_types/base'
-import { auctionB64, auctionClearB64 } from './auctionConstant'
-import auctionInterface from './AuctionInterface.json'
+import {
+  Algodv2,
+  AtomicTransactionComposer,
+  getApplicationAddress,
+  makePaymentTxnWithSuggestedParamsFromObject,
+  OnApplicationComplete,
+  TransactionSigner,
+  TransactionWithSigner,
+} from 'algosdk';
+import { AuctionContract, AUCTION_TYPES } from '../../_types';
+import { StateSchema } from '../../_types/algorand-typeextender';
+import { BaseContract } from '../../_types/base';
+import { auctionB64, auctionClearB64 } from './auctionConstant';
+import auctionInterface from './AuctionInterface.json';
 export class AuctionApp extends BaseContract implements AuctionContract {
-  appID: number
-  constructor(appID = 0, client: Algodv2) {
+  appID: number;
+  constructor(appID = 0, client?: Algodv2) {
     super(
       auctionInterface,
-      client,
       appID,
       new StateSchema(0, 1),
       new StateSchema(4, 3),
+      client,
       auctionB64,
       auctionClearB64
-    )
-    this.appID = appID
+    );
+    this.appID = appID;
   }
 
-  async makeAddOfferedAssetTransaction(signer: TransactionSigner, senderAddress: string, offerAsset: number, royaltieAppID: number): Promise<AtomicTransactionComposer> {
+  async makeAddOfferedAssetTransaction(
+    signer: TransactionSigner,
+    senderAddress: string,
+    offerAsset: number,
+    royaltieAppID: number
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
 
-    const suggestedParams = await this.getSuggested(1000)
-
-    const royaltieSetupColleteral = 100000 + 64 * 50000
+    const royaltieSetupColleteral = 100000 + 64 * 50000;
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
         from: senderAddress,
@@ -33,7 +45,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         rekeyTo: undefined,
       }),
       signer: signer,
-    }
+    };
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
@@ -44,21 +56,25 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         royaltieAppID,
         offerAsset,
         1,
-        getApplicationAddress(royaltieAppID)
+        getApplicationAddress(royaltieAppID),
       ],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
-    return this.atomicTransactionComposer
+    });
+    return this.atomicTransactionComposer;
   }
 
-  async makeBidTransaction(signer: TransactionSigner, senderAddress: string, bidAmount: number, bidderToRefundAddress: string): Promise<AtomicTransactionComposer> {
+  async makeBidTransaction(
+    signer: TransactionSigner,
+    senderAddress: string,
+    bidAmount: number,
+    bidderToRefundAddress: string
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
 
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
-
-    const royaltieSetupColleteral = 100000 + 64 * 50000
+    const royaltieSetupColleteral = 100000 + 64 * 50000;
     const taxPaymentTransaction: TransactionWithSigner = {
       txn: makePaymentTxnWithSuggestedParamsFromObject({
         from: senderAddress,
@@ -68,60 +84,69 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         rekeyTo: undefined,
       }),
       signer: signer,
-    }
+    };
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('bid'),
       sender: senderAddress,
-      methodArgs: [
-        bidAmount,
-        taxPaymentTransaction,
-        bidderToRefundAddress
-      ],
+      methodArgs: [bidAmount, taxPaymentTransaction, bidderToRefundAddress],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 
-  async makeChangeBundleStateTransaction(signer: TransactionSigner, senderAddress: string, bundleState: boolean): Promise<AtomicTransactionComposer> {
-
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+  async makeChangeBundleStateTransaction(
+    signer: TransactionSigner,
+    senderAddress: string,
+    bundleState: boolean
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('changeBundleState'),
       sender: senderAddress,
-      methodArgs: [
-        bundleState
-      ],
+      methodArgs: [bundleState],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 
   async makeCreateAuctionWithDetailsTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     floorPrice: number,
     minimumPriceIncrement: number,
     startRound: number,
     timeToLive: number,
-    auctionType: AUCTION_TYPES): Promise<AtomicTransactionComposer> {
-
-
-    const suggestedParams = await this.getSuggested(1000)
+    auctionType: AUCTION_TYPES
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
     const approvalProgram = new Uint8Array(
-      Buffer.from(await AuctionApp.getCompiledProgram(this.approvalTemplate, AuctionApp.client), "base64")
-    )
+      Buffer.from(
+        await AuctionApp.getCompiledProgram(
+          this.approvalTemplate,
+          AuctionApp.client
+        ),
+        'base64'
+      )
+    );
     const clearProgram = new Uint8Array(
-      Buffer.from(await AuctionApp.getCompiledProgram(this.clearTemplate, AuctionApp.client), "base64")
-    )
+      Buffer.from(
+        await AuctionApp.getCompiledProgram(
+          this.clearTemplate,
+          AuctionApp.client
+        ),
+        'base64'
+      )
+    );
 
     this.atomicTransactionComposer.addMethodCall({
       appID: 0,
@@ -133,7 +158,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         minimumPriceIncrement,
         startRound,
         timeToLive,
-        auctionType
+        auctionType,
       ],
       approvalProgram: approvalProgram,
       clearProgram: clearProgram,
@@ -143,102 +168,106 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       numGlobalInts: this.globalSchema.numUint as number,
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 
-  async makeSetFloorPriceTransaction(signer: TransactionSigner, senderAddress: string, floorPrice: number): Promise<AtomicTransactionComposer> {
-
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+  async makeSetFloorPriceTransaction(
+    signer: TransactionSigner,
+    senderAddress: string,
+    floorPrice: number
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('setFloorPrice'),
       sender: senderAddress,
-      methodArgs: [
-        floorPrice
-      ],
+      methodArgs: [floorPrice],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 
-  async makeSetMinimumPriceIncrementTransaction(signer: TransactionSigner, senderAddress: string, minimumPriceIncrement: number): Promise<AtomicTransactionComposer> {
-
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+  async makeSetMinimumPriceIncrementTransaction(
+    signer: TransactionSigner,
+    senderAddress: string,
+    minimumPriceIncrement: number
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('setMinimumPriceIncrement'),
       sender: senderAddress,
-      methodArgs: [
-        minimumPriceIncrement
-      ],
+      methodArgs: [minimumPriceIncrement],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 
-  async makeSetSellerTransaction(signer: TransactionSigner, senderAddress: string, sellerAddress: string): Promise<AtomicTransactionComposer> {
-
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+  async makeSetSellerTransaction(
+    signer: TransactionSigner,
+    senderAddress: string,
+    sellerAddress: string
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('setSeller'),
       sender: senderAddress,
-      methodArgs: [
-        sellerAddress
-      ],
+      methodArgs: [sellerAddress],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 
-  async makeSetStartRoundTransaction(signer: TransactionSigner, senderAddress: string, startRound: number): Promise<AtomicTransactionComposer> {
-
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+  async makeSetStartRoundTransaction(
+    signer: TransactionSigner,
+    senderAddress: string,
+    startRound: number
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('setStartRound'),
       sender: senderAddress,
-      methodArgs: [
-        startRound
-      ],
+      methodArgs: [startRound],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 
   async makeSettleBundledAuctionTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     sellerAddress: string,
     buyerAddress: string,
     royaltieEnforcerAddress: string,
-    offeredAsset: number): Promise<AtomicTransactionComposer> {
-
-
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+    offeredAsset: number
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
@@ -248,26 +277,26 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         sellerAddress,
         buyerAddress,
         royaltieEnforcerAddress,
-        offeredAsset
+        offeredAsset,
       ],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 
   async makeSettleUnbundledAuctionTransaction(
-    signer: TransactionSigner, senderAddress: string,
+    signer: TransactionSigner,
+    senderAddress: string,
     creatorAddress: string,
     buyerAddress: string,
     royaltieEnforcerAddress: string,
-    offeredAsset: number): Promise<AtomicTransactionComposer> {
-
-
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+    offeredAsset: number
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
@@ -277,32 +306,33 @@ export class AuctionApp extends BaseContract implements AuctionContract {
         creatorAddress,
         buyerAddress,
         royaltieEnforcerAddress,
-        offeredAsset
+        offeredAsset,
       ],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 
-  async makeAdminSetAuctionHashTransaction(signer: TransactionSigner, senderAddress: string, auctionHash: string): Promise<AtomicTransactionComposer> {
-
-    const suggestedParams = await this.getSuggested(1000)
-    suggestedParams.flatFee = false
-    suggestedParams.fee = 0 //get txnfees
+  async makeAdminSetAuctionHashTransaction(
+    signer: TransactionSigner,
+    senderAddress: string,
+    auctionHash: string
+  ): Promise<AtomicTransactionComposer> {
+    const suggestedParams = await this.getSuggested(1000);
+    suggestedParams.flatFee = false;
+    suggestedParams.fee = 0; //get txnfees
 
     this.atomicTransactionComposer.addMethodCall({
       appID: this.appID,
       method: this.getMethodByName('adminSetAuctionHash'),
       sender: senderAddress,
-      methodArgs: [
-        auctionHash
-      ],
+      methodArgs: [auctionHash],
       suggestedParams: suggestedParams,
       signer: signer,
-    })
+    });
 
-    return this.atomicTransactionComposer
+    return this.atomicTransactionComposer;
   }
 }

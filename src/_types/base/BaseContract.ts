@@ -1,81 +1,94 @@
-import algosdk, { ABIContractParams, Algodv2, AtomicTransactionComposer, SignedTransaction, SuggestedParams, Transaction } from 'algosdk'
-import { StateSchema } from '../algorand-typeextender'
+import algosdk, {
+  ABIContractParams,
+  Algodv2,
+  AtomicTransactionComposer,
+  SignedTransaction,
+  SuggestedParams,
+  Transaction,
+} from 'algosdk';
+import { StateSchema } from '../algorand-typeextender';
 
 export enum PROGRAM_TYPE {
   APPROVAL,
   CLEAR,
 }
 
-
 export class BaseContract {
-  static client: Algodv2
-  localSchema: StateSchema
-  globalSchema: StateSchema
-  appID: number
-  address: string
-  handle: algosdk.ABIContract
-  atomicTransactionComposer: AtomicTransactionComposer
-  approvalTemplate: string = "";
-  clearTemplate: string = "";
+  static client: Algodv2;
+  localSchema: StateSchema;
+  globalSchema: StateSchema;
+  appID: number;
+  address: string;
+  handle: algosdk.ABIContract;
+  atomicTransactionComposer: AtomicTransactionComposer;
+  approvalTemplate: string = '';
+  clearTemplate: string = '';
 
   constructor(
     abiInterface: ABIContractParams,
-    client: Algodv2,
     appID: number = 0,
     localSchema = new StateSchema(0, 0),
     globalSchema = new StateSchema(0, 0),
+    client?: Algodv2,
     approvalTemplate?: string,
     clearTemplate?: string
   ) {
-    this.handle = new algosdk.ABIContract(abiInterface)
-    this.appID = appID
-    BaseContract.client = client
-    this.globalSchema = globalSchema
-    this.localSchema = localSchema
-    this.approvalTemplate = approvalTemplate
-    this.clearTemplate = clearTemplate
-    this.atomicTransactionComposer = new AtomicTransactionComposer()
+    this.handle = new algosdk.ABIContract(abiInterface);
+    this.appID = appID;
+    BaseContract.client = client;
+    this.globalSchema = globalSchema;
+    this.localSchema = localSchema;
+    this.approvalTemplate = approvalTemplate;
+    this.clearTemplate = clearTemplate;
+    this.atomicTransactionComposer = new AtomicTransactionComposer();
   }
 
-  static getTransactionsFromGroup(signedArray: SignedTransaction[]): Transaction[] {
-    return signedArray.map((item) => item.txn)
+  static getTransactionsFromGroup(
+    signedArray: SignedTransaction[]
+  ): Transaction[] {
+    return signedArray.map(item => item.txn);
   }
 
   getMethodByName(name: string): algosdk.ABIMethod {
     const m = this.handle.methods.find((mt: algosdk.ABIMethod) => {
-      return mt.name == name
-    })
-    if (m === undefined) throw Error('Method undefined: ' + name)
-    return m
+      return mt.name == name;
+    });
+    if (m === undefined) throw Error('Method undefined: ' + name);
+    return m;
   }
 
   async getSuggested(rounds: number): Promise<SuggestedParams> {
-    const txParams = await BaseContract.client.getTransactionParams().do()
-    return { ...txParams, lastRound: txParams.firstRound + rounds }
+    const txParams = await BaseContract.client.getTransactionParams().do();
+    return { ...txParams, lastRound: txParams.firstRound + rounds };
   }
 
-  static populateContract(template: string, vars?: Record<string, any>): string {
+  static populateContract(
+    template: string,
+    vars?: Record<string, any>
+  ): string {
     for (let v in vars) {
-      let val = vars[v]
-      template = template.replace(new RegExp(v, 'g'), val)
+      let val = vars[v];
+      template = template.replace(new RegExp(v, 'g'), val);
     }
-    return template
+    return template;
   }
-
 
   static async getCompiledProgram(
     template: string,
     client: Algodv2,
     templateVars?: Record<string, any>
   ): Promise<string> {
-    console.log(templateVars)
-    let filledTemplate = Buffer.from(template, "base64").toString()
+    console.log(templateVars);
+    let filledTemplate = Buffer.from(template, 'base64').toString();
     if (templateVars) {
-      filledTemplate = BaseContract.populateContract(filledTemplate, templateVars)
+      filledTemplate = BaseContract.populateContract(
+        filledTemplate,
+        templateVars
+      );
     }
-    const compiledContract = await client.compile(filledTemplate).do()
+    const compiledContract = await client.compile(filledTemplate).do();
 
-    return compiledContract.result
+    return compiledContract.result;
   }
 }
 
