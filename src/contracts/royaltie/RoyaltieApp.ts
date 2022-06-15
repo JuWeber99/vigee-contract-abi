@@ -23,7 +23,7 @@ import royaltieInterface from './RoyaltieInterface.json';
 export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   mainAppID: number;
 
-  constructor(mainAppID: number, client: Algodv2, appID: number = 0) {
+  constructor(mainAppID: number = 0, appID: number = 0, client?: Algodv2) {
     super(
       royaltieInterface,
       appID,
