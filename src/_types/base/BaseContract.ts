@@ -26,10 +26,10 @@ export abstract class BaseContract {
 
   constructor(
     abiInterface: ABIContractParams,
-    appID: number = 0,
+    appID: number,
+    client: Algodv2,
     localSchema = new StateSchema(0, 0),
     globalSchema = new StateSchema(0, 0),
-    client?: Algodv2,
     approvalTemplate?: string,
     clearTemplate?: string
   ) {

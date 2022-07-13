@@ -17,13 +17,13 @@ import listingInterface from './ListingInterface.json';
 
 export class ListingApp extends BaseContract implements ListingContract {
   appID: number;
-  constructor(appID: number = 0, client?: Algodv2) {
+  constructor(appID: number, client: Algodv2) {
     super(
       listingInterface,
       appID,
+      client,
       new StateSchema(0, 1),
       new StateSchema(3, 3),
-      client
     );
     this.appID = appID;
   }

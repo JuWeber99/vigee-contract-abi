@@ -14,13 +14,13 @@ import { solidarityB64, solidarityClearB64 } from './solidarityConstant';
 import solidarityInterface from './SolidarityInterface.json';
 
 export class SolidarityApp extends BaseContract implements SolidarityContract {
-  constructor(client?: Algodv2, appID: number = 0) {
+  constructor(appID: number, client: Algodv2) {
     super(
       solidarityInterface,
       appID,
+      client,
       new StateSchema(5, 0),
       new StateSchema(5, 4),
-      client,
       solidarityB64,
       solidarityClearB64
     );

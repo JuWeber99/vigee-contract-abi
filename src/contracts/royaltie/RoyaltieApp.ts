@@ -23,13 +23,14 @@ import royaltieInterface from './RoyaltieInterface.json';
 export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   mainAppID: number;
 
-  constructor(mainAppID: number, appID: number, client?: Algodv2) {
+  constructor(mainAppID: number, appID: number, client: Algodv2) {
+
     super(
       royaltieInterface,
       appID,
+      client,
       new StateSchema(0, 1),
       new StateSchema(1, 4),
-      client,
       royaltieB64,
       royaltieClearB64
     );
@@ -51,6 +52,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     signer: TransactionSigner,
     senderAddress: string
   ): Promise<algosdk.AtomicTransactionComposer> {
+    console.log("create");
     const suggestedParams = await this.getSuggested(1000);
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees
@@ -100,6 +102,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
     defaultRoyaltieReceiverAddress: string,
     defaultRoyaltieShare: number
   ): Promise<AtomicTransactionComposer> {
+    console.log("setup");
     const suggestedParams = await this.getSuggested(1000);
     // suggestedParams.flatFee = false;
     // suggestedParams.fee = 0; //get txnfees

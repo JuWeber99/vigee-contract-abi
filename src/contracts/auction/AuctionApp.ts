@@ -14,13 +14,13 @@ import { auctionB64, auctionClearB64 } from './auctionConstant';
 import auctionInterface from './AuctionInterface.json';
 export class AuctionApp extends BaseContract implements AuctionContract {
   appID: number;
-  constructor(appID = 0, client?: Algodv2) {
+  constructor(appID: number, client: Algodv2) {
     super(
       auctionInterface,
       appID,
+      client,
       new StateSchema(0, 1),
       new StateSchema(4, 3),
-      client,
       auctionB64,
       auctionClearB64
     );
