@@ -13,8 +13,8 @@ export enum PROGRAM_TYPE {
   CLEAR,
 }
 
-export class BaseContract {
-  static client: Algodv2;
+export abstract class BaseContract {
+  client: Algodv2;
   localSchema: StateSchema;
   globalSchema: StateSchema;
   appID: number;
@@ -35,7 +35,7 @@ export class BaseContract {
   ) {
     this.handle = new algosdk.ABIContract(abiInterface);
     this.appID = appID;
-    BaseContract.client = client;
+    this.client = client;
     this.globalSchema = globalSchema;
     this.localSchema = localSchema;
     this.approvalTemplate = approvalTemplate;
@@ -58,7 +58,7 @@ export class BaseContract {
   }
 
   async getSuggested(rounds: number): Promise<SuggestedParams> {
-    const txParams = await BaseContract.client.getTransactionParams().do();
+    const txParams = await this.client.getTransactionParams().do();
     return { ...txParams, lastRound: txParams.firstRound + rounds };
   }
 

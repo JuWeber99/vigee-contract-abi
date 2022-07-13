@@ -39,7 +39,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
         Buffer.from(
           await SolidarityApp.getCompiledProgram(
             this.approvalTemplate,
-            SolidarityApp.client
+            this.client
           ),
           'base64'
         )
@@ -48,7 +48,7 @@ export class SolidarityApp extends BaseContract implements SolidarityContract {
         Buffer.from(
           await SolidarityApp.getCompiledProgram(
             this.clearTemplate,
-            SolidarityApp.client
+            this.client
           ),
           'base64'
         )

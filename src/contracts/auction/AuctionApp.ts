@@ -133,7 +133,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       Buffer.from(
         await AuctionApp.getCompiledProgram(
           this.approvalTemplate,
-          AuctionApp.client
+          this.client
         ),
         'base64'
       )
@@ -142,7 +142,7 @@ export class AuctionApp extends BaseContract implements AuctionContract {
       Buffer.from(
         await AuctionApp.getCompiledProgram(
           this.clearTemplate,
-          AuctionApp.client
+          this.client
         ),
         'base64'
       )

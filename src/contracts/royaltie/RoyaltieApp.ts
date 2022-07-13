@@ -23,7 +23,7 @@ import royaltieInterface from './RoyaltieInterface.json';
 export class RoyaltieApp extends BaseContract implements RoyaltieContract {
   mainAppID: number;
 
-  constructor(mainAppID: number = 0, appID: number = 0, client?: Algodv2) {
+  constructor(mainAppID: number, appID: number, client?: Algodv2) {
     super(
       royaltieInterface,
       appID,
@@ -59,7 +59,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       Buffer.from(
         await RoyaltieApp.getCompiledProgram(
           this.approvalTemplate,
-          RoyaltieApp.client,
+          this.client,
           { TMPL_VID: this.mainAppID }
         ),
         'base64'
@@ -70,7 +70,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       Buffer.from(
         await RoyaltieApp.getCompiledProgram(
           this.clearTemplate,
-          RoyaltieApp.client
+          this.client
         ),
         'base64'
       )
@@ -120,7 +120,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       Buffer.from(
         await RoyaltieApp.getCompiledProgram(
           this.approvalTemplate,
-          RoyaltieApp.client,
+          this.client,
           { TMPL_VID: this.mainAppID }
         ),
         'base64'
@@ -131,7 +131,7 @@ export class RoyaltieApp extends BaseContract implements RoyaltieContract {
       Buffer.from(
         await RoyaltieApp.getCompiledProgram(
           this.clearTemplate,
-          RoyaltieApp.client
+          this.client
         ),
         'base64'
       )
